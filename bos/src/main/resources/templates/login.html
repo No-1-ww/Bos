@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>万象物流BOS平台</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/login/login.css">
+
+</head>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<body class="default">
+	<div class="login-hd">
+		<div class="left-bg"></div>
+		<div class="right-bg"></div>
+		<div class="hd-inner">
+			<span class="logo"></span>
+			<span class="split"></span>
+			<span class="sys-name">万象物流BOS平台</span>
+		</div>
+	</div>
+	<div class="login-bd">
+		<div class="bd-inner">
+			<div class="inner-wrap">
+				<div class="lg-zone">
+					<div class="lg-box">
+						<div  class="lg-label"><h4 id="total">用户登录</h4></div>
+						<!-- "用户名、密码"不能为空提示 -->
+						<!-- 
+							<div class="alert alert-error">
+				              <i class="iconfont">&#xe62e;</i>
+				              <span>请输入用户名</span>
+				            </div>
+						 -->
+						<form id="aa" action="/logIn" method="post">
+							<div class="lg-username input-item clearfix">
+								<i class="iconfont">&#xe60d;</i>
+								<input id="account" name="username" type="text" placeholder="账号/邮箱">
+							</div>
+							<div class="lg-password input-item clearfix">
+								<i class="iconfont">&#xe634;</i>
+								<input id="password" name="password" type="password" placeholder="请输入密码">
+							</div>
+
+							<div class="tips clearfix">
+								<label><input type="checkbox" checked="checked">记住用户名</label>
+								<a href="javascript:;" class="register">立即注册</a>
+								<a href="javascript:;" class="forget-pwd" onclick="forgetPwd()">其他登录</a>
+
+							</div>
+							<div class="enter">
+								<!--javascript:window.location='main.html'-->
+
+									<a href="javascript:;"  class="supplier" onclick="shiroLog()">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+
+							</div>
+						</form>
+						<form id="bb" action="/logInDx" method="post" style="display: none">
+							<div class="lg-username input-item clearfix">
+								<i class="iconfont">&#xe60d;</i>
+								<input id="telPhone" name="Phone" type="text" placeholder="手机号码">
+							</div>
+
+							<div class="lg-check clearfix">
+								<div class="input-item">
+									<i class="iconfont">&#xe633;</i>
+									<input id="code" type="text" onblur="check()" placeholder="验证码">
+								</div>
+								<input type="button" style="height: 43px" class="button-bar" onclick="getYzm()" value="获取验证码"></input>
+							</div>
+
+							<div class="tips clearfix">
+								<!--<label><input type="checkbox" checked="checked">记住用户名</label>-->
+								<a href="javascript:;" class="register">立即注册</a>
+								<a href="javascript:;" class="forget-pwd" onclick="yuanforGetpwd()">用原方式登录</a>
+							</div>
+							<div class="enter">
+								<a href="javascript:;" class="supplier" onclick="dxLogIn()">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="lg-poster"></div>
+			</div>
+		</div>
+	</div>
+	<div class="login-ft">
+		<div class="ft-inner">
+			<div class="about-us">
+				<a href="javascript:void(0);">关于我们</a>
+				<a href="javascript:void(0);">法律声明</a>
+				<a href="javascript:void(0);">服务条款</a>
+				<a href="javascript:void(0);">联系方式</a>
+			</div>
+			<div class="address">地址：湖南省长沙市岳麓区&nbsp;邮编：410006&nbsp;&nbsp;Copyright&nbsp;©&nbsp;2010&nbsp;-&nbsp;2020&nbsp;新睿IT教育&nbsp;版权所有</div>
+			<div class="other-info">建议使用IE8及以上版本浏览器&nbsp;联系电话：0731-83062466</div>
+		</div>
+	</div>
+</body> 
+</html>
+    
+<script type="text/javascript">
+	//shiro登录
+	function shiroLog() {
+		$("#aa").submit();
+    }
+	//短信登录
+	var Yzm = "";
+    function getYzm() {
+        var Phone = $("#telPhone").val();
+        if(Phone==""){
+            alert("手机号码不能为空！");
+            return;
+        }
+        //进入后台判断是否存在该手机号，存在则跳转
+        $.ajax({
+            url:"/queryExit",
+            type:"POST",
+            data:{"Phone":Phone},
+            success:function (data) {
+                console.log(data);
+                if(data=="no"){
+                    alert("您的手机号码不存在系统中");
+                    Yzm = "no";
+                }else{
+                    Yzm =  data;
+                }
+
+            }
+        })
+    }
+    function check() {
+        var code = $("#code").val();
+        if(code==""){
+            alert("验证码不能为空");
+            return;
+		}
+		if(Yzm=="no"){
+            alert("验证码发送失败");
+            return;
+		}
+		if(code!=Yzm){
+		    alert("验证码错误");
+		    return;
+		}
+    }
+
+
+    function forgetPwd() {
+        $("#bb").show();
+        $("#aa").hide();
+        $("#total").text("手机号码登录");
+    }
+    function yuanforGetpwd() {
+        $("#bb").hide();
+        $("#aa").show();
+        $("#total").text("用户登录");
+    }
+</script>

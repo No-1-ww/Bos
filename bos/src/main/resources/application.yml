@@ -1,0 +1,53 @@
+spring:
+  resources:
+    static-locations: classpath:/static/
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+    #static-path-pattern: /static/**
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+
+  redis:
+    database: 0
+    host: 101.132.41.213
+    password:
+    port: 6379
+    jedis:
+      pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+    timeout: 60000ms
+
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bos
+
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /
+  port: 8089
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xr.bos.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

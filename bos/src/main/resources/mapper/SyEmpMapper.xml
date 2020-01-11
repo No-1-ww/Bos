@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.SyEmpMapper">
+    <select id="select" resultType="SyEmp">
+        select * from sy_emp
+    </select>
+    <select id="logIn" parameterType="String" resultType="SyEmp">
+        select * from sy_emp where EmpNo =#{empNo}
+    </select>
+    <select id="queryRoles"  parameterType="SyEmp" resultMap="roles">
+        select e.* from sy_emp e,sy_roles r where e.ID = #{ID} and e.RoleID = r.ID
+    </select>
+
+    <select id="queryExitPhone" resultType="int" parameterType="String">
+        select count(*) from sy_emp where Phone = #{Phone}
+    </select>
+
+    <select id="logInDx" resultType="SyEmp" parameterType="String">
+        select * from sy_emp where Phone =#{phone}
+    </select>
+
+
+    <resultMap id="roles" type="Map">
+        <id column="ID" property="roleId"></id>
+        <result column="RoleName" property="roleName"></result>
+        <result column="RoleDesc" property="roleDesc"></result>
+        <result column="Disabled" property="disabled"></result>
+    </resultMap>
+</mapper>
