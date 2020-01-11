@@ -95,8 +95,7 @@ public class SyMenusController {
             sb.append("]");
             sb.append("},");
             //所有一级菜单加载完毕进行加载下一个大模块，把变量j归零
-             j= 0;
-             k = 0;
+
 
         }
         //所有大模块加载完毕删除多余的,

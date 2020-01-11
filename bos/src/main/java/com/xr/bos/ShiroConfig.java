@@ -47,6 +47,7 @@ public class ShiroConfig {
         filterChainMap.put("/queryExit","anon");
         filterChainMap.put("/logInDx","anon");
 
+        filterChainMap.put("/aabbcc","anon");
         //配置访问静态资源，由于前端html没有更改路径所以前面不需要加/static
         filterChainMap.put("/css/**","anon");
         filterChainMap.put("/fonts/**","anon");

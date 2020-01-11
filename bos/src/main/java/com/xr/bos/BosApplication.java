@@ -16,6 +16,4 @@ public class BosApplication {
         SpringApplication.run(BosApplication.class, args);
     }
 
-
-
 }

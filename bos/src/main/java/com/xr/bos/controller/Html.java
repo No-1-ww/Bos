@@ -96,17 +96,39 @@ public class Html {
         return "/acceptance/businessAcceptance";
     }
 
+    //业务受理 新增businessAcceptance_add
+    @GetMapping("/businessAcceptance_add")
+    public String businessAcceptance_add(){return "acceptance/businessAcceptance_add"; }
+
+    //业务受理修改
+    @GetMapping("/businessAcceptance_update")
+    public String businessAcceptance_update(){
+        return "/acceptance/businessAcceptance_update";
+    }
+
+
     //工作单快速录入
     @GetMapping("/acceptance/worksheetQuickInput")
     public String worksheetQuickInput(){
         return "/acceptance/worksheetQuickInput";
     }
 
+    //工作单快速录入businessAcceptance_add
+   /* @GetMapping("/businessAcceptance_add")
+    public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}
+*/
     //工作单查询
     @GetMapping("/acceptance/worksheetQuery")
     public String worksheetQuery(){
         return "/acceptance/worksheetQuery";
     }
+
+    //工作单查询修改dispatchingPersonnelSet_update
+    @GetMapping("/dispatchingPersonnelSet_update")
+    public String dispatchingPersonnelSet_update(){
+        return "/acceptance/dispatchingPersonnelSet_update";
+    }
+
 
     //查台转单
     @GetMapping("/dispatch/checkTable")
@@ -114,11 +136,23 @@ public class Html {
         return "/dispatch/checkTable";
     }
 
+    //查台转单的转单singleTurn
+    @GetMapping("/singleTurn")
+    public String singleTurn(){return "/dispatch/singleTurn"; }
+
     //人工调度
     @GetMapping("/dispatch/manualScheduling")
     public String manualScheduling(){
         return "/dispatch/manualScheduling";
     }
+
+    //人工调度distribution
+    @GetMapping("/distribution")
+    public String distribution(){return "/dispatch/distribution"; }
+
+    //人工详情manualScheduling_detail
+    @GetMapping("/manualScheduling_detail")
+    public String manualScheduling_detail(){return "/dispatch/manualScheduling_detail"; }
 
     //签收录入
     @GetMapping("/dispatch/signInput")
@@ -126,17 +160,45 @@ public class Html {
         return "/dispatch/signInput";
     }
 
+    //签收录入新增signInput_add
+    @GetMapping("/signInput_add")
+    public String signInput_add(){ return "/dispatch/signInput_add"; }
+
+    //签收录入的修改signlnput_update
+    @GetMapping("/signlnput_update")
+    public String signlnput_update(){return "/dispatch/signlnput_update";}
+
+    //签收录入的详情
+    @GetMapping("/signInput_detail")
+    public String signInput_detail(){return "/dispatch/signInput_detail"; }
+
     //取消签收申请确认
     @GetMapping("/dispatch/cancelSignApplicationConfirmation")
     public String cancelSignApplicationConfirmation(){
         return "/dispatch/cancelSignApplicationConfirmation";
     }
 
+    //取消签收申请确认 新增 cancelSignApplicationConfirmation_add
+    @GetMapping("/cancelSignApplicationConfirmation_add")
+    public String cancelSignApplicationConfirmation_add(){return "/dispatch/cancelSignApplicationConfirmation_add"; }
+
+    //取消签收申请确认 详情 cancelSignApplicationConfirmation_detail
+    @GetMapping("/cancelSignApplicationConfirmation_detail")
+    public String cancelSignApplicationConfirmation_detail(){return "/dispatch/cancelSignApplicationConfirmation_detail"; }
+
     //宣传任务
     @GetMapping("/dispatch/propagandaTask")
     public String propagandaTask(){
         return "/dispatch/propagandaTask";
     }
+
+    //宣传任务的 新增+修改 propagandaTask_add
+    @GetMapping("/propagandaTask_add")
+    public String propagandaTask_add(){return "/dispatch/propagandaTask_add"; }
+
+    //宣传任务的 详情propagandaTask_detail
+    @GetMapping("/propagandaTask_detail")
+    public String propagandaTask_detail(){return "/dispatch/propagandaTask_detail"; }
 
     //返货申请
     @GetMapping("/return/returnApply")
@@ -149,11 +211,27 @@ public class Html {
     public String returnApplyConfirm(){
         return "/return/returnApplyConfirm";
     }
+
+    //返货申请确认的新增returnApply_add
+    @GetMapping("/returnApply_add")
+    public String returnApply_add(){return "/return/returnApply_add"; }
+
+    //返货申请确认的详情returnApply_detail
+    @GetMapping("/returnApply_detail")
+    public String returnApply_detail(){return "/return/returnApply_detail"; }
+
     //成生返货单
     @GetMapping("/return/returnInvoiceProduce")
     public String returnInvoiceProduce(){
         return "/return/returnInvoiceProduce";
     }
+
+    //生成返货单的成生返货单returnInvoiceProduce_add
+    @GetMapping("/returnInvoiceProduce_add")
+    public String returnInvoiceProduce_add(){return "/return/returnInvoiceProduce_add"; }
+
+    //生成返货单的详情returnInvoiceProduce_detail
+    public String returnInvoiceProduce_detail(){return "/return/returnInvoiceProduce_detail"; }
 
     //包装材料物品管理
     @GetMapping("/packagingMaterialManagement/packagingMaterialManagement")
@@ -194,10 +272,10 @@ public class Html {
 
 
     //入库
-    /*@GetMapping("")
+    @GetMapping("/sortingManagement/storage")
     public String storage(){
-        return "";
-    }*/
+        return "/sortingManagement/storage";
+    }
     //出库
     @GetMapping("/sortingManagement/theLibrary")
     public String theLibrary(){

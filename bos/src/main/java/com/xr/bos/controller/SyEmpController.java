@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Controller
@@ -59,13 +57,6 @@ public class SyEmpController {
     @PostMapping("/logIn")
     public ModelAndView login(String username, String password, HttpSession session){
         ModelAndView mv = new ModelAndView();
-        MessageDigest md5 = null;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
         System.out.println(username + "\t" + password);
 
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
