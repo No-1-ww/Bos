@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -152,15 +152,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr th:each="stor :${sorStorages}">
                     <td><input type="checkbox" name="check" lay-skin="primary"></td>
-                    <td>1</td>
-                    <td>JJD1001</td>
-                    <td>2017-11-11 11:11:11</td>
-                    <td>老王</td>
-                    <td>长沙分部</td>
-                    <td>老张</td>
-                    <td>深圳分部</td>
+                    <td th:text="${stor.id}">JJD1001</td>
+                    <td th:text="${stor.acceptDate}"></td>
+                    <td th:text="${stor.acceptPerson}"></td>
+                    <td th:text="${stor.acceptCompany}"></td>
+                    <td th:text="${stor.deliveryPerson}"></td>
+                    <td th:text="${stor.deliveryCompany}"></td>
                     <td>
                         <button type="button" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button>
                     </td>
