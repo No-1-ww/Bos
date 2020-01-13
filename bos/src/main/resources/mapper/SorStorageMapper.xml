@@ -15,4 +15,15 @@
         <result property="deliveryPerson" column="DeliveryPerson"></result>
         <result property="deliveryCompany" column="DeliveryCompany"></result>
     </resultMap>
+
+    <select id="queryMaxID" resultType="String">
+        select max(ID) from  sor_storage;
+    </select>
+
+    <insert id="addStorage" parameterType="SorStorage">
+        insert into sor_storage(ID,AcceptDate,AcceptPerson,AcceptCompany,DeliveryPerson,DeliveryCompany)
+        values(#{ID},#{acceptDate},#{acceptPerson},#{acceptCompany},#{deliveryPerson},#{deliveryCompany});
+    </insert>
+
+
 </mapper>

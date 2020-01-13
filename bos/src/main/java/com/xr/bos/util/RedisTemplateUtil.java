@@ -27,6 +27,7 @@ public class RedisTemplateUtil {
         return redisTemplate.opsForValue().get(key);
     }
 
+
     public void setList(String key, List<?> value){
         ListOperations<String, Object> listOperations = redisTemplate.opsForList();
         listOperations.leftPush(key, value);

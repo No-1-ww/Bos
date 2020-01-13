@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html lang="en"> 
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head> 
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
@@ -7,19 +7,22 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head> 
 <body>
-	<form class="layui-form">
+
+	<form class="layui-form" action="/addStorage" method="post">
+		<br/>
+		<br/>
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="14%">入库交接单号</td>
 		      	<td width="20%">
-					<input type="text" name="title" placeholder="入库交接单号" autocomplete="off" class="layui-input" value="" disabled>
+					<input type="text" name="ID" placeholder="入库交接单号" th:value="${stoID}"  autocomplete="off" class="layui-input" value="" disabled>
 		      	</td>
 		      	<td class="layui-bg-gray" width="13%">接货时间</td>
 		      	<td width="20%">
-					<input type="text" name="title" placeholder="请输入接货时间" autocomplete="off" class="layui-input" value="" disabled>
+					<input type="text" name="acceptDate" placeholder="请输入接货时间" autocomplete="off" class="layui-input" value="" disabled>
 		      	</td>
-		      	<td class="layui-bg-gray" width="13%">接货人</td>
+		      	<td class="layui-bg-gray" width="13%">接货人：当前登录用户</td>
 		      	<td width="20%">
 					<input type="text" name="title" placeholder="请输入接货人" autocomplete="off" class="layui-input" value="">
 		      	</td>
@@ -29,9 +32,12 @@
 		      	<td>
 					<input type="text" name="title" placeholder="请输入接收单位" autocomplete="off" class="layui-input" value="">
 				</td>
-		      	<td class="layui-bg-gray">发货人</td>
+		      	<td class="layui-bg-gray">发货人:来自员工表</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入发货人" autocomplete="off" class="layui-input" value="">
+					<select  name="city" lay-verify="required">
+						<option    value=""></option>
+						<option th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
+					</select>
 				</td>
 		      	<td class="layui-bg-gray">发货单位</td>
 		      	<td>
@@ -58,52 +64,6 @@
 		</tr>
 		</thead>
 		<tbody>
-		<tr>
-			<td>
-				<input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<select name="city" lay-verify="required">
-					<option value=""></option>
-					<option value="0">中转入库</option>
-					<option value="1">二次入库</option>
-					<option value="1">初始入库</option>
-					<option value="1">有货无单</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<input type="text" name="title" placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
-			</td>
-			<td>
-				<select name="city" lay-verify="required">
-					<option value=""></option>
-					<option value="0">中转入库</option>
-					<option value="1">二次入库</option>
-					<option value="1">初始入库</option>
-					<option value="1">有货无单</option>
-				</select>
-			</td>
-		</tr>
 		<tr>
 			<td>
 				<input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">

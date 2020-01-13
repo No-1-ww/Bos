@@ -41,5 +41,16 @@ public class SyEmpServiceImpl implements SyEmpService {
         return syEmpMapper.logInDx(phone);
     }
 
+    /**
+     * 查询除了当前用户后的所有用户
+     * @param id
+     * 当前登录用户的ID
+     * @return
+     */
+    @Override
+    public List<SyEmp> querySyEmp(Integer id) {
+        return syEmpMapper.querySyEmp(id);
+    }
+
 
 }

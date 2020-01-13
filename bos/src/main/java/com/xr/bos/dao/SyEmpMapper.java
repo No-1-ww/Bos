@@ -21,4 +21,7 @@ public interface SyEmpMapper {
 
      SyEmp logInDx(String phone);
 
+     //查询除去当前用户的所有用户
+    List<SyEmp> querySyEmp(Integer id);
+
 }

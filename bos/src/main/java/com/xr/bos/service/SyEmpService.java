@@ -16,4 +16,6 @@ public interface SyEmpService {
     int queryExitPhone(String phone);
 
     SyEmp logInDx(String phone);
+
+    List<SyEmp> querySyEmp(Integer id);
 }
