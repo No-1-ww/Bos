@@ -35,8 +35,8 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.43.61:3306/bos
-
+    url: jdbc:mysql://192.168.0.100:3306/bos
+#192.168.43.61 局域网ip地址
 
 server:
   tomcat:

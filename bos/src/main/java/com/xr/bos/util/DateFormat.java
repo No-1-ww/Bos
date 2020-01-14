@@ -1,7 +1,9 @@
 package com.xr.bos.util;
 
-import java.sql.Date;
+import com.alibaba.druid.sql.visitor.functions.Now;
+
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +35,12 @@ public class DateFormat {
             }
         }
         return list;
+    }
+    public static String getNow(){
+        //得到系统当前时间
+        SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd");
+        //date为util包，而不是sql包
+        String format = myFmt.format(new Date());
+        return format;
     }
 }

@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head> 
 <body>
+	<!--引入自定义的js脚本库-->
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 
 	<form class="layui-form" action="/addStorage" method="post">
 		<br/>
@@ -16,32 +18,32 @@
 		    <tr>
 		    	<td class="layui-bg-gray" width="14%">入库交接单号</td>
 		      	<td width="20%">
-					<input type="text" name="ID" placeholder="入库交接单号" th:value="${stoID}"  autocomplete="off" class="layui-input" value="" disabled>
+					<input type="text" name="ID" placeholder="入库交接单号" th:value="${stoID}"  autocomplete="off" class="layui-input" value="" disabled="disabled">
 		      	</td>
 		      	<td class="layui-bg-gray" width="13%">接货时间</td>
 		      	<td width="20%">
-					<input type="text" name="acceptDate" placeholder="请输入接货时间" autocomplete="off" class="layui-input" value="" disabled>
+					<input type="text" name="acceptDate" placeholder="请输入接货时间" th:value="${now}" autocomplete="off" class="layui-input" value="" disabled="disabled">
 		      	</td>
-		      	<td class="layui-bg-gray" width="13%">接货人：当前登录用户</td>
+		      	<td class="layui-bg-gray" width="13%">接货人</td>
 		      	<td width="20%">
-					<input type="text" name="title" placeholder="请输入接货人" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="title" placeholder="请输入接货人" th:value="${shouHuo}" autocomplete="off" class="layui-input" value="" disabled="disabled">
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">接收单位</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入接收单位" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="title" placeholder="请输入接收单位" th:value="${SyUnitsName}" autocomplete="off" class="layui-input" value="" disabled="disabled">
 				</td>
-		      	<td class="layui-bg-gray">发货人:来自员工表</td>
+		      	<td class="layui-bg-gray">发货人 </td>
 		      	<td>
-					<select  name="city" lay-verify="required">
+					<select lay-filter="test" id="acceptPerson"  >
 						<option    value=""></option>
-						<option th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
+						<option  th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
 					</select>
 				</td>
 		      	<td class="layui-bg-gray">发货单位</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="deliveryPerson" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="" disabled="disabled">
 				</td>
 		    </tr>
 	  	</tbody>
@@ -66,24 +68,24 @@
 		<tbody>
 		<tr>
 			<td>
-				<input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="ID" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="packageID" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="weiGht" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<input type="text" name="title" placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
+				<input type="text"  name="outBoundID" placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<select name="city" lay-verify="required">
+				<select lay-filter="state" name="state" >
 					<option value=""></option>
-					<option value="0">中转入库</option>
-					<option value="1">二次入库</option>
-					<option value="1">初始入库</option>
-					<option value="1">有货无单</option>
+					<option value="0">初始入库</option>
+					<option value="1">中转入库</option>
+					<option value="2">二次入库</option>
+					<option value="3">有货无单</option>
 				</select>
 			</td>
 		</tr>
@@ -100,12 +102,38 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
-        
+
+
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
-           
+            var form = layui.form;
+            /*form.render();*/
+			//监听select下拉框的值改变事件
+            form.on("select(test)",function (data) {
+               /* alert(data.value);
+               * 取得下拉框的值*/
+                var id = data.value;
+                $.ajax({
+					url:"/queryUnitsName",
+					type:"POST",
+					data:{"EmpUnitID":id},
+					success:function (data) {
+						$("input[name=deliveryPerson]").val(data);
+                    }
+				})
+            });
+
+            form.on("select(state)",function (data) {
+                alert(data.value)
+				if(data.value == 0){
+				    $("input[name=outBoundID]").attr("disabled","disabled");
+                    $("input[name=outBoundID]").val("该列不需要填写");
+
+				}
+            });
+
+
         });
-      
     </script>
 </body> 
 </html>

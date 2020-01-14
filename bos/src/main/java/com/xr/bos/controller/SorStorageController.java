@@ -2,16 +2,15 @@ package com.xr.bos.controller;
 
 import com.xr.bos.model.SorStorage;
 import com.xr.bos.model.SyEmp;
+import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.SorStorageService;
 import com.xr.bos.service.SyEmpService;
+import com.xr.bos.service.SyUnitsService;
 import com.xr.bos.util.DateFormat;
 import com.xr.bos.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +20,9 @@ import java.util.Map;
 
 @Controller
 public class SorStorageController {
+
+    @Autowired
+    private SyUnitsService syUnitsService;
 
     @Autowired
     private SorStorageService sorStorageService;
@@ -65,11 +67,26 @@ public class SorStorageController {
         String stoID = sorStorageService.queryMaxID();
         int sto = Integer.parseInt(stoID) + 1;
 
+
+
         //得到当前登录的用户
         SyEmp syEmp = (SyEmp)session.getAttribute("SyEmp");
 
         //订单号
         mv.addObject("stoID",sto);
+        //收货人：当前登录用户
+        mv.addObject("shouHuo",syEmp.getEmpName());
+
+        //查询出当前登录的用户的所在公司编号来查询
+
+        SyUnits syUnits = syUnitsService.findID(syEmp.getEmpUnit());
+        //再获得公司的名字，绑定至前台
+        mv.addObject("SyUnitsName",syUnits.getName());
+
+        String now = DateFormat.getNow();
+
+        //当前的系统时间
+        mv.addObject("now",now);
 
         //查询所有的员工
         List<SyEmp> select = syEmpService.querySyEmp(syEmp.getID());
@@ -88,6 +105,28 @@ public class SorStorageController {
 
         ModelAndView mv = queryAll();
         return mv;
+    }
+
+    /**
+     * 根据值改变去数据库取得对应的公司名称
+     */
+    @RequestMapping(value = "/queryUnitsName",produces = "text/String;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String queryUnitsName(Integer EmpUnitID){
+        if(EmpUnitID==null){
+            return "";
+        }
+        String key = "com.xr.bos.controller.SorStorageController.queryUnitsName"+EmpUnitID;
+        Object str = redisTemplateUtil.getString(key);
+        if(str==null||str==""){
+            //跟据单位ID查询
+            SyUnits syUnits = syUnitsService.findID(EmpUnitID);
+            String name = syUnits.getName();
+            redisTemplateUtil.setString(key,str);
+            return name;
+        }else{
+            return str.toString();
+        }
     }
 
 
