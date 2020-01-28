@@ -98,6 +98,7 @@ public class SyMenusController {
 
 
         }
+        System.out.println(sb);
         //所有大模块加载完毕删除多余的,
         sb.deleteCharAt(sb.lastIndexOf(","));
         sb.append("]");

@@ -39,6 +39,9 @@ public class SorStorageController {
      */
     @RequestMapping("/sortingManagement/storage")
     public ModelAndView queryAll(){
+        /*
+        java.net.ConnectException: Connection refused: no further information
+        连接异常
         String key = "com.xr.bos.controller.SorStorageController.queryAll";
         Object list = redisTemplateUtil.getList(key);
         ModelAndView mv = new ModelAndView();
@@ -49,7 +52,12 @@ public class SorStorageController {
             redisTemplateUtil.setList(key,acceptDate);
         }else{
              sorStorages = (List)list;
-        }
+        }*/
+        /*String key = "com.xr.bos.controller.SorStorageController.queryAll";
+        Object list = redisTemplateUtil.getList(key);*/
+        ModelAndView mv = new ModelAndView();
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll();
+        List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
         mv.addObject("sorStorages",sorStorages);
         mv.setViewName("/sortingManagement/storage");
         return  mv;
@@ -101,8 +109,12 @@ public class SorStorageController {
      * @return
      */
     @RequestMapping("/addStorage")
-    public ModelAndView addStorage(SorStorage sorStorage){
-
+    public ModelAndView addStorage(SorStorage sorStorage,HttpSession session){
+        System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss"+sorStorage);
+        SyEmp syEmp = (SyEmp) session.getAttribute("SyEmp");
+        //得到当前登录的用户来设置收货人id
+        Integer id = syEmp.getID();
+        sorStorage.setDeliveryPerson(id);
         ModelAndView mv = queryAll();
         return mv;
     }
@@ -113,9 +125,14 @@ public class SorStorageController {
     @RequestMapping(value = "/queryUnitsName",produces = "text/String;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String queryUnitsName(Integer EmpUnitID){
+        //传进来的
         if(EmpUnitID==null){
             return "";
         }
+        /*
+            redis
+          java.net.ConnectException: Connection refused: no further information
+
         String key = "com.xr.bos.controller.SorStorageController.queryUnitsName"+EmpUnitID;
         Object str = redisTemplateUtil.getString(key);
         if(str==null||str==""){
@@ -126,7 +143,10 @@ public class SorStorageController {
             return name;
         }else{
             return str.toString();
-        }
+        }*/
+        SyUnits syUnits = syUnitsService.findID(EmpUnitID);
+        String name = syUnits.getName();
+        return name;
     }
 
 

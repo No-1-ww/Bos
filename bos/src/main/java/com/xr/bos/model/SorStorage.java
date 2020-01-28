@@ -76,5 +76,17 @@ public class SorStorage {
     public void setDeliveryCompany(String deliveryCompany) {
         this.deliveryCompany = deliveryCompany;
     }
+
+    @Override
+    public String toString() {
+        return "SorStorage{" +
+                "ID=" + ID +
+                ", acceptDate=" + acceptDate +
+                ", acceptPerson=" + acceptPerson +
+                ", acceptCompany='" + acceptCompany + '\'' +
+                ", deliveryPerson=" + deliveryPerson +
+                ", deliveryCompany='" + deliveryCompany + '\'' +
+                '}';
+    }
 }
 

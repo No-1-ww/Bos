@@ -3,6 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SyUnitsMapper">
     <select id="findID" parameterType="Integer" resultType="SyUnits">
-        select * from sy_units where ID  = #{ID}
+        select u.* from sy_units u,sy_emp e where e.EmpUnit = u.ID and e.ID = #{ID}
     </select>
 </mapper>

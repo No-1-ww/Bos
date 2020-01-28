@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SorStorageDetails {
-    private Integer ID;
+    private Integer SID;
     private String packageID;
     private double weiGht;
     private String outBoundID;
@@ -15,7 +15,7 @@ public class SorStorageDetails {
     }
 
     public SorStorageDetails(Integer ID, String packageID, double weiGht, String outBoundID, int state) {
-        this.ID = ID;
+        this.SID = ID;
         this.packageID = packageID;
         this.weiGht = weiGht;
         this.outBoundID = outBoundID;
@@ -23,11 +23,11 @@ public class SorStorageDetails {
     }
 
     public Integer getID() {
-        return ID;
+        return SID;
     }
 
     public void setID(Integer ID) {
-        this.ID = ID;
+        this.SID = ID;
     }
 
     public String getPackageID() {
@@ -65,7 +65,7 @@ public class SorStorageDetails {
     @Override
     public String toString() {
         return "SorStorageDetails{" +
-                "ID=" + ID +
+                "SID=" + SID +
                 ", packageID='" + packageID + '\'' +
                 ", weiGht=" + weiGht +
                 ", outBoundID='" + outBoundID + '\'' +
