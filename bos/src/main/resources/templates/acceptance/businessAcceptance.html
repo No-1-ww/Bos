@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,20 +22,20 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">通知单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="businessNoticeNo" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">客户编号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="customCode" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button id="cx" type="button" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
@@ -87,7 +87,6 @@
 			  	<thead>
 				    <tr>
 				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
 				      <th>业务通知单号</th>
 				      <th>客户编号</th>
 				      <th>客户名称</th>
@@ -101,106 +100,21 @@
 				    </tr>
 			  	</thead>
 			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>YWD1001</td>
-				      	<td>C1001</td>
-				      	<td>老王</td>
-				      	<td>老李</td>
-				      	<td>18612345678</td>
-								<td>
-									<p class="overlength" title="湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</p>
-				      	</td>
-								<td>长沙市</td>
-								<td>岳阳市</td>
-								<td>手机</td>
-								<td> 2017-10-17 14:31 </td>
-				    </tr>
-
+					<tr th:each="bus : ${busList}">
+						<th><input type="checkbox" οnclick="checkboxOnclick(this)" lay-skin="primary"></th>
+						<td th:text="${bus.businessNoticeNo}"></td>
+						<td th:text="${bus.customCode}"></td>
+						<td th:text="${bus.customName}"></td>
+						<td th:text="${bus.linkman}"></td>
+						<td th:text="${bus.telPhone}"></td>
+						<td th:text="${bus.pickupAddress}"></td>
+						<td th:text="${bus.sendAddress}"></td>
+						<td th:text="${bus.arriveCity}"></td>
+						<td th:text="${bus.importantHints}"></td>
+						<td th:text="${bus.reservationTime}"></td>
+					</tr>
 			  	</tbody>
 			</table>
-		</div>
 		</form>
 	</div>
 </div>
@@ -208,6 +122,40 @@
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+    //checkbox选中修改
+	function checkboxOnclick(checkbox){
+	    if(checkbox.checked ==true){
+	        $.ajax({
+				url:"/businessAcceptance_update",
+				type:"POST",
+				success:function(){
+				console.log("123123")
+				}
+			})
+		}else{
+
+		}
+	}
+
+
+	//业务受理根据两个条件查询
+	$("cx").click(function(){
+			if($("input[name=businessNoticeNo]").val()==""&&$("input[name=customCode]").val()){
+	        	alter("必须选择一项查询")
+				return false;
+			}else{
+			    var businessNoticeNo=("input[name=businessNoticeNo]").val();
+			    var customCode=("input[name=customCode]").val();
+			    $.ajax({
+					url:"busin_querywhere",
+					success:function(){
+					    var result=eval(data);
+					    console.log(result);
+					}
+				})
+			}
+	})
+
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
 
@@ -270,6 +218,17 @@ $(function(){
 	});
 
 });
+
+layui.use(['laypage','layer']),function(){
+    laypage.render({
+        elem: 'demo7'
+        ,count: 100
+        ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+        ,jump: function(obj){
+            console.log(obj)
+        }
+    });
+}
 
 </script>
 

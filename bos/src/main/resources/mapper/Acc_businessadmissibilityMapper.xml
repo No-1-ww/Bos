@@ -4,15 +4,11 @@
 <mapper namespace="com.xr.bos.dao.Acc_businessadmissibilityMapper">
 
     <select id="queryAcc_businessadmissibility" resultMap="queryacc">
-        select o.id ID,a.businessNoticeNo ,a.customCode,a.customName,a.linkman,
-            a.telPhone,a.pickupAddress,a.sendAddress,a.arriveCity,a.importantHints,a.reservationTime,
-            o.pickupStatus
-        from acc_businessadmissibility a,acc_workorder o
-        where a.BusinessNoticeNo=o.BusinessNoticeNo
+        select a.businessNoticeNo ,a.customCode,a.customName,a.linkman,
+            a.telPhone,a.pickupAddress,a.sendAddress,a.arriveCity,a.importantHints,a.reservationTime
+        from acc_businessadmissibility a
     </select>
-
     <resultMap id="queryacc" type="Map">
-        <id property="id" column="ID" ></id>
         <result property="businessNoticeNo" column="businessNoticeNo"></result>
         <result property="customCode" column="customCode"></result>
         <result property="customName" column="customName"></result>
@@ -23,7 +19,29 @@
         <result property="arriveCity" column="arriveCity"></result>
         <result property="importantHints" column="importantHints"></result>
         <result property="reservationTime" column="reservationTime"></result>
-        <result property="pickupStatus" column="pickupStatus"></result>
     </resultMap>
 
+    <select id="querybusinNo_ID" resultType="String">
+        select max(businessNoticeNo) from acc_businessadmissibility
+    </select>
+    <select id="query_importantHints" resultType="Acc_businessadmissibility">
+        select importantHints from acc_businessadmissibility
+    </select>
+
+    <insert id="addBusin" parameterType="Acc_businessadmissibility" useGeneratedKeys="true" keyProperty="businessNoticeNo">
+        insert into bos.acc_businessadmissibility(businessNoticeNo,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime)
+        values(#{businessNoticeNo},#{customCode},#{customName},#{linkman},#{telPhone},#{pickupAddress},#{sendAddress},#{arriveCity},#{importantHints},#{reservationTime})
+    </insert>
+
+    <select id="queryByIDbusinessNoticeNo" resultType="Acc_businessadmissibility">
+        select businessNoticeNo ,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime
+        from acc_businessadmissibility
+        where businessNoticeNo =#{businessNoticeNo}
+    </select>
+
+    <select id="query_whereAcc" resultType="Acc_businessadmissibility">
+        select businessNoticeNo ,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime
+        from acc_businessadmissibility
+        where businessNoticeNo like #{businessNoticeNo} or customCode like #{customCode}
+    </select>
 </mapper>

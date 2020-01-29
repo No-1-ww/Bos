@@ -90,23 +90,22 @@ public class Html {
         return "/systemManagement/sysRole";
     }
 
-    //业务受理
-    @GetMapping("/acceptance/businessAcceptance")
+    //业务受理查询
+    /*@GetMapping("/acceptance/businessAcceptance")
     public String businessAcceptance(){
         return "/acceptance/businessAcceptance";
-    }
+    }*/
 
     //业务受理 新增businessAcceptance_add
-    @GetMapping("/businessAcceptance_add")
+    /*@GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add(){return "acceptance/businessAcceptance_add"; }
-
+   */
     //业务受理修改
-    @GetMapping("/businessAcceptance_update")
+   /* @GetMapping("/businessAcceptance_update")
     public String businessAcceptance_update(){
         return "/acceptance/businessAcceptance_update";
     }
-
-
+*/
     //工作单快速录入
     @GetMapping("/acceptance/worksheetQuickInput")
     public String worksheetQuickInput(){
@@ -118,11 +117,11 @@ public class Html {
     public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}
 */
     //工作单查询
-    @GetMapping("/acceptance/worksheetQuery")
+   /* @GetMapping("/acceptance/worksheetQuery")
     public String worksheetQuery(){
         return "/acceptance/worksheetQuery";
     }
-
+*/
     //工作单查询修改dispatchingPersonnelSet_update
     @GetMapping("/dispatchingPersonnelSet_update")
     public String dispatchingPersonnelSet_update(){

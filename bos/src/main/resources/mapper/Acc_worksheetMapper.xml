@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.Acc_worksheetMapper">
+    <select id="queryAcc_worksheetMapper" resultMap="querywor">
+        select b.id,c.workSheetNo,a.customCode,a.importantHints,c.destination,
+        a.businessNoticeNo,s.empNo,s.empName,b.pickupTime,a.customName,a.linKman
+        from acc_businessadmissibility a,acc_workorder b,acc_worksheet c,sy_emp s
+        where a.BusinessNoticeNo=b.BusinessNoticeNo and a.PickerInfo=s.id and b.id=c.id
+    </select>
+    <resultMap id="querywor" type="Map">
+        <result property="id" column="id"></result>
+        <result property="workSheetNo" column="workSheetNo"></result>
+        <result property="customCode" column="customCode"></result>
+        <result property="importantHints" column="importantHints"></result>
+        <result property="destination" column="destination"></result>
+        <result property="businessNoticeNo" column="businessNoticeNo"></result>
+        <result property="empNo" column="empNo"></result>
+        <result property="empName" column="empName"></result>
+        <result property="pickupTime" column="pickupTime"></result>
+        <result property="customName" column="customName"></result>
+        <result property="linKman" column="linKman"></result>
+    </resultMap>
+</mapper>
