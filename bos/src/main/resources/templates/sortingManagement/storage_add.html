@@ -69,19 +69,19 @@
 		<tbody>
 		<tr>
 			<td>
-				<input type="text" name="SID" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
+				<input type="number" name="SID" readonly="readonly" th:value="${dDNumber}" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<input type="text" name="packageID" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
+				<input type="number" name="packageID" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<input type="text" name="weiGht" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
+				<input type="number" name="weiGht" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
 				<input type="text"  name="outBoundID"  placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
-				<select lay-filter="state" name="state" >
+				<select id="state" lay-filter="state" name="state" >
 					<option value="0">初始入库</option>
 					<option value="1">中转入库</option>
 					<option value="2">二次入库</option>
@@ -103,6 +103,23 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
+        $(function () {
+            //初始化状态
+            var state = $("#state").val();
+            if(state==0){
+                $("input[name=outBoundID]").val("");
+                $("input[name=outBoundID]").attr("readonly","readonly");
+                $("input[name=outBoundID]").attr("placeholder","该列不需要填写");
+                $("input[name=packageID]").attr("readonly","readonly");
+                $("input[name=packageID]").attr("placeholder","该列不需要填写");
+            }else{
+                //移除属性
+                $("input[name=outBoundID]").removeAttr("readonly","");
+                $("input[name=outBoundID]").attr("placeholder","关联出库交接单");
+                $("input[name=packageID]").removeAttr("readonly","");
+                $("input[name=packageID]").attr("placeholder","请输入合包号");
+            }
+        })
 
 
         //加载'form'模块，使checkbox、select、radio初始化
@@ -134,6 +151,9 @@
                     $("#errAcceptPerson").show();
                     return false;
                 }
+
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
             })
 
             form.on("select(state)",function (data) {
@@ -148,9 +168,10 @@
                     //移除属性
                     $("input[name=outBoundID]").removeAttr("readonly","");
                     $("input[name=outBoundID]").attr("placeholder","关联出库交接单");
-                    $("input[name=packageID]").attr("readonly","");
+                    $("input[name=packageID]").removeAttr("readonly","");
                     $("input[name=packageID]").attr("placeholder","请输入合包号");
 				}
+
             });
 
 

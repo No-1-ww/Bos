@@ -1,8 +1,10 @@
 package com.xr.bos.controller;
 
 import com.xr.bos.model.SorStorage;
+import com.xr.bos.model.SorStorageDetails;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyUnits;
+import com.xr.bos.service.SorStorageDetailsService;
 import com.xr.bos.service.SorStorageService;
 import com.xr.bos.service.SyEmpService;
 import com.xr.bos.service.SyUnitsService;
@@ -33,6 +35,10 @@ public class SorStorageController {
     @Autowired
     private  RedisTemplateUtil redisTemplateUtil;
     //自动装配redis工具类
+    @Autowired
+    private SorStorageDetailsService sorStorageDetailsService;
+    //自动装配订单详情的service
+
     /**
      * 查询所有入库信息
      * @return
@@ -96,6 +102,14 @@ public class SorStorageController {
         //当前的系统时间
         mv.addObject("now",now);
 
+        //订单号
+        /**
+         * 注意订单ID和订单详情ID为同一个ID
+         */
+        Integer dDNumber = sto;
+
+        mv.addObject("dDNumber",dDNumber);
+
         //查询所有的员工
         List<SyEmp> select = syEmpService.querySyEmp(syEmp.getID());
         mv.addObject("SyEmps",select);
@@ -109,12 +123,16 @@ public class SorStorageController {
      * @return
      */
     @RequestMapping("/addStorage")
-    public ModelAndView addStorage(SorStorage sorStorage,HttpSession session){
-        System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss"+sorStorage);
+    public ModelAndView addStorage(SorStorage sorStorage, SorStorageDetails sorStorageDetails, HttpSession session){
         SyEmp syEmp = (SyEmp) session.getAttribute("SyEmp");
         //得到当前登录的用户来设置收货人id
         Integer id = syEmp.getID();
         sorStorage.setDeliveryPerson(id);
+        System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss"+sorStorage);
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+sorStorageDetails);
+        //新增入库单和详情单
+        sorStorageDetailsService.addSorStorageDetails(sorStorageDetails);
+        sorStorageService.addStorage(sorStorage);
         ModelAndView mv = queryAll();
         return mv;
     }

@@ -28,6 +28,7 @@ public class SorStorageServiceImpl implements SorStorageService {
 
     @Override
     public Integer addStorage(SorStorage sorStorage){
+        //新增入库
         return sorStorageMapper.addStorage(sorStorage);
     }
 
