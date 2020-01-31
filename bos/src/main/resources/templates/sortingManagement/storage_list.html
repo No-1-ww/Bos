@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,6 @@
 			  	</colgroup>
 			  	<thead>
 				    <tr>
-				    	<th>序号</th>
 				      	<th>单号</th>
 				      	<th>合包号</th>
 				      	<th>重量</th>
@@ -35,45 +34,12 @@
 				    </tr> 
 			  	</thead>
 			  	<tbody>
-				    <tr>
-				      	<td>1</td>
-				      	<td>DH1001</td>
-				      	<td>HBH1001</td>
-				      	<td>12</td>
-				      	<td>CKJJD1101</td>
-				      	<td>中转入库</td>
-				    </tr>
-					<tr>
-						<td>1</td>
-						<td>DH1001</td>
-						<td>HBH1001</td>
-						<td>12</td>
-						<td>CKJJD1101</td>
-						<td>中转入库</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>DH1001</td>
-						<td>HBH1001</td>
-						<td>12</td>
-						<td>CKJJD1101</td>
-						<td>中转入库</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>DH1001</td>
-						<td>HBH1001</td>
-						<td>12</td>
-						<td>CKJJD1101</td>
-						<td>中转入库</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>DH1001</td>
-						<td>HBH1001</td>
-						<td>12</td>
-						<td>CKJJD1101</td>
-						<td>中转入库</td>
+					<tr th:each="sor:${sorStorageDetails}">
+						<td th:text="${sor.SID}" ></td>
+						<td th:text="${sor.packageID}"></td>
+						<td th:text="${sor.weiGht}"></td>
+						<td th:text="${sor.outBoundID}"></td>
+						<td th:text="${sor.state}"></td>
 					</tr>
 
 			  	</tbody>

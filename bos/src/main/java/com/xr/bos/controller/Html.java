@@ -281,10 +281,10 @@ public class Html {
      * 查看入库明细
      * @return
      */
-    @GetMapping("/storage_list")
-    public String queryStorAgelist(){
+    /*@GetMapping("/storage_list")
+    public String queryStorAgelist(String stoID){
         return "/sortingManagement/storage_list";
-    }
+    }*/
 
 
     //出库

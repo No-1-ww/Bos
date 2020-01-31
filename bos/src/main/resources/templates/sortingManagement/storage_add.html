@@ -32,19 +32,19 @@
 		    <tr>
 		      	<td class="layui-bg-gray">接收单位</td>
 		      	<td>
-					<input type="text" name="deliveryCompany" placeholder="请输入接收单位" th:value="${SyUnitsName}" autocomplete="off" class="layui-input" value="" readonly="readonly">
+					<input type="text" name="acceptCompany" placeholder="请输入接收单位" th:value="${SyUnitsName}" autocomplete="off" class="layui-input" value="" readonly="readonly">
 				</td>
 		      	<td class="layui-bg-gray">发货人 </td>
 		      	<td>
-                    <label id="errAcceptPerson" style="color: #FF5722; display:none">请选择收货人</label>
-					<select lay-filter="test" name="acceptPerson" id="acceptPerson"  >
+                    <label id="errDeliveryPerson" style="color: #FF5722; display:none">请选择收货人</label>
+					<select lay-filter="test" name="deliveryPerson" id="deliveryPerson"  >
 						<option    value=""></option>
 						<option  th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
 					</select>
 				</td>
 		      	<td class="layui-bg-gray">发货单位</td>
 		      	<td>
-					<input type="text" name="acceptCompany" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="" readonly="readonly">
+					<input type="text" name="deliveryCompany" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="" readonly="readonly">
 				</td>
 		    </tr>
 	  	</tbody>
@@ -132,7 +132,7 @@
                * 取得下拉框的值*/
 
                //隐藏错误消息
-                $("#errAcceptPerson").hide();
+                $("#errDeliveryPerson").hide();
 
                 var id = data.value;
                 $.ajax({
@@ -140,15 +140,15 @@
 					type:"POST",
 					data:{"EmpUnitID":id},
 					success:function (data) {
-						$("input[name=acceptCompany]").val(data);
+						$("input[name=deliveryCompany]").val(data);
                     }
 				})
             });
 
             form.on("submit(stoForm)",function () {
-                var acceptPerson = $("#acceptPerson").val();
-                if(acceptPerson==""){
-                    $("#errAcceptPerson").show();
+                var deliveryPerson = $("#deliveryPerson").val();
+                if(deliveryPerson==""){
+                    $("#errDeliveryPerson").show();
                     return false;
                 }
 

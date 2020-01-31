@@ -19,7 +19,7 @@ public class DateFormat {
         //resultMap中定义的时间列对应的列名字
         for (Map<String, Object> map : list) {
             for (String s : map.keySet()) {
-                SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd");
                 try{
                     Object o =  map.get(key);
                     //格式化后的时间

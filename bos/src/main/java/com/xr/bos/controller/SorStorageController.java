@@ -127,7 +127,7 @@ public class SorStorageController {
         SyEmp syEmp = (SyEmp) session.getAttribute("SyEmp");
         //得到当前登录的用户来设置收货人id
         Integer id = syEmp.getID();
-        sorStorage.setDeliveryPerson(id);
+        sorStorage.setAcceptPerson(id);
         System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss"+sorStorage);
         System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+sorStorageDetails);
         //新增入库单和详情单
@@ -166,6 +166,9 @@ public class SorStorageController {
         String name = syUnits.getName();
         return name;
     }
+
+
+
 
 
 }

@@ -153,14 +153,14 @@
                 <tbody>
                 <tr th:each="stor :${sorStorages}">
                     <td><input type="checkbox" name="check" lay-skin="primary"></td>
-                    <td th:text="${stor.id}">JJD1001</td>
+                    <td id="stoID" th:text="${stor.id}"></td>
                     <td th:text="${stor.acceptDate}"></td>
                     <td th:text="${stor.acceptPerson}"></td>
                     <td th:text="${stor.acceptCompany}"></td>
                     <td th:text="${stor.deliveryPerson}"></td>
                     <td th:text="${stor.deliveryCompany}"></td>
                     <td>
-                        <button type="button" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button>
+                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>
                     </td>
                 </tr>
                 </tbody>
@@ -214,14 +214,24 @@
         });
 
         //查看明细
-        $('#opQueryDetail').click(function(){
+        $('button[name=opQueryDetail]').click(function(){
             //页面层
+            /**
+             * 得到button的所有父级元素
+             * @type {*|jQuery}
+             * 以下方法失效弹出结果为[]
+             * var parent = $(this).parent().siblings();
+                var stoID = parent.eq(0).text();
+             */
+
+            var parent = $(this).parent().prev().prev().prev().prev().prev().prev().text();
             layer.open({
                 title: ['查看明细', 'color:#fff;background:#1da02b;'],
                 type: 2,
                 //skin: 'layui-layer-rim', //加上边框
                 area: ['760px', '340px'], //宽高
-                content: '/storage_list'
+                content: '/storage_list?stoID='+parent
+                //直接在前台传值后台可以直接接受
             });
         });
 

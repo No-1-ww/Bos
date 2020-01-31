@@ -5,4 +5,8 @@
     <insert id="addSorStorageDetails" parameterType="SorStorageDetails">
         insert into sor_storagedetails(ID,PackageID,Weight,OutBoundID,State) values (#{SID},#{packageID},#{weiGht},#{outBoundID},#{state})
     </insert>
+
+    <select id="queryByID" parameterType="Integer" resultType="SorStorageDetails">
+        select * from sor_storagedetails where ID = #{SID}
+    </select>
 </mapper>

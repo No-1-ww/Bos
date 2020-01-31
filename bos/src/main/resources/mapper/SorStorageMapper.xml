@@ -3,9 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SorStorageMapper">
     <select id="queryAll" resultMap="SorStorageMap">
-        select s.ID as ID,s.AcceptDate as AcceptDate,e.EmpName as AcceptPerson,s.AcceptCompany as AcceptCompany,
-        (select EmpName from sy_emp se,sor_storage ss where se.ID = ss.DeliveryPerson ) as DeliveryPerson ,s.DeliveryCompany as DeliveryCompany
-        from sor_storage s,sy_emp e where s.AcceptPerson=e.ID
+        select s.ID,s.AcceptDate,se1.EmpName AcceptPerson ,s.AcceptCompany,se2.EmpName DeliveryPerson ,s.DeliveryCompany from sor_storage s
+        inner join sy_emp se1 on s.AcceptPerson = se1.ID
+        inner join sy_emp se2 on s.DeliveryPerson = se2.ID
     </select>
     <resultMap id="SorStorageMap" type="Map">
         <id property="id" column="ID"></id>

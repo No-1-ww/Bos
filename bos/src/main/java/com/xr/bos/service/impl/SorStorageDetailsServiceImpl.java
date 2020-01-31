@@ -6,6 +6,8 @@ import com.xr.bos.service.SorStorageDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SorStorageDetailsServiceImpl implements SorStorageDetailsService {
 
@@ -16,5 +18,10 @@ public class SorStorageDetailsServiceImpl implements SorStorageDetailsService {
     @Override
     public int addSorStorageDetails(SorStorageDetails sorStorageDetails) {
         return sorStorageDetailsMapper.addSorStorageDetails(sorStorageDetails);
+    }
+
+    @Override
+    public List<SorStorageDetails> queryByID(Integer SID) {
+        return sorStorageDetailsMapper.queryByID(SID);
     }
 }
