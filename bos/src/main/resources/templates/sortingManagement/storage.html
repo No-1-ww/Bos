@@ -174,9 +174,10 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
     //加载'form'模块，使checkbox、select、radio初始化
-    layui.use('form', function(){
+    layui.use('form', function() {
+        var form = layer.form;
 
-    });
+    })
 
     //加载'table'组件
     layui.use('table', function(){
@@ -241,7 +242,7 @@
         });
 
         //查看明细
-        $('button[name=opQueryDetail]').click(function(){
+        $(document).on('click',"button[name=opQueryDetail]",function () {
             //页面层
             /**
              * 得到button的所有父级元素
@@ -250,7 +251,6 @@
              * var parent = $(this).parent().siblings();
                 var stoID = parent.eq(0).text();
              */
-
             var parent = $(this).parent().prev().prev().prev().prev().prev().prev().text();
             layer.open({
                 title: ['查看明细', 'color:#fff;background:#1da02b;'],
@@ -272,7 +272,34 @@
                 area: ['860px', '440px'], //宽高
                 content: '/storage_add',
                 end:function () {
-                    query();
+                    layui.use('form', function() {
+                        var form = layer.form;
+                        $.ajax({
+                            url: "/sortingManagement/query",
+                            type: "POST",
+                            success: function (data) {
+                                var result = eval(data);
+                                $("#stoBody").empty();
+                                for (var i = 0; i < result.length; i++) {
+
+                                    $("#stoBody").append('<tr>' +
+                                        '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
+                                        '                    <td >' + result[i].id + '</td>' +
+                                        '                    <td >' + result[i].acceptDate + '</td>' +
+                                        '                    <td >' + result[i].acceptPerson + '</td>' +
+                                        '                    <td >' + result[i].acceptCompany + '</td>' +
+                                        '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                        '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                        '                    <td>' +
+                                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                        '                    </td>' +
+                                        '                </tr>')
+                                }
+                                form.render();
+
+                            }
+                        })
+                    })
                 }
 
             });
@@ -286,9 +313,13 @@
                 type: 2,
                 //skin: 'layui-layer-rim', //加上边框
                 area: ['860px', '340px'], //宽高
-                content: 'ExceptionRecord_add.html',
+                content: '/ExceptionRecord_add',
                 end:function () {
-                    alert("哈哈");
+                    //加载'form'模块，动态加载checkbox
+                    layui.use('form', function() {
+                        var form = layer.form;
+                        layui.msg("执行完毕");
+                    })
                 }
             });
 
@@ -297,33 +328,6 @@
 
     });
 
-    function query() {
-        $.ajax({
-            url:"/sortingManagement/query",
-            type:"POST",
-            success:function (data) {
-                var result = eval(data);
-                console.log(result);
-                $("#stoBody").empty();
-                for (var i = 0; i < result.length; i++) {
-
-                    $("#stoBody").append('<tr>\n' +
-                        '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>\n' +
-                        '                    <td >'+result[i].id+'</td>\n' +
-                        '                    <td >'+result[i].acceptDate+'</td>\n' +
-                        '                    <td >'+result[i].acceptPerson+'</td>\n' +
-                        '                    <td >'+result[i].acceptCompany+'</td>\n' +
-                        '                    <td >'+result[i].deliveryPerson+'</td>\n' +
-                        '                    <td >'+result[i].deliveryCompany+'</td>\n' +
-                        '                    <td>\n' +
-                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>\n' +
-                        '                    </td>\n' +
-                        '                </tr>')
-                }
-
-            }
-        })
-    }
 
 </script>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html lang="en"> 
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head> 
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
@@ -7,18 +7,13 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head> 
 <body>
-	<form class="layui-form">
+	<form lay-filter="addExceptionRecord" class="layui-form" action="/addExceptionRecord">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
-		    	<td class="layui-bg-gray" width="14%">异常编号</td>
-		      	<td width="20%">
-					<input type="text" name="title" placeholder="请输入异常编号" autocomplete="off" class="layui-input" value="" disabled>
-		      	</td>
 		      	<td class="layui-bg-gray" width="12%">异常类型</td>
-		      	<td width="20%">
-					<select name="city" lay-verify="required">
-						<option value=""></option>
+		      	<td width="22%">
+					<select name="abnormalType" lay-verify="required">
 						<option value="0">有单无货</option>
 						<option value="1">有货无单</option>
 					</select>
@@ -26,7 +21,6 @@
 		      	<td class="layui-bg-gray" width="14%">状态</td>
 		      	<td width="20%">
 					<select name="city" lay-verify="required">
-						<option value=""></option>
 						<option value="0">未处理</option>
 						<option value="1">已处理</option>
 					</select>
@@ -41,29 +35,29 @@
 		    <tr>
 		      	<td class="layui-bg-gray">单号</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
+					<input type="number" name="cargoInt" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
 				</td>
 		      	<td class="layui-bg-gray">合包号</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="packageInt" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
 				</td>
 		      	<td class="layui-bg-gray">交接单号</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入交接单号" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="TransferInt" placeholder="请输入交接单号" autocomplete="off" class="layui-input" value="">
 				</td>
 		    </tr>
 			<tr>
 				<td class="layui-bg-gray">对冲异常编号</td>
 				<td>
-					<input type="text" name="title" placeholder="对冲异常编号" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="hedgeAbnInt" placeholder="对冲异常编号" autocomplete="off" class="layui-input" value="">
 				</td>
 				<td class="layui-bg-gray">异常记录人</td>
 				<td>
-					<input type="text" name="title" placeholder="异常记录人" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="launchPerson" placeholder="异常记录人" autocomplete="off" class="layui-input" th:value="${SyEmpName}" readonly>
 				</td>
 				<td class="layui-bg-gray">异常记录时间</td>
 				<td>
-					<input type="text" name="title" placeholder="异常记录时间" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="launchDate" placeholder="异常记录时间" autocomplete="off" class="layui-input" th:value="${now}" readonly>
 				</td>
 			</tr>
 			<tr>
@@ -82,7 +76,10 @@
         
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
-           
+           var form = layui.form
+			form.on("submit(addExceptionRecord)",function (data) {
+			    $("input[name=hedgeAbnInt]").val();
+            })
         });
       
     </script>

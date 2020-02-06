@@ -1,14 +1,8 @@
 package com.xr.bos.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.xr.bos.model.SorStorage;
-import com.xr.bos.model.SorStorageDetails;
-import com.xr.bos.model.SyEmp;
-import com.xr.bos.model.SyUnits;
-import com.xr.bos.service.SorStorageDetailsService;
-import com.xr.bos.service.SorStorageService;
-import com.xr.bos.service.SyEmpService;
-import com.xr.bos.service.SyUnitsService;
+import com.xr.bos.model.*;
+import com.xr.bos.service.*;
 import com.xr.bos.util.DateFormat;
 import com.xr.bos.util.RedisTemplateUtil;
 import jdk.nashorn.internal.ir.RuntimeNode;
@@ -99,9 +93,6 @@ public class SorStorageController {
         //得到该数据库最大单号+1绑定至前台
         String stoID = sorStorageService.queryMaxID();
         int sto = Integer.parseInt(stoID) + 1;
-
-
-
         //得到当前登录的用户
         SyEmp syEmp = (SyEmp)session.getAttribute("SyEmp");
 
@@ -110,7 +101,7 @@ public class SorStorageController {
         //收货人：当前登录用户
         mv.addObject("shouHuo",syEmp.getEmpName());
 
-        //查询出当前登录的用户的所在公司编号来查询
+        //查询出当前登录的用户的所在公司信息
 
         SyUnits syUnits = syUnitsService.findID(syEmp.getEmpUnit());
         //再获得公司的名字，绑定至前台
@@ -148,8 +139,6 @@ public class SorStorageController {
         //得到当前登录的用户来设置收货人id
         Integer id = syEmp.getID();
         sorStorage.setAcceptPerson(id);
-        System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss"+sorStorage);
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+sorStorageDetails);
         //新增入库单和详情单
         sorStorageDetailsService.addSorStorageDetails(sorStorageDetails);
         sorStorageService.addStorage(sorStorage);
@@ -186,6 +175,60 @@ public class SorStorageController {
         String name = syUnits.getName();
         return name;
     }
+
+
+
+
+
+
+    @Autowired
+    private ExceptionRecordService exceptionRecordService;
+
+
+
+    /**
+     * 新增异常记录
+     * @return
+     */
+    @RequestMapping("/ExceptionRecord_add")
+    public ModelAndView exctionRecord(HttpSession session){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sortingManagement/ExceptionRecord_add");
+
+
+        //得到新增页面需要的页面数据
+
+        String now = DateFormat.getNow();
+        //当前的系统时间
+        mv.addObject("now",now);
+
+        //得到当前登录的用户
+        SyEmp syEmp = (SyEmp)session.getAttribute("SyEmp");
+        mv.addObject("SyEmpName",syEmp.getEmpName());
+        return mv;
+    }
+
+    @RequestMapping("/addExceptionRecord")
+    @ResponseBody
+    public String addExceptionRecord(ExceptionRecord exceptionRecord,HttpSession session){
+        //得到当前登录的用户和公司信息
+        SyEmp syEmp = (SyEmp)session.getAttribute("SyEmp");
+        SyUnits syUnits = syUnitsService.findID(syEmp.getEmpUnit());
+
+        exceptionRecord.setHandleDate(exceptionRecord.getLaunchDate());
+
+        exceptionRecord.setLaunchCompany(syUnits.getName());
+        int i = exceptionRecordService.addExceptionRecord(exceptionRecord);
+        if(i!=0){
+            System.out.println("--------------------------返回ID为：-------------------------");
+            return "ok";
+        }else{
+            return "no";
+        }
+
+    }
+
+
 
 
 
