@@ -1,5 +1,6 @@
 package com.xr.bos.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.xr.bos.model.SorStorage;
 import com.xr.bos.model.SorStorageDetails;
 import com.xr.bos.model.SyEmp;
@@ -10,8 +11,10 @@ import com.xr.bos.service.SyEmpService;
 import com.xr.bos.service.SyUnitsService;
 import com.xr.bos.util.DateFormat;
 import com.xr.bos.util.RedisTemplateUtil;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,7 +46,7 @@ public class SorStorageController {
      * 查询所有入库信息
      * @return
      */
-    @RequestMapping("/sortingManagement/storage")
+    @RequestMapping(value = "/sortingManagement/storage")
     public ModelAndView queryAll(){
         /*
         java.net.ConnectException: Connection refused: no further information
@@ -66,8 +69,24 @@ public class SorStorageController {
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
         mv.addObject("sorStorages",sorStorages);
         mv.setViewName("/sortingManagement/storage");
-        return  mv;
+        String s = JSONArray.toJSONString(acceptDate);
+        return mv;
     }
+
+
+    /**
+     * 查询所有，ajax方式
+     * @return
+     */
+    @RequestMapping(value = "/sortingManagement/query",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String query(){
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll();
+        List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
+        String s = JSONArray.toJSONString(acceptDate);
+        return s;
+    }
+
     /**
      *新增入库页面
      */
@@ -123,6 +142,7 @@ public class SorStorageController {
      * @return
      */
     @RequestMapping("/addStorage")
+    @ResponseBody
     public ModelAndView addStorage(SorStorage sorStorage, SorStorageDetails sorStorageDetails, HttpSession session){
         SyEmp syEmp = (SyEmp) session.getAttribute("SyEmp");
         //得到当前登录的用户来设置收货人id
