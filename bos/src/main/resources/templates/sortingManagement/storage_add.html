@@ -72,12 +72,15 @@
 				<input type="number" name="SID" readonly="readonly" th:value="${dDNumber}" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
+				<label id="errPackageID" style="color: #FF5722; display:none">请输入合包号</label>
 				<input type="number" name="packageID" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
+				<label id="errWeiGht" style="color: #FF5722; display:none">请输入重量</label>
 				<input type="number" name="weiGht" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
+				<label id="errOutBoundID" style="color: #FF5722; display:none">请输入出库交接单</label>
 				<input type="text"  name="outBoundID"  placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
 			</td>
 			<td>
@@ -103,6 +106,76 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
+		/**
+		 * 验证
+		 * 验证前端的写法
+		 * */
+		//合包号的验证
+		function checkedPackageID(){
+            var packageID = $("input[name=packageID]").val();
+            var states = $("input[name=packageID]").attr("placeholder");
+            if(states=="该列不需要填写"){
+                $("#errPackageID").hide();
+                return true;
+            }else{
+                if(packageID==""){
+                    $("#errPackageID").show();
+                    return false;
+                }else{
+                    $("#errPackageID").hide();
+                    return true;
+                }
+
+            }
+		}
+		//验证重量
+		function checkedWeiGht(){
+            var weiGht = $("input[name=weiGht]").val();
+            if(weiGht==""){
+                $("#errWeiGht").show();
+                return false;
+            }else{
+                $("#errWeiGht").hide();
+            }
+            return true;
+		}
+
+		//验证出库交接单
+        function checkedOutBoundID(){
+            var outBoundID = $("input[name=outBoundID]").val();
+            var states = $("input[name=outBoundID]").attr("placeholder");
+            if(states=="该列不需要填写"){
+                $("#errOutBoundID").hide();
+                return true;
+            }else{
+                if(outBoundID==""){
+                    $("#errOutBoundID").show();
+                    return false;
+                }else{
+                    $("#errOutBoundID").hide();
+                    return true;
+				}
+
+            }
+        }
+
+		$("input[name=packageID]").blur(function () {
+            checkedPackageID();
+		 });
+
+            //得到重量
+         $("input[name=weiGht]").blur(function () {
+             checkedWeiGht();
+        });
+        $("input[name=outBoundID]").blur(function () {
+            checkedOutBoundID();
+        });
+
+
+
+
+
+
         $(function () {
             //初始化状态
             var state = $("#state").val();
@@ -151,9 +224,51 @@
                     $("#errDeliveryPerson").show();
                     return false;
                 }
+                //合包号验证
+                var packageID = $("input[name=packageID]").val();
+                var states2 = $("input[name=packageID]").attr("placeholder");
+                if(states2=="该列不需要填写"){
+                    $("#errPackageID").hide();
+                }else{
+                    if(packageID==""){
+                        $("#errPackageID").show();
+                        return false;
+                    }else{
+                        $("#errPackageID").hide();
+                    }
 
+
+                }
+                //重量验证
+                var weiGht = $("input[name=weiGht]").val();
+                if(weiGht==""){
+                    $("#errWeiGht").show();
+                    return false;
+                }else{
+                    $("#errWeiGht").hide();
+                }
+                //出库交接单写法，由于需要关闭窗体故不能用 return true的写法
+                var outBoundID = $("input[name=outBoundID]").val();
+                var states = $("input[name=outBoundID]").attr("placeholder");
+                if(states=="该列不需要填写"){
+                    $("#errOutBoundID").hide();
+                }else{
+                    if(outBoundID==""){
+                        $("#errOutBoundID").show();
+                        return false;
+                    }else{
+                        $("#errOutBoundID").hide();
+                    }
+                }
+
+                //没有任意一个return false 关闭窗体
                 var index = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(index);
+
+
+
+
+
             })
 
             form.on("select(state)",function (data) {

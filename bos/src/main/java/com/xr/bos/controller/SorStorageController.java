@@ -218,14 +218,26 @@ public class SorStorageController {
         exceptionRecord.setHandleDate(exceptionRecord.getLaunchDate());
 
         exceptionRecord.setLaunchCompany(syUnits.getName());
-        int i = exceptionRecordService.addExceptionRecord(exceptionRecord);
-        if(i!=0){
-            System.out.println("--------------------------返回ID为：-------------------------");
+        int exceID = exceptionRecordService.addExceptionRecord(exceptionRecord);
+        if(exceID!=0){
             return "ok";
         }else{
             return "no";
         }
 
+    }
+
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/invoiceComparisonTable_add")
+    public ModelAndView queryByID(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sortingManagement/invoiceComparisonTable_add");
+
+
+        return mv;
     }
 
 

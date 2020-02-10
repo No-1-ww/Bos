@@ -45,7 +45,7 @@ public class SorStorageDetailsController {
             //由于绑定到前台的数据状态不能为0，1，2，3并且不宜修改数据库，故用该方法来绑定值
             Map<String,Object> map = new HashMap<>();
             map.put("SID",sorStorageDetail.getID());
-            if(sorStorageDetail.getPackageID().equals("")||sorStorageDetail.getPackageID()!=null){
+            if(sorStorageDetail.getPackageID().equals("")||sorStorageDetail.getPackageID()==null){
                 map.put("packageID","无");
             }else{
                 map.put("packageID",sorStorageDetail.getPackageID());
@@ -53,7 +53,7 @@ public class SorStorageDetailsController {
             map.put("weiGht",sorStorageDetail.getWeiGht());
             String abc = sorStorageDetail.getOutBoundID();
             System.out.println(abc.equals(""));
-            if(sorStorageDetail.getOutBoundID().equals("")||sorStorageDetail.getOutBoundID()!=null){
+            if(sorStorageDetail.getOutBoundID().equals("")||sorStorageDetail.getOutBoundID()==null){
                 map.put("outBoundID","无");
             }else{
                 map.put("outBoundID",sorStorageDetail.getOutBoundID());
