@@ -9,4 +9,8 @@
     <select id="queryByID" parameterType="Integer" resultType="SorStorageDetails">
         select * from sor_storagedetails where ID = #{SID}
     </select>
+    <!--删除订单详情-->
+    <delete id="deleteSorStorageDetails" parameterType="Integer">
+        delete from sor_storagedetails where ID =#{ID}
+    </delete>
 </mapper>

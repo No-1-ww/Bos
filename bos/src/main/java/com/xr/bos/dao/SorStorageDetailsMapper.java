@@ -15,4 +15,6 @@ public interface SorStorageDetailsMapper {
      * @return
      */
     List<SorStorageDetails> queryByID(Integer SID);
+
+    Integer deleteSorStorageDetails(Integer ID);
 }

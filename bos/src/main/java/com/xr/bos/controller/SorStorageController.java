@@ -232,12 +232,82 @@ public class SorStorageController {
      * 修改
      */
     @RequestMapping("/invoiceComparisonTable_add")
-    public ModelAndView queryByID(){
-        ModelAndView mv = new ModelAndView();
+    public ModelAndView queryByID(Integer upDateStoID,HttpSession session){
+         ModelAndView mv = new ModelAndView();
         mv.setViewName("/sortingManagement/invoiceComparisonTable_add");
+        Map<String,Object> map = sorStorageService.queryByIDStorage(upDateStoID);
 
+        Map<String, Object> storage = DateFormat.format(map, "acceptDate");
+        mv.addObject("stoID",storage.get("id"));
+        mv.addObject("acceptDate",storage.get("acceptDate"));
+        mv.addObject("acceptPerson",storage.get("acceptPerson"));
+        mv.addObject("acceptCompany",storage.get("acceptCompany"));
+        //发货人，发货单位
+        mv.addObject("deliveryPerson",storage.get("deliveryPerson"));
+        mv.addObject("deliveryCompany",storage.get("deliveryCompany"));
 
         return mv;
+    }
+
+    /**
+     *
+     * @param name 员工姓名
+     * @param SyUnitsName 员工所在公司名称
+     * @return
+     */
+    @RequestMapping(value = "/invoiceComparisonTable_add/check",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
+    @ResponseBody
+    public String check(String name,String SyUnitsName){
+        SyEmp check = syEmpService.check(name);
+        if(check==null){
+            return "输入的姓名不存在";
+        }
+        System.out.println("111111111111111111111111111111111111111111111111111"+check.getEmpUnit());
+        //姓名存在，那么把公司名字绑定到前台
+
+        SyUnits syUnits = syUnitsService.findID(check.getEmpUnit());
+        //如果该员工没有公司也是查询不到的
+        return syUnits.getName();
+    }
+
+    /**
+     * 修改
+     * @param aPerson
+     * @param dPerson
+     * @param sorStorage
+     * @param session
+     * @return
+     */
+    @RequestMapping("/upDateSorStoage")
+    public ModelAndView updateSorStoage(String aPerson,String dPerson,SorStorage sorStorage,HttpSession session){
+        System.out.println("收货人"+aPerson);
+        System.out.println("发货人："+dPerson);
+
+        ModelAndView mv = new ModelAndView();
+        //根据员工姓名查询ID
+        SyEmp check = syEmpService.check(aPerson);
+        SyEmp check1 = syEmpService.check(dPerson);
+        sorStorage.setAcceptPerson(check.getID());
+        sorStorage.setDeliveryPerson(check1.getID());
+        System.out.println("更改后的对象：：：：：：：：：：：：：：：：：："+sorStorage);
+        //调用修改方法
+        sorStorageService.updateStorage(sorStorage);
+        mv.setViewName("/sortingManagement/invoiceComparisonTable_add");
+        return mv;
+    }
+
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/deleteSorStoage",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
+    @ResponseBody
+    public String  deleteSorStorage(Integer ID){
+        //由于query方法就是查询所有的直接返回query方法就是返回了前台所有的数据
+
+        sorStorageService.deleteSorStorage(ID);
+        sorStorageDetailsService.deleteSorStorageDetails(ID);
+        return query();
     }
 
 

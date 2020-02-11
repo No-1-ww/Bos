@@ -24,4 +24,9 @@ public class SorStorageDetailsServiceImpl implements SorStorageDetailsService {
     public List<SorStorageDetails> queryByID(Integer SID) {
         return sorStorageDetailsMapper.queryByID(SID);
     }
+
+    @Override
+    public Integer deleteSorStorageDetails(Integer ID) {
+        return sorStorageDetailsMapper.deleteSorStorageDetails(ID);
+    }
 }

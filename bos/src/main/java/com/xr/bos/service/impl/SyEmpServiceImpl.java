@@ -52,5 +52,10 @@ public class SyEmpServiceImpl implements SyEmpService {
         return syEmpMapper.querySyEmp(id);
     }
 
+    @Override
+    public SyEmp check(String empName) {
+        return syEmpMapper.check(empName);
+    }
+
 
 }

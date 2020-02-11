@@ -32,5 +32,22 @@ public class SorStorageServiceImpl implements SorStorageService {
         return sorStorageMapper.addStorage(sorStorage);
     }
 
+    @Override
+    public Map<String,Object> queryByIDStorage(Integer ID) {
+        //根据ID查询
+        return sorStorageMapper.queryByIDStorage(ID);
+    }
+
+    @Override
+    public Integer updateStorage(SorStorage sorStorage) {
+        //修改
+        return sorStorageMapper.updateStorage(sorStorage);
+    }
+
+    @Override
+    public Integer deleteSorStorage(Integer ID) {
+        return sorStorageMapper.deleteSorStorage(ID);
+    }
+
 
 }

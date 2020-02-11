@@ -14,6 +14,14 @@ public class DateFormat {
         String date = myFmt.format(column);
         return date;
     }
+    //格式化Map集合中的事件
+    public static Map<String,Object> format(Map<String,Object> map,String key){
+
+        SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd");
+        String format = myFmt.format(map.get(key));
+        map.put(key,format);
+        return map;
+    }
     public static List<Map<String,Object>> formatMap(List<Map<String,Object>> list,String key){
         //多表联查格式化时间，第二个参数为时间类型的键
         //resultMap中定义的时间列对应的列名字

@@ -33,4 +33,11 @@
         <result column="RoleDesc" property="roleDesc"></result>
         <result column="Disabled" property="disabled"></result>
     </resultMap>
+
+
+    <!--修改入库交接单-->
+    <select id="check" parameterType="String" resultType="SyEmp">
+        select * from sy_emp where EmpName = #{empName}
+    </select>
+
 </mapper>

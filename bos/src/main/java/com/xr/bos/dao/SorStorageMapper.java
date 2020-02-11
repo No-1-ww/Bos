@@ -9,11 +9,26 @@ import java.util.Map;
 
 @Repository
 public interface SorStorageMapper {
+
      List<Map<String,Object>> queryAll();
 
+     /**
+      * 查询最大ID
+      * @return
+      */
      String queryMaxID();
 
      Integer addStorage(SorStorage sorStorage);
 
+
+     Map<String,Object> queryByIDStorage(Integer ID);
+
+
+     //修改
+     Integer updateStorage(SorStorage sorStorage);
+
+
+     //删除
+     Integer deleteSorStorage(Integer ID);
 
 }

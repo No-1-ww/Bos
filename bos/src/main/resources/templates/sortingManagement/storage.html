@@ -262,9 +262,90 @@
                 type: 2,
                 //skin: 'layui-layer-rim', //加上边框
                 area: ['660px', '340px'], //宽高
-                content: 'invoiceComparisonTable_add'
+                content: '/invoiceComparisonTable_add?upDateStoID='+upDateStoID,
+                end:function () {
+                    layui.use(['form','layer'], function() {
+                        var layer = layui.layer,
+                            form = layui.form;
+
+
+                        layer.msg("执行完毕");
+                        $.ajax({
+                            url: "/sortingManagement/query",
+                            type: "POST",
+                            success: function (data) {
+                                var result = eval(data);
+                                $("#stoBody").empty();
+                                for (var i = 0; i < result.length; i++) {
+
+                                    $("#stoBody").append('<tr>' +
+                                        '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
+                                        '                    <td >' + result[i].id + '</td>' +
+                                        '                    <td >' + result[i].acceptDate + '</td>' +
+                                        '                    <td >' + result[i].acceptPerson + '</td>' +
+                                        '                    <td >' + result[i].acceptCompany + '</td>' +
+                                        '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                        '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                        '                    <td>' +
+                                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                        '                    </td>' +
+                                        '                </tr>')
+                                }
+                                form.render();
+                            }
+                        });
+
+                    });
+                }
+
             });
         });
+
+
+        //删除
+        $("#opDelete").click(function () {
+            //偷懒，和修改用的同一个变量
+            var deleteStoID = $("#upDateStoID").val();
+            if(deleteStoID==""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请选中一行数据！");
+
+                });
+                return;
+            }
+            $.ajax({
+                url:"/deleteSorStoage",
+                type:"POST",
+                data:{"ID":deleteStoID},
+                success:function (data) {
+                    layui.use(['form','layer'], function() {
+                        var layer = layui.layer,
+                            form = layui.form;
+                        layer.msg("删除成功");
+                        var result = eval(data);
+                        $("#stoBody").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            $("#stoBody").append('<tr>' +
+                                '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
+                                '                    <td >' + result[i].id + '</td>' +
+                                '                    <td >' + result[i].acceptDate + '</td>' +
+                                '                    <td >' + result[i].acceptPerson + '</td>' +
+                                '                    <td >' + result[i].acceptCompany + '</td>' +
+                                '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                '                    <td>' +
+                                '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                '                    </td>' +
+                                '                </tr>')
+                        }
+                                form.render();
+                    });
+                }
+            })
+
+        });
+
 
         //查看明细
         $(document).on('click',"button[name=opQueryDetail]",function () {

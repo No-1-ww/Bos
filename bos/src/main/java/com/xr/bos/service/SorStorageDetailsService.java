@@ -13,4 +13,9 @@ public interface SorStorageDetailsService {
      * @return
      */
     List<SorStorageDetails> queryByID(Integer SID);
+
+    /**
+     * 删除
+     */
+    Integer deleteSorStorageDetails(Integer ID);
 }
