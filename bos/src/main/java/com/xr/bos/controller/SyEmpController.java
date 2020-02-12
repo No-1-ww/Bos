@@ -110,4 +110,5 @@ public class SyEmpController {
         ModelAndView mv = login(syEmp.getEmpNo(), syEmp.getPwd(), session);
         return mv;
     }
+
 }
