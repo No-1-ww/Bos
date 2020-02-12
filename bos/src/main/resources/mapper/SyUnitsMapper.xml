@@ -5,20 +5,4 @@
     <select id="findID" parameterType="Integer" resultType="SyUnits">
         select u.* from sy_units u inner JOIN sy_emp e on u.ID = e.EmpUnit group by u.ID having u.ID = #{ID}
     </select>
-
-    <select id="findUntisAll" resultType="map">
-    select u.ID,u.`Name`,u.Remarks,e.EmpName,u.OperationTime
-     from sy_units u,sy_emp e where u.OperatorID=e.ID
-
-
-    </select>
-    <select id="findUntiswhereAsname" parameterType="String" resultType="map">
-        select
-        u.ID,u.`Name`,u.Remarks,e.EmpName,u.OperationTime
-    from
-        sy_units u,sy_emp e
-    where
-        u.OperatorID=e.ID and   `Name`=#{name}
-
-    </select>
 </mapper>

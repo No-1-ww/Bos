@@ -6,9 +6,6 @@ import com.xr.bos.service.SyUnitsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
 @Service
 public class SyUnitsServiceImpl implements SyUnitsService {
 
@@ -18,15 +15,5 @@ public class SyUnitsServiceImpl implements SyUnitsService {
     @Override
     public SyUnits findID(Integer ID) {
         return syUnitsMapper.findID(ID);
-    }
-
-    @Override
-    public List<Map<String, Object>> findUntisAll() {
-        return syUnitsMapper.findUntisAll();
-    }
-
-    @Override
-    public List<Map<String, Object>> findUntiswhereAsname(String name) {
-        return syUnitsMapper.findUntiswhereAsname(name);
     }
 }

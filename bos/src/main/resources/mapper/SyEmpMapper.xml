@@ -40,11 +40,4 @@
         select * from sy_emp where EmpName = #{empName}
     </select>
 
-    <!--查询所有员工-->
-    <select id="findEmpAll" resultType="map">
-        select e.ID,e.EmpNo,e.EmpName,r.RoleName,e.Disabled
-        from sy_emp e ,sy_roles r
-        where e.RoleID=r.ID
-    </select>
-
 </mapper>
