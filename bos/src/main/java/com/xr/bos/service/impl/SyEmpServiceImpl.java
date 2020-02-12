@@ -57,5 +57,10 @@ public class SyEmpServiceImpl implements SyEmpService {
         return syEmpMapper.check(empName);
     }
 
+    @Override
+    public List<Map<String, Object>> findEmpAll() {
+        return syEmpMapper.findEmpAll();
+    }
+
 
 }

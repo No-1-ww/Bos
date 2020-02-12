@@ -11,4 +11,13 @@
           select m.* from sy_emp e,sy_roles r,sy_menus m,sy_rolesmenus rm
           where e.ID = #{syEmpID} and e.RoleID = r.ID and r.ID = rm.RoleID and rm.MenuID = m.ID and parentID = #{parentID}
     </select>
+
+    <select id="findMenusAll" resultType="SyMenus">
+
+
+        select  s.ID as ID,s.parentID,
+        s.type,s.text,s.url,s.tip from sy_menus s
+
+    </select>
+
 </mapper>

@@ -29,4 +29,7 @@ public interface SyEmpMapper {
     SyEmp check(String empName);
 
 
+    //查询所有员工
+    List<Map<String,Object>> findEmpAll();
+
 }
