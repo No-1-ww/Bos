@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form action="/busin_add" class="layui-form" method="post">
+	<form lay-filter="stoForm" action="/busin_add" class="layui-form" method="post">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
@@ -17,7 +17,7 @@
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">客户编号</td>
 		      	<td width="22%">
-					         <input type="text" name="customCode" placeholder="请输入客户编号" autocomplete="off" class="layui-input" value="">
+					         <input type="text" name="customCode" placeholder="请输入客户编号" th:value="${customCode}" autocomplete="off" class="layui-input" value="" readonly>
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">客户名称</td>
 		      	<td width="22%">
@@ -81,21 +81,20 @@
 
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
-
-           /* var form=layui.form;
-			form.on("select(test)",function(data){
-			   alert(data.value);
-			    var id=data.value;
-			    $.ajax({
-					url:"/businessAcceptance_update",
-					type:"POST",
-					data:{"businessNoticeNo":id,
-					    success:function(){
-					    	$("input[name=businessNoticeNo]").val(data);
-						}
-					},
-				})
-			})*/
+            var form = layui.form;
+            form.on("submit(stoForm)",function(){
+                var c=$("input[name=customName]").val();
+                var d=$("input[name=linkman]").val();
+                var e=$("input[name=telPhone]").val();
+                var f=$("input[name=pickupAddress]").val();
+                var g=$("input[name=sendAddress]").val();
+                var h=$("input[name=arriveCity]").val();
+                var f=$("input[name=reservationTime]").val();
+                if(c==""||d==""||e==""||f==""||g==""||h==""||f==""){
+                    alert("不能为空");
+                    return false;
+                }
+            })
         });
 
     </script>

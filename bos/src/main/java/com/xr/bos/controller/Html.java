@@ -96,7 +96,7 @@ public class Html {
         return "/acceptance/businessAcceptance";
     }*/
 
-    //业务受理 新增businessAcceptance_add
+    //业务受理新增businessAcceptance_add
     /*@GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add(){return "acceptance/businessAcceptance_add"; }
    */
@@ -107,12 +107,12 @@ public class Html {
     }
 */
     //工作单快速录入
-    @GetMapping("/acceptance/worksheetQuickInput")
+   /* @GetMapping("/acceptance/worksheetQuickInput")
     public String worksheetQuickInput(){
         return "/acceptance/worksheetQuickInput";
     }
-
-    //工作单快速录入businessAcceptance_add
+*/
+    //工作单快速录入里面的新增businessAcceptance_add
    /* @GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}
 */

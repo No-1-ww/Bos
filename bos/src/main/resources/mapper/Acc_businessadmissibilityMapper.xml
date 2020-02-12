@@ -24,6 +24,11 @@
     <select id="querybusinNo_ID" resultType="String">
         select max(businessNoticeNo) from acc_businessadmissibility
     </select>
+
+    <select id="query_customCode" resultType="String">
+        select max(customCode) from acc_businessadmissibility
+    </select>
+
     <select id="query_importantHints" resultType="Acc_businessadmissibility">
         select importantHints from acc_businessadmissibility
     </select>
@@ -39,9 +44,29 @@
         where businessNoticeNo =#{businessNoticeNo}
     </select>
 
+    <!--修改-->
+    <update id="updateAcc" parameterType="Acc_businessadmissibility">
+        UPDATE acc_businessadmissibility SET businessNoticeNo=#{businessNoticeNo}, customName=#{customName}, pickupAddress=#{pickupAddress},
+        customCode=#{customCode}, linkman=#{linkman}, telPhone=#{telPhone}, importantHints=#{importantHints}, arriveCity=#{arriveCity}, sendAddress=#{sendAddress},reservationTime=#{reservationTime}
+        WHERE businessNoticeNo=#{businessNoticeNo};
+    </update>
+
     <select id="query_whereAcc" resultType="Acc_businessadmissibility">
         select businessNoticeNo ,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime
         from acc_businessadmissibility
-        where businessNoticeNo like #{businessNoticeNo} or customCode like #{customCode}
+        where
+        <if test=" businessNoticeNo !='' and customCode !='' ">
+            businessNoticeNo like contat('%',#{businessNoticeNo},'%') and customCode like contat('%',#{customCode},'%')
+        </if>
+        <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
+            and businessNoticeNo like contat('%',#{businessNoticeNo},'%')
+        </if>
+        <if test=" customCode !='' and customCode !=null">
+            and customCode like contat('%',#{customCode},'%')
+        </if>
     </select>
+
+    <update id="update_afterSingleNum" parameterType="String">
+        update acc_workorder set afterSingleNum=afterSingleNum+1 where businessNoticeNo=#{businessNoticeNo}
+    </update>
 </mapper>

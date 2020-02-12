@@ -32,6 +32,12 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
     }
 
     @Override
+    public String query_customCode() {
+        return acc_businessadmissibilityMapper.query_customCode();
+    }
+
+
+    @Override
     public List<Acc_businessadmissibility> query_importantHints() {
         return acc_businessadmissibilityMapper.query_importantHints();
     }
@@ -42,8 +48,18 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
     }
 
     @Override
-    public List<Acc_businessadmissibility> query_whereAcc(String businessNoticeNo, String customCode) {
-        return acc_businessadmissibilityMapper.query_whereAcc(businessNoticeNo,customCode);
+    public int updateAcc(Acc_businessadmissibility acc_businessadmissibility) {
+        return acc_businessadmissibilityMapper.updateAcc(acc_businessadmissibility);
+    }
+
+    @Override
+    public List<Acc_businessadmissibility> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility) {
+        return acc_businessadmissibilityMapper.query_whereAcc(acc_businessadmissibility);
+    }
+
+    @Override
+    public int update_afterSingleNum(String businessNoticeNo) {
+        return acc_businessadmissibilityMapper.update_afterSingleNum(businessNoticeNo);
     }
 
 
