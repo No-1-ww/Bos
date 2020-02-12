@@ -110,4 +110,17 @@ public class SyMenusController {
 
     }
 
+    //查询所有的菜单
+    @RequestMapping(value = "/systemManagement/sysMenu")
+    public ModelAndView findMenusAll(){
+        System.out.println("进入findMenusAll方法。。。。");
+        List<SyMenus> menusList = syMenusService.findMenusAll();
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("menus",menusList);
+        mv.setViewName("/systemManagement/sysMenu");
+
+
+        return mv;
+    }
+
 }
