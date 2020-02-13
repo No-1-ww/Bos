@@ -1,6 +1,5 @@
 package com.xr.bos.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,11 @@ public class RedisTemplateUtil {
         return redisTemplate.opsForValue().get(key);
     }
 
-
     public void setList(String key, List<?> value){
         ListOperations<String, Object> listOperations = redisTemplate.opsForList();
+        /*redisTemplate.expire(key,60, TimeUnit.HOURS);*/
         listOperations.leftPush(key, value);
-        //redisTemplate.expire(key,60, TimeUnit.HOURS);
+
 
     }
     public Object getList(String key) {

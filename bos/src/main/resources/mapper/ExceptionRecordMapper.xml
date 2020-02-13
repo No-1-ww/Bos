@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xr.bos.dao.ExceptionRecordMapper">
-    <insert id="addExceptionRecord" useGeneratedKeys="true" keyProperty="ID"   parameterType="ExceptionRecord">
-        insert into sor_abnormal(ID,LaunchDate,LaunchPerson,LaunchCompany,AbnormalType,TransferInt,CargoInt,PackageInt,HedgeAbnInt,AboState,HandleDate)
-        values(null,#{launchDate},#{launchPerson},#{launchCompany},#{abnormalType},#{TransferInt},#{cargoInt},#{packageInt},#{hedgeAbnInt},#{aboState},#{handleDate})
-    </insert>
-</mapper>

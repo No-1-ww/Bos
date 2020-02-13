@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class SyEmpController {
@@ -111,17 +110,4 @@ public class SyEmpController {
         ModelAndView mv = login(syEmp.getEmpNo(), syEmp.getPwd(), session);
         return mv;
     }
-
-    //查询所有员工
-    //aa
-    @RequestMapping(value = "/systemManagement/sysEmp")
-    public ModelAndView findEmpAll(){
-        System.out.println("进入查询员工放法findEmpAll.......");
-        List<Map<String, Object>> mapList = syEmpService.findEmpAll();
-        ModelAndView mv=new ModelAndView();
-        mv.addObject("emps",mapList);
-        mv.setViewName("/systemManagement/sysEmp");
-        return mv;
-    }
-
 }

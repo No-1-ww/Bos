@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class Html {
 
-    //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     @GetMapping("/login")
     public String login(){
         return "/login.html";
@@ -266,27 +265,17 @@ public class Html {
         return "/packing/packagingInformationQuery";
     }
     //大物流发货对照表
-    @GetMapping("/largeLogisticsManagement/invoiceComparisonTable")
+   /* @GetMapping("/largeLogisticsManagement/invoiceComparisonTable")
     public String invoiceComparisonTable(){
         return "/largeLogisticsManagement/invoiceComparisonTable";
     }
-
+*/
 
     //入库
-    /*@GetMapping("/sortingManagement/storage")
+    @GetMapping("/sortingManagement/storage")
     public String storage(){
         return "/sortingManagement/storage";
-    }*/
-    /**
-     * 查看入库明细
-     * @return
-     */
-    /*@GetMapping("/storage_list")
-    public String queryStorAgelist(String stoID){
-        return "/sortingManagement/storage_list";
-    }*/
-
-
+    }
     //出库
     @GetMapping("/sortingManagement/theLibrary")
     public String theLibrary(){
