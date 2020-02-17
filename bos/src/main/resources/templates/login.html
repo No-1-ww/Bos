@@ -10,7 +10,6 @@
 </head>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
-
 <body class="default">
 	<div class="login-hd">
 		<div class="left-bg"></div>
@@ -120,6 +119,7 @@
             type:"POST",
             data:{"Phone":Phone},
             success:function (data) {
+                console.log(data);
                 if(data=="no"){
                     alert("您的手机号码不存在系统中");
                     Yzm = "no";

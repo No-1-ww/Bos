@@ -10,6 +10,4 @@ public interface SyMenusService {
     List<SyMenus> queryDaMoKuai(Integer syEmpID);
 
     List<SyMenus> queryChild(Map<String,Object> map);
-
-    List<SyMenus> findMenusAll();
 }

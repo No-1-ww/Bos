@@ -47,14 +47,13 @@ public class ShiroConfig {
         filterChainMap.put("/queryExit","anon");
         filterChainMap.put("/logInDx","anon");
 
+        filterChainMap.put("/aabbcc","anon");
         //配置访问静态资源，由于前端html没有更改路径所以前面不需要加/static
         filterChainMap.put("/css/**","anon");
         filterChainMap.put("/fonts/**","anon");
         filterChainMap.put("/images/**","anon");
         filterChainMap.put("/js/**","anon");
         filterChainMap.put("/scss/**","anon");
-        filterChainMap.put("/layer/**","anon");
-        filterChainMap.put("/layui/**","anon");
 
         filterChainMap.put("/**", "authc");
         //3.设置默认登录的URL.

@@ -6,6 +6,8 @@ var SystemMenu="";
         async: false,
         dataType: 'json',
         success: function (data) {
+            console.log(data);
+            console.log(eval('(' + data + ')'));
             SystemMenu = eval('(' + data + ')');
         }
     })

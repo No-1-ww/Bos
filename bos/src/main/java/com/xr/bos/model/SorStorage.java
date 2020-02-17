@@ -1,7 +1,5 @@
 package com.xr.bos.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -9,7 +7,6 @@ import java.sql.Date;
 @Component
 public class SorStorage {
     private Integer ID;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date acceptDate;
     private Integer acceptPerson;
     private String acceptCompany;
@@ -75,18 +72,6 @@ public class SorStorage {
 
     public void setDeliveryCompany(String deliveryCompany) {
         this.deliveryCompany = deliveryCompany;
-    }
-
-    @Override
-    public String toString() {
-        return "SorStorage{" +
-                "ID=" + ID +
-                ", acceptDate=" + acceptDate +
-                ", acceptPerson=" + acceptPerson +
-                ", acceptCompany='" + acceptCompany + '\'' +
-                ", deliveryPerson=" + deliveryPerson +
-                ", deliveryCompany='" + deliveryCompany + '\'' +
-                '}';
     }
 }
 

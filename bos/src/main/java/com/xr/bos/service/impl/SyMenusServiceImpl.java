@@ -25,9 +25,4 @@ public class SyMenusServiceImpl implements SyMenusService {
     public List<SyMenus> queryChild(Map<String, Object> map) {
         return syMenusMapper.queryChild(map);
     }
-
-    @Override
-    public List<SyMenus> findMenusAll() {
-        return syMenusMapper.findMenusAll();
-    }
 }
