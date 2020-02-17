@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SyEmpMapper">
+
+    <select id="querySyEmp" resultType="SyEmp" parameterType="Integer">
+    /* 查询除去当前用户的其他的用户*/
+        select * from sy_emp where ID!= #{id}
+    </select>
+
     <select id="select" resultType="SyEmp">
         select * from sy_emp
     </select>
@@ -27,4 +33,19 @@
         <result column="RoleDesc" property="roleDesc"></result>
         <result column="Disabled" property="disabled"></result>
     </resultMap>
+
+
+    <!--修改入库交接单-->
+    <select id="check" parameterType="String" resultType="SyEmp">
+        select * from sy_emp where EmpName = #{empName}
+    </select>
+
+
+    <!--查询所有员工-->
+    <select id="findEmpAll" resultType="map">
+select e.ID,e.EmpNo,e.EmpName,r.RoleName,e.Disabled
+    from sy_emp e ,sy_roles r
+        where e.RoleID=r.ID
+    </select>
+
 </mapper>

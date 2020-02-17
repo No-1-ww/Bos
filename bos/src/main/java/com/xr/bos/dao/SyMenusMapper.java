@@ -21,8 +21,15 @@ public interface SyMenusMapper {
      * @param map
      * @return
      */
-    List<SyMenus> queryChild(Map<String,Object> map);
+    List<SyMenus> queryChild(Map<String, Object> map);
     //parmettype Integer
     //select m.* from sy_emp e,sy_roles r,sy_menus m,sy_rolesmenus rm
     // where e.ID = 1 and e.RoleID = r.ID and r.ID = rm.RoleID and rm.MenuID = m.ID and parentID = #{parentID}
+
+    //查询所有菜单
+
+    // select  s.id as ID,
+    // (SELECT text from sy_menus WHERE s.parentID = ID) as shangjilanmu,
+    // s.type,s.text,s.url,s.tip from sy_menus s
+    List<SyMenus> findMenusAll();
 }

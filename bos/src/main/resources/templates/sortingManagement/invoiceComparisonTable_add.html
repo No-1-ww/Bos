@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>大物流发货对照表</title>
+	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head>
+<body>
+
+	<form lay-filter="upDateStoForm" class="layui-form" action="/upDateSorStoage">
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+		<tbody>
+		<tr>
+			<td class="layui-bg-gray" width="17%">工作单号</td>
+			<td width="33%">
+				<input type="text" th:value="${stoID}" name="ID" placeholder="请输入入库交接单号" autocomplete="off" class="layui-input" readonly>
+			</td>
+			<td class="layui-bg-gray" width="17%">接货时间</td>
+			<td width="33%">
+				<input type="text" th:value="${acceptDate}" name="acceptDate" placeholder="请输入接货时间" autocomplete="off" class="layui-input" readonly>
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray" >接货人</td>
+			<td >
+				<label id="errAPerson"></label>
+				<input type="text" th:value="${acceptPerson}" name="aPerson" placeholder="请输入接货人" autocomplete="off" class="layui-input">
+			</td>
+			<td class="layui-bg-gray">接货公司</td>
+			<td >
+				<input type="text" th:value="${acceptCompany}"  name="acceptCompany" placeholder="请输入接货公司" autocomplete="off" class="layui-input" readonly>
+			</td>
+
+		</tr>
+
+		<tr>
+			<td class="layui-bg-gray">发货人</td>
+			<td>
+				<label id="errDPerson"></label>
+				<input type="text" th:value="${deliveryPerson}"  name="dPerson" placeholder="请输入发货人" autocomplete="off" class="layui-input">
+			</td>
+			<td class="layui-bg-gray">发货公司</td>
+			<td >
+				<input type="text"  th:value="${deliveryCompany}" name="deliveryCompany" placeholder="请输入发货公司" autocomplete="off" class="layui-input" readonly>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6">
+				<button class="layui-btn" style="background: #1da02b;">确定</button>
+				<button type="button" class="layui-btn layui-btn-primary">取消</button>
+			</td>
+		</tr>
+
+		</tbody>
+	</table>
+	</form>
+
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+
+	$("input[name=aPerson]").blur(function () {
+	    var name = $(this).val();
+
+        var dName = $("input[name=dPerson]").val();
+		var SyUnitsName = $("input[name=acceptCompany]").val();
+		if(name==""){
+                $("#errAPerson").text("请输入接货人姓名").css("color","red");
+
+            return;
+		}
+		$.ajax({
+			url:"/invoiceComparisonTable_add/check",
+			type:"POST",
+			data:{"name":name,"SyUnitsName":SyUnitsName},
+			success:function (data) {
+				console.log(data);
+				//姓名验证完成前台做验证
+                if(data=="输入的姓名不存在"){
+                    $("#errAPerson").text("输入的姓名不存在").css("color","red");
+                }else if(name==dName){
+                    $("#errAPerson").text("两个姓名不能一致").css("color","red");
+                }else{
+                    //将收货人的公司绑定至前台
+                    $("input[name=acceptCompany]").val(data);
+                    $("#errAPerson").text("");
+                    layui.use('layer',function () {
+                        var layer = layui.layer;
+
+                    });
+				}
+
+
+            }
+		})
+    });
+    $("input[name=dPerson]").blur(function () {
+        var name = $(this).val();
+
+        var aName = $("input[name=aPerson]").val();
+        var SyUnitsName = $("input[name=deliveryCompany]").val();
+        if(name==""){
+                $("#errDPerson").text("请输入发货人姓名").css("color","red");
+            return;
+        }
+        $.ajax({
+            url:"/invoiceComparisonTable_add/check",
+            type:"POST",
+            data:{"name":name,"SyUnitsName":SyUnitsName},
+            success:function (data) {
+                console.log(data);
+                //姓名验证完成前台做验证
+                if(data=="输入的姓名不存在"){
+                    $("#errDPerson").text("输入的姓名不存在").css("color","red");
+                }else if(name==aName){
+                    $("#errDPerson").text("两个姓名不能一致").css("color","red");
+				}else{
+                    //将收货人的公司绑定至前台
+                    $("input[name=deliveryCompany]").val(data);
+                    $("#errDPerson").text("");
+
+                }
+
+
+            }
+        })
+    });
+	//加载'form'模块，使checkbox、select、radio初始化
+	layui.use('form', function(){
+
+		var form = layui.form;
+		form.on("submit(upDateStoForm)",function () {
+			var aName = $("input[name=aPerson]").val();
+			var dName = $("input[name=dPerson]").val();
+			var errAPerson = $("#errAPerson").text();
+            var errDPerson = $("#errDPerson").text();
+			if(errAPerson!=""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入正确的接货人姓名");
+
+                });
+                return false;
+			}
+            if(errDPerson!=""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入正确的发货人姓名");
+
+                });
+                return false;
+            }
+            if(aName==""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入接货人姓名");
+
+                });
+                return false;
+            }
+            if(dName==""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入发货人姓名");
+
+                });
+                return false;
+			}
+			if(aName==dName){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("两者姓名不能一致");
+
+                });
+                return false;
+			}
+
+
+
+            //没有任意一个return false 关闭窗体
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+
+        })
+	});
+
+	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+	layui.use('element', function(){
+		var element = layui.element;
+
+		//…
+	});
+
+</script>
+</body>
+</html>

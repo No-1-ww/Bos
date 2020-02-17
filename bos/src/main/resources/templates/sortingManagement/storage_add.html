@@ -1,0 +1,298 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>新增入库交接单</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head> 
+<body>
+	<!--引入自定义的js脚本库-->
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+	<form  lay-filter="stoForm" class="layui-form" action="/addStorage" method="post">
+		<br/>
+		<br/>
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+	  	<tbody>
+		    <tr>
+		    	<td class="layui-bg-gray" width="14%">入库交接单号</td>
+		      	<td width="20%">
+					<input type="text" name="ID" placeholder="入库交接单号" th:value="${stoID}"  autocomplete="off" class="layui-input" value="" readonly="readonly">
+		      	</td>
+		      	<td class="layui-bg-gray" width="13%">接货时间</td>
+		      	<td width="20%">
+					<input type="text" name="acceptDate" placeholder="请输入接货时间" th:value="${now}" autocomplete="off" class="layui-input" value="" readonly="readonly">
+		      	</td>
+		      	<td class="layui-bg-gray" width="13%">接货人</td>
+		      	<td width="20%">
+					<input type="text" name="title" placeholder="请输入接货人" th:value="${shouHuo}" autocomplete="off" class="layui-input" value="" readonly="readonly">
+		      	</td>
+		    </tr>
+		    <tr>
+		      	<td class="layui-bg-gray">接收单位</td>
+		      	<td>
+					<input type="text" name="acceptCompany" placeholder="请输入接收单位" th:value="${SyUnitsName}" autocomplete="off" class="layui-input" value="" readonly="readonly">
+				</td>
+		      	<td class="layui-bg-gray">发货人 </td>
+		      	<td>
+                    <label id="errDeliveryPerson" style="color: #FF5722; display:none">请选择收货人</label>
+					<select lay-filter="test" name="deliveryPerson" id="deliveryPerson"  >
+						<option    value=""></option>
+						<option  th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
+					</select>
+				</td>
+		      	<td class="layui-bg-gray">发货单位</td>
+		      	<td>
+					<input type="text" name="deliveryCompany" placeholder="请输入发货单位" autocomplete="off" class="layui-input" value="" readonly="readonly">
+				</td>
+		    </tr>
+	  	</tbody>
+	</table>
+	<table class="layui-table" style="width: 98%;margin: 5px auto;text-align: center;">
+		<colgroup>
+			<col width="20%">
+			<col width="20%">
+			<col width="20%">
+			<col width="20%">
+			<col>
+		</colgroup>
+		<thead>
+		<tr>
+			<th>单号</th>
+			<th>合包号</th>
+			<th>重量</th>
+			<th>关联出库交接单</th>
+			<th>状态</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>
+				<input type="number" name="SID" readonly="readonly" th:value="${dDNumber}" placeholder="请输入单号" autocomplete="off" class="layui-input" value="">
+			</td>
+			<td>
+				<label id="errPackageID" style="color: #FF5722; display:none">请输入合包号</label>
+				<input type="number" name="packageID" placeholder="请输入合包号" autocomplete="off" class="layui-input" value="">
+			</td>
+			<td>
+				<label id="errWeiGht" style="color: #FF5722; display:none">请输入重量</label>
+				<input type="number" name="weiGht" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
+			</td>
+			<td>
+				<label id="errOutBoundID" style="color: #FF5722; display:none">请输入出库交接单</label>
+				<input type="text"  name="outBoundID"  placeholder="关联出库交接单" autocomplete="off" class="layui-input" value="">
+			</td>
+			<td>
+				<select id="state" lay-filter="state" name="state" >
+					<option value="0">初始入库</option>
+					<option value="1">中转入库</option>
+					<option value="2">二次入库</option>
+					<option value="3">有货无单</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="5">
+				<button class="layui-btn" style="background: #1da02b;">确定</button>
+				<button type="button" class="layui-btn layui-btn-primary">取消</button>
+			</td>
+		</tr>
+		</tbody>
+
+	</table>
+	</form>
+	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript">
+		/**
+		 * 验证
+		 * 验证前端的写法
+		 * */
+		//合包号的验证
+		function checkedPackageID(){
+            var packageID = $("input[name=packageID]").val();
+            var states = $("input[name=packageID]").attr("placeholder");
+            if(states=="该列不需要填写"){
+                $("#errPackageID").hide();
+                return true;
+            }else{
+                if(packageID==""){
+                    $("#errPackageID").show();
+                    return false;
+                }else{
+                    $("#errPackageID").hide();
+                    return true;
+                }
+
+            }
+		}
+		//验证重量
+		function checkedWeiGht(){
+            var weiGht = $("input[name=weiGht]").val();
+            if(weiGht==""){
+                $("#errWeiGht").show();
+                return false;
+            }else{
+                $("#errWeiGht").hide();
+            }
+            return true;
+		}
+
+		//验证出库交接单
+        function checkedOutBoundID(){
+            var outBoundID = $("input[name=outBoundID]").val();
+            var states = $("input[name=outBoundID]").attr("placeholder");
+            if(states=="该列不需要填写"){
+                $("#errOutBoundID").hide();
+                return true;
+            }else{
+                if(outBoundID==""){
+                    $("#errOutBoundID").show();
+                    return false;
+                }else{
+                    $("#errOutBoundID").hide();
+                    return true;
+				}
+
+            }
+        }
+
+		$("input[name=packageID]").blur(function () {
+            checkedPackageID();
+		 });
+
+            //得到重量
+         $("input[name=weiGht]").blur(function () {
+             checkedWeiGht();
+        });
+        $("input[name=outBoundID]").blur(function () {
+            checkedOutBoundID();
+        });
+
+
+
+
+
+
+        $(function () {
+            //初始化状态
+            var state = $("#state").val();
+            if(state==0){
+                $("input[name=outBoundID]").val("");
+                $("input[name=outBoundID]").attr("readonly","readonly");
+                $("input[name=outBoundID]").attr("placeholder","该列不需要填写");
+                $("input[name=packageID]").attr("readonly","readonly");
+                $("input[name=packageID]").attr("placeholder","该列不需要填写");
+            }else{
+                //移除属性
+                $("input[name=outBoundID]").removeAttr("readonly","");
+                $("input[name=outBoundID]").attr("placeholder","关联出库交接单");
+                $("input[name=packageID]").removeAttr("readonly","");
+                $("input[name=packageID]").attr("placeholder","请输入合包号");
+            }
+        })
+
+
+        //加载'form'模块，使checkbox、select、radio初始化
+        layui.use('form', function(){
+            var form = layui.form;
+            /*form.render();*/
+			//监听select下拉框的值改变事件
+            form.on("select(test)",function (data) {
+               /* alert(data.value);
+               * 取得下拉框的值*/
+
+               //隐藏错误消息
+                $("#errDeliveryPerson").hide();
+
+                var id = data.value;
+                $.ajax({
+					url:"/queryUnitsName",
+					type:"POST",
+					data:{"EmpUnitID":id},
+					success:function (data) {
+						$("input[name=deliveryCompany]").val(data);
+                    }
+				})
+            });
+
+            form.on("submit(stoForm)",function () {
+                var deliveryPerson = $("#deliveryPerson").val();
+                if(deliveryPerson==""){
+                    $("#errDeliveryPerson").show();
+                    return false;
+                }
+                //合包号验证
+                var packageID = $("input[name=packageID]").val();
+                var states2 = $("input[name=packageID]").attr("placeholder");
+                if(states2=="该列不需要填写"){
+                    $("#errPackageID").hide();
+                }else{
+                    if(packageID==""){
+                        $("#errPackageID").show();
+                        return false;
+                    }else{
+                        $("#errPackageID").hide();
+                    }
+
+
+                }
+                //重量验证
+                var weiGht = $("input[name=weiGht]").val();
+                if(weiGht==""){
+                    $("#errWeiGht").show();
+                    return false;
+                }else{
+                    $("#errWeiGht").hide();
+                }
+                //出库交接单写法，由于需要关闭窗体故不能用 return true的写法
+                var outBoundID = $("input[name=outBoundID]").val();
+                var states = $("input[name=outBoundID]").attr("placeholder");
+                if(states=="该列不需要填写"){
+                    $("#errOutBoundID").hide();
+                }else{
+                    if(outBoundID==""){
+                        $("#errOutBoundID").show();
+                        return false;
+                    }else{
+                        $("#errOutBoundID").hide();
+                    }
+                }
+
+                //没有任意一个return false 关闭窗体
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+
+
+
+
+
+            })
+
+            form.on("select(state)",function (data) {
+				if(data.value == 0){
+                    $("input[name=outBoundID]").val("");
+				    $("input[name=outBoundID]").attr("readonly","readonly");
+                    $("input[name=outBoundID]").attr("placeholder","该列不需要填写");
+                    $("input[name=packageID]").attr("readonly","readonly");
+                    $("input[name=packageID]").attr("placeholder","该列不需要填写");
+
+				}else{
+                    //移除属性
+                    $("input[name=outBoundID]").removeAttr("readonly","");
+                    $("input[name=outBoundID]").attr("placeholder","关联出库交接单");
+                    $("input[name=packageID]").removeAttr("readonly","");
+                    $("input[name=packageID]").attr("placeholder","请输入合包号");
+				}
+
+            });
+
+
+        });
+    </script>
+</body> 
+</html>
+    
+

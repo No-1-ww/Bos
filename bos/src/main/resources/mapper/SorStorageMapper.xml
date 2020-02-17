@@ -3,9 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SorStorageMapper">
     <select id="queryAll" resultMap="SorStorageMap">
-        select s.ID as ID,s.AcceptDate as AcceptDate,e.EmpName as AcceptPerson,s.AcceptCompany as AcceptCompany,
-        (select EmpName from sy_emp se,sor_storage ss where se.ID = ss.DeliveryPerson ) as DeliveryPerson ,s.DeliveryCompany as DeliveryCompany
-        from sor_storage s,sy_emp e where s.AcceptPerson=e.ID
+        select s.ID,s.AcceptDate,se1.EmpName AcceptPerson ,s.AcceptCompany,se2.EmpName DeliveryPerson ,s.DeliveryCompany
+        from sor_storage s
+        inner join sy_emp se1 on s.AcceptPerson = se1.ID
+        inner join sy_emp se2 on s.DeliveryPerson = se2.ID
+        order by s.ID
     </select>
     <resultMap id="SorStorageMap" type="Map">
         <id property="id" column="ID"></id>
@@ -15,4 +17,34 @@
         <result property="deliveryPerson" column="DeliveryPerson"></result>
         <result property="deliveryCompany" column="DeliveryCompany"></result>
     </resultMap>
+
+    <select id="queryMaxID" resultType="String">
+        select max(ID) from  sor_storage;
+    </select>
+
+    <insert id="addStorage" parameterType="SorStorage">
+        insert into sor_storage(ID,AcceptDate,AcceptPerson,AcceptCompany,DeliveryPerson,DeliveryCompany)
+        values(#{ID},#{acceptDate},#{acceptPerson},#{acceptCompany},#{deliveryPerson},#{deliveryCompany});
+    </insert>
+
+    <!--根据条件查询-->
+    <select id="queryByIDStorage" parameterType="Integer" resultMap="SorStorageMap">
+        select s.ID,s.AcceptDate,se1.EmpName AcceptPerson ,s.AcceptCompany,se2.EmpName DeliveryPerson ,s.DeliveryCompany
+        from sor_storage s
+        inner join sy_emp se1 on s.AcceptPerson = se1.ID
+        inner join sy_emp se2 on s.DeliveryPerson = se2.ID
+         where s.ID=#{ID}
+    </select>
+
+    <!--修改-->
+    <update id="updateStorage" useGeneratedKeys="true" keyColumn="ID">
+        update sor_storage set AcceptPerson=#{acceptPerson},AcceptCompany=#{acceptCompany},DeliveryPerson=#{deliveryPerson},DeliveryCompany=#{deliveryCompany}
+        where ID=#{ID}
+    </update>
+    
+    <!--删除,同时删除订单详情-->
+    <delete id="deleteSorStorage" parameterType="Integer">
+        delete from sor_storage where ID =#{ID}
+    </delete>
+
 </mapper>
