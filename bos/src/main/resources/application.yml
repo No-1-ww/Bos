@@ -33,10 +33,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://112.124.15.177:3306/bos?serverTimezone=UTC
-#192.168.43.61
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.43.61:3306/bos
+#192.168.43.61 局域网ip地址
 
 server:
   tomcat:
@@ -51,11 +51,3 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-
-#pagehelper分页配置
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql

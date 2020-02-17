@@ -231,6 +231,8 @@
 
         //点击checkbox时得到该列的ID
         layui.use('form',function (data) {
+
+
             var form = layui.form;
             //进行监听渲染
             form.on("checkbox(check)", function (data) {
@@ -239,8 +241,13 @@
                 var che = $(data.elem);
                 //得到check属性
                 var check = data.elem.checked;
-                var id = $(che).parent().next().text();
-                $("#upDateStoID").val(id);
+                if(check==true){
+                    var id = $(che).parent().next().text();
+                    $("#upDateStoID").val(id);
+                }else{
+                    $("#upDateStoID").val("");
+                }
+
             })
         });
 
@@ -279,7 +286,7 @@
                                 for (var i = 0; i < result.length; i++) {
 
                                     $("#stoBody").append('<tr>' +
-                                        '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
+                                        '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
                                         '                    <td >' + result[i].id + '</td>' +
                                         '                    <td >' + result[i].acceptDate + '</td>' +
                                         '                    <td >' + result[i].acceptPerson + '</td>' +
@@ -292,6 +299,7 @@
                                         '                </tr>')
                                 }
                                 form.render();
+
                             }
                         });
 
@@ -327,7 +335,7 @@
                         $("#stoBody").empty();
                         for (var i = 0; i < result.length; i++) {
                             $("#stoBody").append('<tr>' +
-                                '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
+                                '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
                                 '                    <td >' + result[i].id + '</td>' +
                                 '                    <td >' + result[i].acceptDate + '</td>' +
                                 '                    <td >' + result[i].acceptPerson + '</td>' +
