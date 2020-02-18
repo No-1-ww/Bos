@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class Html {
 
-    //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     @GetMapping("/login")
     public String login(){
         return "/login.html";
@@ -91,39 +90,38 @@ public class Html {
         return "/systemManagement/sysRole";
     }
 
-    //业务受理
-    @GetMapping("/acceptance/businessAcceptance")
+    //业务受理查询
+    /*@GetMapping("/acceptance/businessAcceptance")
     public String businessAcceptance(){
         return "/acceptance/businessAcceptance";
-    }
+    }*/
 
-    //业务受理 新增businessAcceptance_add
-    @GetMapping("/businessAcceptance_add")
+    //业务受理新增businessAcceptance_add
+    /*@GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add(){return "acceptance/businessAcceptance_add"; }
-
+   */
     //业务受理修改
-    @GetMapping("/businessAcceptance_update")
+   /* @GetMapping("/businessAcceptance_update")
     public String businessAcceptance_update(){
         return "/acceptance/businessAcceptance_update";
     }
-
-
+*/
     //工作单快速录入
-    @GetMapping("/acceptance/worksheetQuickInput")
+   /* @GetMapping("/acceptance/worksheetQuickInput")
     public String worksheetQuickInput(){
         return "/acceptance/worksheetQuickInput";
     }
-
-    //工作单快速录入businessAcceptance_add
+*/
+    //工作单快速录入里面的新增businessAcceptance_add
    /* @GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}
 */
     //工作单查询
-    @GetMapping("/acceptance/worksheetQuery")
+   /* @GetMapping("/acceptance/worksheetQuery")
     public String worksheetQuery(){
         return "/acceptance/worksheetQuery";
     }
-
+*/
     //工作单查询修改dispatchingPersonnelSet_update
     @GetMapping("/dispatchingPersonnelSet_update")
     public String dispatchingPersonnelSet_update(){
@@ -273,20 +271,10 @@ public class Html {
 
 
     //入库
-    /*@GetMapping("/sortingManagement/storage")
+    @GetMapping("/sortingManagement/storage")
     public String storage(){
         return "/sortingManagement/storage";
-    }*/
-    /**
-     * 查看入库明细
-     * @return
-     */
-    /*@GetMapping("/storage_list")
-    public String queryStorAgelist(String stoID){
-        return "/sortingManagement/storage_list";
-    }*/
-
-
+    }
     //出库
     @GetMapping("/sortingManagement/theLibrary")
     public String theLibrary(){

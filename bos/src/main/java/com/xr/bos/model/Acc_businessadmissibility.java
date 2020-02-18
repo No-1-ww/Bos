@@ -34,4 +34,239 @@ public class Acc_businessadmissibility implements Serializable {
     private Double packingFee; //包装费
     private Integer actualPacking; //实际包装
 
+    public Acc_businessadmissibility() {
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getBusinessNoticeNo() {
+        return businessNoticeNo;
+    }
+
+    public void setBusinessNoticeNo(String businessNoticeNo) {
+        this.businessNoticeNo = businessNoticeNo;
+    }
+
+    public Date getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(Date reservationTime) {
+        this.reservationTime = reservationTime;
+    }
+
+    public String getCustomName() {
+        return customName;
+    }
+
+    public void setCustomName(String customName) {
+        this.customName = customName;
+    }
+
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
+
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
+
+    public String getCustomCode() {
+        return customCode;
+    }
+
+    public void setCustomCode(String customCode) {
+        this.customCode = customCode;
+    }
+
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+
+    public String getTelPhone() {
+        return telPhone;
+    }
+
+    public void setTelPhone(String telPhone) {
+        this.telPhone = telPhone;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Double volume) {
+        this.volume = volume;
+    }
+
+    public String getImportantHints() {
+        return importantHints;
+    }
+
+    public void setImportantHints(String importantHints) {
+        this.importantHints = importantHints;
+    }
+
+    public String getArriveCity() {
+        return arriveCity;
+    }
+
+    public void setArriveCity(String arriveCity) {
+        this.arriveCity = arriveCity;
+    }
+
+    public Integer getPickerInfo() {
+        return pickerInfo;
+    }
+
+    public void setPickerInfo(Integer pickerInfo) {
+        this.pickerInfo = pickerInfo;
+    }
+
+    public String getSendAddress() {
+        return sendAddress;
+    }
+
+    public void setSendAddress(String sendAddress) {
+        this.sendAddress = sendAddress;
+    }
+
+    public Integer getProcessingUnit() {
+        return processingUnit;
+    }
+
+    public void setProcessingUnit(Integer processingUnit) {
+        this.processingUnit = processingUnit;
+    }
+
+    public Integer getNotificationSource() {
+        return notificationSource;
+    }
+
+    public void setNotificationSource(Integer notificationSource) {
+        this.notificationSource = notificationSource;
+    }
+
+    public String getCustomNoModifyFlag() {
+        return customNoModifyFlag;
+    }
+
+    public void setCustomNoModifyFlag(String customNoModifyFlag) {
+        this.customNoModifyFlag = customNoModifyFlag;
+    }
+
+    public String getSingleType() {
+        return singleType;
+    }
+
+    public void setSingleType(String singleType) {
+        this.singleType = singleType;
+    }
+
+    public Integer getPackagesNum() {
+        return packagesNum;
+    }
+
+    public void setPackagesNum(Integer packagesNum) {
+        this.packagesNum = packagesNum;
+    }
+
+    public Double getActualWeight() {
+        return actualWeight;
+    }
+
+    public void setActualWeight(Double actualWeight) {
+        this.actualWeight = actualWeight;
+    }
+
+    public Double getBillingWeight() {
+        return billingWeight;
+    }
+
+    public void setBillingWeight(Double billingWeight) {
+        this.billingWeight = billingWeight;
+    }
+
+    public Double getPackingFee() {
+        return packingFee;
+    }
+
+    public void setPackingFee(Double packingFee) {
+        this.packingFee = packingFee;
+    }
+
+    public Integer getActualPacking() {
+        return actualPacking;
+    }
+
+    public void setActualPacking(Integer actualPacking) {
+        this.actualPacking = actualPacking;
+    }
+
+    @Override
+    public String toString() {
+        return "Acc_businessadmissibility{" +
+                "businessNoticeNo='" + businessNoticeNo + '\'' +
+                ", reservationTime=" + reservationTime +
+                ", customName='" + customName + '\'' +
+                ", pickupAddress='" + pickupAddress + '\'' +
+                ", customCode='" + customCode + '\'' +
+                ", linkman='" + linkman + '\'' +
+                ", telPhone='" + telPhone + '\'' +
+                ", weight='" + weight + '\'' +
+                ", volume=" + volume +
+                ", importantHints='" + importantHints + '\'' +
+                ", arriveCity='" + arriveCity + '\'' +
+                ", pickerInfo=" + pickerInfo +
+                ", sendAddress='" + sendAddress + '\'' +
+                ", processingUnit=" + processingUnit +
+                ", notificationSource=" + notificationSource +
+                ", customNoModifyFlag='" + customNoModifyFlag + '\'' +
+                ", singleType='" + singleType + '\'' +
+                ", packagesNum=" + packagesNum +
+                ", actualWeight=" + actualWeight +
+                ", billingWeight=" + billingWeight +
+                ", packingFee=" + packingFee +
+                ", actualPacking=" + actualPacking +
+                '}';
+    }
+
+    public Acc_businessadmissibility(String businessNoticeNo, Date reservationTime, String customName, String pickupAddress, String customCode, String linkman, String telPhone, String weight, Double volume, String importantHints, String arriveCity, Integer pickerInfo, String sendAddress, Integer processingUnit, Integer notificationSource, String customNoModifyFlag, String singleType, Integer packagesNum, Double actualWeight, Double billingWeight, Double packingFee, Integer actualPacking) {
+        this.businessNoticeNo = businessNoticeNo;
+        this.reservationTime = reservationTime;
+        this.customName = customName;
+        this.pickupAddress = pickupAddress;
+        this.customCode = customCode;
+        this.linkman = linkman;
+        this.telPhone = telPhone;
+        this.weight = weight;
+        this.volume = volume;
+        this.importantHints = importantHints;
+        this.arriveCity = arriveCity;
+        this.pickerInfo = pickerInfo;
+        this.sendAddress = sendAddress;
+        this.processingUnit = processingUnit;
+        this.notificationSource = notificationSource;
+        this.customNoModifyFlag = customNoModifyFlag;
+        this.singleType = singleType;
+        this.packagesNum = packagesNum;
+        this.actualWeight = actualWeight;
+        this.billingWeight = billingWeight;
+        this.packingFee = packingFee;
+        this.actualPacking = actualPacking;
+    }
 }
