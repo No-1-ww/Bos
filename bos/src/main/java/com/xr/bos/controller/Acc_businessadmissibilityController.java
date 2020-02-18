@@ -8,6 +8,7 @@ import com.xr.bos.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,13 +33,17 @@ public class Acc_businessadmissibilityController {
     /*
         业务受理的查询
      */
-    @RequestMapping(value = "/acceptance/businessAcceptance",method = RequestMethod.GET,produces = "text/String;charset=UTF-8")
+    @RequestMapping(value = "/acceptance/businessAcceptanceAjax",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
     @ResponseBody
     public String queryBus(){
         System.out.println("进入查询后台。。。");
         List<Map<String,Object>> list = acc_businessadmissibilityService.queryAcc_businessadmissibility();
         String s = JSONArray.toJSONString(list);
         return s;
+    }
+    @GetMapping("/acceptance/businessAcceptance")
+    public String businessAcceptance(){
+        return "/acceptance/businessAcceptance";
     }
 
     /*

@@ -56,13 +56,13 @@
         from acc_businessadmissibility
         where
         <if test=" businessNoticeNo !='' and customCode !='' ">
-            businessNoticeNo like contat('%',#{businessNoticeNo},'%') and customCode like contat('%',#{customCode},'%')
+            businessNoticeNo =  #{businessNoticeNo} and customCode = #{customCode}
         </if>
         <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
-            and businessNoticeNo like contat('%',#{businessNoticeNo},'%')
+             businessNoticeNo =  #{businessNoticeNo}
         </if>
         <if test=" customCode !='' and customCode !=null">
-            and customCode like contat('%',#{customCode},'%')
+             customCode = #{customCode}
         </if>
     </select>
 

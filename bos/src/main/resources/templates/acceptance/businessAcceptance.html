@@ -99,7 +99,7 @@
 					  	<th>预约取件时间</th>
 				    </tr>
 			  	</thead>
-			  	<tbody id="tbody">
+			  	<tbody id="tBody">
 
 			  	</tbody>
 			</table>
@@ -114,49 +114,79 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
 	//查询
-	$.ajax({
-		url:"/acceptance/businessAcceptance",
-		success:function(data){
-		    var result=eval(data);
-            $("#tbody").empty();
-            for (var i=0;i<result.length;i++){
-                $("#tbody").append('<tr>' +
-                    '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
-                    '<td>'+result[i].businessNoticeNo+'</td>' +
-                    '<td>'+result[i].customCode+'</td>' +
-                    '<td>'+result[i].customName+'</td>' +
-                    '<td>'+result[i].linkman+'</td>' +
-                    '<td>'+result.telPhone+'</td>' +
-                    '<td>'+result.pickupAddress+'</td>' +
-                    '<td>'+result.sendAddress+'</td>' +
-                    '<td>'+result.arriveCity+'</td>' +
-                    '<td>'+result.importantHints+'</td>' +
-                    '<td>'+result.reservationTime+'</td>' +
-                    '</tr>')
-            }
+	$(function () {
+        $.ajax({
+            url:"/acceptance/businessAcceptanceAjax",
+			type:"POST",
+            success:function(data){
+                layui.use('form', function() {
 
-        }
-	})
+                    var form = layui.form;
+
+                    var result = eval(data);
+                    $("#tBody").empty();
+                    for (var i = 0; i < result.length; i++) {
+                        $("#tBody").append('<tr>' +
+                            '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
+                            '<td>' + result[i].businessNoticeNo + '</td>' +
+                            '<td>' + result[i].customCode + '</td>' +
+                            '<td>' + result[i].customName + '</td>' +
+                            '<td>' + result[i].linkman + '</td>' +
+                            '<td>' + result[i].telPhone + '</td>' +
+                            '<td>' + result[i].pickupAddress + '</td>' +
+                            '<td>' + result[i].sendAddress + '</td>' +
+                            '<td>' + result[i].arriveCity + '</td>' +
+                            '<td>' + result[i].importantHints + '</td>' +
+                            '<td>' + result[i].reservationTime + '</td>' +
+                            '</tr>')
+                    }
+                    form.render();
+                })
+
+            }
+        })
+    })
+
 
 
 
     //业务受理根据两个条件查询
     $("#cx").click(function(){
-        if($("input[id=businessNoticeNo]").val()==""&&$("input[id=customCode]").val()==""){
-            alert("必须选择一项查询")
+        if($("#businessNoticeNo").val()==""&&$("#customCode").val()==""){
+            alert("必须选择一项查询");
             return false;
         }else{
-            var businessNoticeNo=$("input[id=businessNoticeNo]").val();
-            var customCode=$("input[id=customCode]").val();
-
+            var businessNoticeNo=$("#businessNoticeNo").val();
+            var customCode=$("#customCode").val();
             $.ajax({
                 url:"/busin_querywhere",
+				type:"POST",
+				data:{"businessNoticeNo":businessNoticeNo,"customCode":customCode},
                 success:function(data){
-                    var result=eval(data);
-
+                    layui.use('form', function() {
+						var form = layui.form;
+                        var result = eval(data);
+                        $("#tBody").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            $("#tBody").append('<tr>' +
+                                '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
+                                '<td>' + result[i].businessNoticeNo + '</td>' +
+                                '<td>' + result[i].customCode + '</td>' +
+                                '<td>' + result[i].customName + '</td>' +
+                                '<td>' + result[i].linkman + '</td>' +
+                                '<td>' + result[i].telPhone + '</td>' +
+                                '<td>' + result[i].pickupAddress + '</td>' +
+                                '<td>' + result[i].sendAddress + '</td>' +
+                                '<td>' + result[i].arriveCity + '</td>' +
+                                '<td>' + result[i].importantHints + '</td>' +
+                                '<td>' + result[i].reservationTime + '</td>' +
+                                '</tr>')
+                        }
+                        form.render();
+                    })
                 }
             })
-        }
+		}
     });
 
     //追单

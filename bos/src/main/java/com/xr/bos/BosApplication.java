@@ -1,6 +1,7 @@
 package com.xr.bos;
 
 /*import com.github.pagehelper.PageHelper;*/
+import com.github.pagehelper.PageHelper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +22,7 @@ public class BosApplication {
     /*
      * 注册MyBatis分页插件PageHelper
      */
-    /*@Configuration
+    @Configuration
     public class MybatisConf {
         @Bean
         public PageHelper pageHelper() {
@@ -34,5 +35,5 @@ public class BosApplication {
             pageHelper.setProperties(p);
             return pageHelper;
         }
-    }*/
+    }
 }
