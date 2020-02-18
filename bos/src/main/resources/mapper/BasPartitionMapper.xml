@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasPartitionMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasPartition">
+    <!--@mbg.generated generated on Sat Jan 18 12:23:47 CST 2020.-->
+    <!--@Table bas_partition-->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="Province" jdbcType="VARCHAR" property="province" />
+    <result column="City" jdbcType="VARCHAR" property="city" />
+    <result column="County" jdbcType="VARCHAR" property="county" />
+    <result column="ZoneCode" jdbcType="VARCHAR" property="zonecode" />
+    <result column="Keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="StartInt" jdbcType="INTEGER" property="startint" />
+    <result column="TerminateInt" jdbcType="INTEGER" property="terminateint" />
+    <result column="SDInt" jdbcType="BIT" property="sdint" />
+    <result column="OperatorID" jdbcType="INTEGER" property="operatorid" />
+    <result column="OperationUnitID" jdbcType="INTEGER" property="operationunitid" />
+    <result column="AccworkorderID" jdbcType="INTEGER" property="accworkorderid" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+    <result column="Stats" jdbcType="BIT" property="stats" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jan 18 12:23:47 CST 2020.-->
+    ID, Province, City, County, ZoneCode, Keyword, StartInt, TerminateInt, SDInt, OperatorID, 
+    OperationUnitID, AccworkorderID, OperationTime, Stats
+  </sql>
+
+  <!--查询管理分区 所有-->
+    <select id="findpartitionAll" resultType="map">
+SELECT p.ID,w.SortingCode,p.ZoneCode,p.Province,
+			p.City,p.County,p.Keyword,p.StartInt,
+				p.TerminateInt,p.SDInt,e.EmpName,u.`Name` as Uname,p.OperationTime
+from
+		bas_partition p,sy_emp e,sy_units u,acc_workorder  w
+where
+	p.OperationUnitID=u.ID and p.OperatorID=e.ID and p.AccworkorderID=w.ID
+
+
+    </select>
+</mapper>

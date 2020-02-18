@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasSubstituteMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasSubstitute">
+    <!--@mbg.generated generated on Fri Jan 17 18:16:37 CST 2020.-->
+    <!--@Table bas_substitute-->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="EmpNo" jdbcType="VARCHAR" property="empno" />
+    <result column="EmpName" jdbcType="VARCHAR" property="empname" />
+    <result column="MobileNo" jdbcType="VARCHAR" property="mobileno" />
+    <result column="Type" jdbcType="INTEGER" property="type" />
+    <result column="PDA" jdbcType="BIT" property="pda" />
+    <result column="StandardKg" jdbcType="DECIMAL" property="standardkg" />
+    <result column="StandardLength" jdbcType="DECIMAL" property="standardlength" />
+    <result column="Models" jdbcType="VARCHAR" property="models" />
+    <result column="PlateInt" jdbcType="VARCHAR" property="plateint" />
+    <result column="InvalidateMark" jdbcType="BIT" property="invalidatemark" />
+    <result column="SubordinateUnit" jdbcType="INTEGER" property="subordinateunit" />
+    <result column="Stats" jdbcType="BIT" property="stats" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+    <result column="OperatorID" jdbcType="INTEGER" property="operatorid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Fri Jan 17 18:16:37 CST 2020.-->
+    ID, EmpNo, EmpName, MobileNo, `Type`, PDA, StandardKg, StandardLength, Models, PlateInt, 
+    InvalidateMark, SubordinateUnit, Stats, OperationTime, OperatorID
+  </sql>
+    <select id="findBasSubstituteAll" resultType="map">
+    select s.ID,s.EmpNo,s.EmpName,s.MobileNo,r.RoleName,s.InvalidateMark,
+    s.PDA,u.Name,s.Models,s.PlateInt,e.EmpName as caozuoyuan,
+    s.OperationTime
+     from
+        bas_substitute s ,sy_units u,sy_emp e,sy_roles r					#查询出'角色表' RoleID为?的记录
+ where s.SubordinateUnit=u.ID and s.OperatorID=e.ID
+      and (SELECT RoleID from sy_emp WHERE EmpNo = s.EmpNo) = r.ID
+
+
+    </select>
+</mapper>
