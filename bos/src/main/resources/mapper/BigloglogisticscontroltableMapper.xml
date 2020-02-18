@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   <mapper namespace="com.xr.bos.dao.Bigloglogisticscontroltabledao">
+    <select id="select" resultType="Bigloglogisticscontroltable">
+        SELECT bl.ID,bl.WorkSheetNo,bl.CType,bl.Corporation,bl.WaybillID,s.EmpName,bl.InputDate,bl.Remarks from biglog_logisticscontroltable bl, sy_emp s where bl.InputPerson = s.ID
+    </select>
+    <select id="selectwhere" resultType="Bigloglogisticscontroltable">
+        select * from biglog_logisticscontroltable where 1=1
+
+            <if test="WorkSheetNo!=null">
+              and  WorkSheetNo = #{WorkSheetNo}
+            </if>
+            <if test="Corporation!=null">
+               and Corporation=#{Corporation}
+            </if>
+    </select>
+    <select id="selectmax" resultType="map">
+        select max(WorkSheetNo),max(WaybillID) from biglog_logisticscontroltable
+    </select>
+    <insert id="insertBL" parameterType="Bigloglogisticscontroltable">
+      insert into biglog_logisticscontroltable(WorkSheetNo,CType,Corporation,WaybillID,Remarks,InputPerson,InputDate,InputCompany) values
+      (#{workSheetNo},#{cType},#{corporation},#{waybillID},#{remarks},#{inputPerson},#{inputDate},#{inputCompany})
+    </insert>
+</mapper>
