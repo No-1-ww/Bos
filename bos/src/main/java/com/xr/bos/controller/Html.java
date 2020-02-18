@@ -271,10 +271,10 @@ public class Html {
 
 
     //入库
-    @GetMapping("/sortingManagement/storage")
+  /*  @GetMapping("/sortingManagement/storage")
     public String storage(){
         return "/sortingManagement/storage";
-    }
+    }*/
     //出库
     @GetMapping("/sortingManagement/theLibrary")
     public String theLibrary(){
