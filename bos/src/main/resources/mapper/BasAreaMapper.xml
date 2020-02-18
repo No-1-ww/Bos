@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasAreaMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasArea">
+    <!--@mbg.generated generated on Sat Jan 18 11:56:07 CST 2020.-->
+    <!--@Table bas_area-->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="Province" jdbcType="VARCHAR" property="province" />
+    <result column="City" jdbcType="VARCHAR" property="city" />
+    <result column="County" jdbcType="VARCHAR" property="county" />
+    <result column="PostalCode" jdbcType="INTEGER" property="postalcode" />
+    <result column="SimpleCode" jdbcType="VARCHAR" property="simplecode" />
+    <result column="CityCode" jdbcType="INTEGER" property="citycode" />
+    <result column="EntryUnitID" jdbcType="INTEGER" property="entryunitid" />
+    <result column="ComplementUnitID" jdbcType="INTEGER" property="complementunitid" />
+    <result column="Nature" jdbcType="INTEGER" property="nature" />
+    <result column="TheArea" jdbcType="INTEGER" property="thearea" />
+    <result column="Stats" jdbcType="BIT" property="stats" />
+    <result column="OperatorID" jdbcType="INTEGER" property="operatorid" />
+    <result column="OperationUnitID" jdbcType="INTEGER" property="operationunitid" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jan 18 11:56:07 CST 2020.-->
+    ID, Province, City, County, PostalCode, SimpleCode, CityCode, EntryUnitID, ComplementUnitID, 
+    Nature, TheArea, Stats, OperatorID, OperationUnitID, OperationTime
+  </sql>
+
+  <!--查询所有区域设置-->
+    <select id="findBasAreaAll" resultType="map">
+      SELECT a.ID,a.Province,a.City,a.County,a.PostalCode,a.SimpleCode,
+		a.CityCode,e.EmpName,u.`Name` as Uname,a.OperationTime
+			from bas_area a,sy_emp e,sy_units u
+		where a.OperatorID=e.ID and a.OperationUnitID=u.ID
+
+
+
+    </select>
+</mapper>

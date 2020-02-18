@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasStandartimeMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasStandartime">
+    <!--@mbg.generated generated on Sat Jan 18 13:22:53 CST 2020.-->
+    <!--@Table bas_standartime-->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="TimeName" jdbcType="VARCHAR" property="timename" />
+    <result column="SubordinateUnit" jdbcType="INTEGER" property="subordinateunit" />
+    <result column="WorkingTime" jdbcType="TIME" property="workingtime" />
+    <result column="ClosingTime" jdbcType="TIME" property="closingtime" />
+    <result column="SaturdayWorkingTime" jdbcType="TIME" property="saturdayworkingtime" />
+    <result column="SaturdayClosingTime" jdbcType="TIME" property="saturdayclosingtime" />
+    <result column="SundayWorkingTime" jdbcType="TIME" property="sundayworkingtime" />
+    <result column="SundayClosingTime" jdbcType="TIME" property="sundayclosingtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jan 18 13:22:53 CST 2020.-->
+    ID, TimeName, SubordinateUnit, WorkingTime, ClosingTime, SaturdayWorkingTime, SaturdayClosingTime, 
+    SundayWorkingTime, SundayClosingTime
+  </sql>
+    <select id="findstandartimeAll" resultType="map">
+      select
+    s.ID,s.TimeName,u.`Name` as Uname,s.WorkingTime,s.ClosingTime,s.SaturdayWorkingTime,s.SaturdayClosingTime,s.SundayWorkingTime,s.SundayClosingTime
+from
+  bas_standartime s ,sy_units u
+where
+    s.SubordinateUnit=u.ID
+
+    </select>
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasDeliverystandardMapper">
+  <!--<resultMap id="BaseResultMap" type="com.xr.bos.model.BasDeliverystandard">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    &lt;!&ndash;@Table bas_deliverystandard&ndash;&gt;
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="MinWeight" jdbcType="DECIMAL" property="minweight" />
+    <result column="MaxWeight" jdbcType="DECIMAL" property="maxweight" />
+    <result column="OperatorID" jdbcType="INTEGER" property="operatorid" />
+    <result column="OperationUnitID" jdbcType="INTEGER" property="operationunitid" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    ID, `Name`, MinWeight, MaxWeight, OperatorID, OperationUnitID, OperationTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    select 
+    <include refid="Base_Column_List" />
+    from bas_deliverystandard
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    delete from bas_deliverystandard
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.xr.bos.model.BasDeliverystandard" useGeneratedKeys="true">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    insert into bas_deliverystandard (`Name`, MinWeight, MaxWeight, 
+      OperatorID, OperationUnitID, OperationTime
+      )
+    values (#{name,jdbcType=VARCHAR}, #{minweight,jdbcType=DECIMAL}, #{maxweight,jdbcType=DECIMAL}, 
+      #{operatorid,jdbcType=INTEGER}, #{operationunitid,jdbcType=INTEGER}, #{operationtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.xr.bos.model.BasDeliverystandard" useGeneratedKeys="true">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    insert into bas_deliverystandard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `Name`,
+      </if>
+      <if test="minweight != null">
+        MinWeight,
+      </if>
+      <if test="maxweight != null">
+        MaxWeight,
+      </if>
+      <if test="operatorid != null">
+        OperatorID,
+      </if>
+      <if test="operationunitid != null">
+        OperationUnitID,
+      </if>
+      <if test="operationtime != null">
+        OperationTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="minweight != null">
+        #{minweight,jdbcType=DECIMAL},
+      </if>
+      <if test="maxweight != null">
+        #{maxweight,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorid != null">
+        #{operatorid,jdbcType=INTEGER},
+      </if>
+      <if test="operationunitid != null">
+        #{operationunitid,jdbcType=INTEGER},
+      </if>
+      <if test="operationtime != null">
+        #{operationtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xr.bos.model.BasDeliverystandard">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    update bas_deliverystandard
+    <set>
+      <if test="name != null">
+        `Name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="minweight != null">
+        MinWeight = #{minweight,jdbcType=DECIMAL},
+      </if>
+      <if test="maxweight != null">
+        MaxWeight = #{maxweight,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorid != null">
+        OperatorID = #{operatorid,jdbcType=INTEGER},
+      </if>
+      <if test="operationunitid != null">
+        OperationUnitID = #{operationunitid,jdbcType=INTEGER},
+      </if>
+      <if test="operationtime != null">
+        OperationTime = #{operationtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xr.bos.model.BasDeliverystandard">
+    &lt;!&ndash;@mbg.generated&ndash;&gt;
+    update bas_deliverystandard
+    set `Name` = #{name,jdbcType=VARCHAR},
+      MinWeight = #{minweight,jdbcType=DECIMAL},
+      MaxWeight = #{maxweight,jdbcType=DECIMAL},
+      OperatorID = #{operatorid,jdbcType=INTEGER},
+      OperationUnitID = #{operationunitid,jdbcType=INTEGER},
+      OperationTime = #{operationtime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>-->
+    <select id="findBasDeliverystandardAll" resultType="map">
+      select  d.ID,d.`Name` as Dname,d.MinWeight,d.MaxWeight,e.EmpName,u.`Name` as Uname,d.OperationTime from
+	bas_deliverystandard d,sy_emp e, sy_units u
+		where e.ID = d.OperatorID and u.ID=d.OperationUnitID
+
+    </select>
+</mapper>

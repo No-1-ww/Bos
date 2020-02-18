@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasZoneinfoMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasZoneinfo">
+    <!--@mbg.generated generated on Sat Jan 18 12:56:53 CST 2020.-->
+    <!--@Table bas_zoneinfo-->
+    <id column="ZoneName" jdbcType="VARCHAR" property="zonename" />
+    <result column="ZoneCode" jdbcType="VARCHAR" property="zonecode" />
+    <result column="ZonePeople" jdbcType="INTEGER" property="zonepeople" />
+    <result column="TelPhone" jdbcType="VARCHAR" property="telphone" />
+    <result column="SubordinateUnit" jdbcType="INTEGER" property="subordinateunit" />
+    <result column="Stats" jdbcType="BIT" property="stats" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jan 18 12:56:53 CST 2020.-->
+    ZoneName, ZoneCode, ZonePeople, TelPhone, SubordinateUnit, Stats
+  </sql>
+
+
+  <!--查询定区管理-->
+    <select id="findZoneinfoAll" resultType="map">
+      SELECT z.ZoneCode,z.ZoneName,e.EmpName,z.TelPhone,u.`Name`
+FROM bas_zoneinfo z,sy_emp e,sy_units u
+where z.ZonePeople=e.ID and z.SubordinateUnit=u.ID and z.Stats=0 and 1=1
+    </select>
+</mapper>
