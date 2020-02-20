@@ -13,10 +13,12 @@
     </select>
 
     <select id="findMenusAll" resultType="SyMenus">
+        <!--select  id,
+        (SELECT text from sy_menus WHERE s.parentID = ID) as '上级栏目',
+        type,text,url,tip from sy_menus s-->
 
-
-        select  s.ID as ID,s.parentID,
-        s.type,s.text,s.url,s.tip from sy_menus s
+         select  s.ID as ID,s.parentID,
+         s.type,s.text,s.url,s.tip from sy_menus s
 
     </select>
 

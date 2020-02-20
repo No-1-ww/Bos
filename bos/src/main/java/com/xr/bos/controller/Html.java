@@ -18,77 +18,124 @@ public class Html {
     }
 
     //收派标准
-    @GetMapping("/basicData/deliveryStandard")
+    /*@GetMapping("/basicData/deliveryStandard")
     public String deliveryStandard(){
         return "/basicData/deliveryStandard";
     }
+*/
+    //收派标准的添加
+    @GetMapping("/deliveryStandard_add")
+    public String deliveryStandard_add(){
+        return "/basicData/deliveryStandard_add";
+    }
+    //收派标准的编辑
+    @GetMapping("/deliveryStandard_update")
+    public String deliveryStandard_update(){
+        return "/basicData/deliveryStandard_update";
+    }
 
-    //基础档案
+   /* //基础档案
     @GetMapping("/basicData/basicArchives")
     public String basicArchives(){
         return "/basicData/basicArchives";
     }
-
+*/
     //班车设置
-    @GetMapping("/basicData/shuttleBusSet")
+   /* @GetMapping("/basicData/shuttleBusSet")
     public String shuttleBusSet(){
         return "/basicData/shuttleBusSet";
     }
-
+*/
     //取派员设置
-    @GetMapping("/basicData/dispatchingPersonnelSet")
+   /* @GetMapping("/basicData/dispatchingPersonnelSet")
     public String dispatchingPersonnelSet(){
         return "/basicData/shuttleBusSet";
     }
-
+*/
     //区域设置
-    @GetMapping("/basicData/areaSet")
+   /* @GetMapping("/basicData/areaSet")
     public String areaSet(){
         return "/basicData/areaSet";
     }
-
+*/
     //管理分区
-    @GetMapping("/basicData/partition")
+  /*  @GetMapping("/basicData/partition")
     public String partition(){
         return "/basicData/partition";
     }
-
+*/
     //管理定区
     @GetMapping("/basicData/zone")
     public String zone(){
         return "/basicData/zone";
     }
 
+   //增加定区管理
+   @GetMapping("/zone_add")
+   public String zone_add(){
+       return "/basicData/zone_add";
+   }
+
     //收派时间管理
-    @GetMapping("/basicData/deliveryTime")
+    /*@GetMapping("/basicData/deliveryTime")
     public String deliveryTime(){
         return "/basicData/deliveryTime";
     }
-
+*/
     //单位管理
-    @GetMapping("/systemManagement/sysUnit")
+   /* @GetMapping("/systemManagement/sysUnit")
     public String sysUnit(){
         return "/systemManagement/sysUnit";
     }
-
+*/
     //员工管理
-    @GetMapping("/systemManagement/sysEmp")
+    /*@GetMapping("/systemManagement/sysEmp")
     public String sysEmp(){
         return "/systemManagement/sysEmp";
     }
+*/
+    //单位管理增加/修改
+    @GetMapping("sysUnit_add")
+    public String sysUnit_add(){
+        return
+                "/systemManagement/sysUnit_add";
+    }
 
-
-    //栏目管理
+       //栏目管理
     @GetMapping("/systemManagement/sysMenu")
     public String sysMenu(){
         return "/systemManagement/sysMenu";
     }
+//  添加栏目
+       @GetMapping("/sysMenu_add")
+       public String sysMenu_add(){
+           return
+                   "/systemManagement/sysMenu_add";
+       }
 
+    //  修改栏目
+    @GetMapping("/sysMenu_edit")
+    public String sysMenu_edit(){
+        return
+                "/systemManagement/sysMenu_edit";
+    }
     //角色管理
     @GetMapping("/systemManagement/sysRole")
     public String sysRole(){
         return "/systemManagement/sysRole";
     }
+    //分配角色
+    @GetMapping("/sysRole_distribution")
+    public String sysRole_distribution(){
+        return "/systemManagement/sysRole_distribution";
+    }
+
+    //添加角色/修改角色
+    @GetMapping("/sysRole_add")
+    public String sysRole_add(){
+        return "/systemManagement/sysRole_add";
+    }
+
 
     //业务受理查询
     /*@GetMapping("/acceptance/businessAcceptance")
