@@ -2,6 +2,8 @@ package com.xr.bos.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hazelcast.internal.json.Json;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyMenus;
@@ -9,13 +11,12 @@ import com.xr.bos.service.SyMenusService;
 import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,16 +112,32 @@ public class SyMenusController {
     }
 
     //查询所有的菜单
-    @RequestMapping(value = "/systemManagement/sysMenu")
-    public ModelAndView findMenusAll(){
+    @RequestMapping(value = "/findMenusAll")
+    public void findMenusAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入findMenusAll方法。。。。");
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         List<SyMenus> menusList = syMenusService.findMenusAll();
-        ModelAndView mv=new ModelAndView();
-        mv.addObject("menus",menusList);
-        mv.setViewName("/systemManagement/sysMenu");
+        PageInfo pageInfo = new PageInfo(menusList);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+pageInfo.getTotal()+",\"data\":[");
+        for (SyMenus s : menusList) {
+            sb.append("{\"ID\":" + "\"" + s.getID() + "\",\"parentID\":" + "\"" + s.getParentID() + "\",\"type\":" + "\"" +s.getType() + "\",\"text\":" + "\"" +s.getText()+"\",\"url\":"+"\""+s.getUrl()+"\",\"tip\":"+"\""+s.getTip()+"\"},");
 
-
-        return mv;
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }

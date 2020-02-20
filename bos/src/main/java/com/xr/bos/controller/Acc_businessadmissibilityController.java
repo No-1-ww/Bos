@@ -94,19 +94,19 @@ public class Acc_businessadmissibilityController {
         业务受理的新增
      */
    @RequestMapping(value = "/busin_add",method = RequestMethod.POST)
-    public ModelAndView inseeretbus(String businessNoticeNo,Acc_businessadmissibility acc_businessadmissibility){
+   @ResponseBody
+    public String inseeretbus(String businessNoticeNo,Acc_businessadmissibility acc_businessadmissibility){
        System.out.println("新增的businessNoticeNo为"+businessNoticeNo);
        System.out.println("进入！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
        System.out.println("对象"+acc_businessadmissibility);
        ModelAndView mv=new ModelAndView();
        int i = acc_businessadmissibilityService.addBusin(acc_businessadmissibility);
-       if(i>0){
-           mv.setViewName("/acceptance/businessAcceptance");
-           return mv;
-       }else{
-           mv.setViewName("/acceptance/businessAcceptance_add");
-           return mv;
-       }
+        if(i!=0){
+            return "ok";
+        }else{
+            return "no";
+        }
+
     }
 
     /*

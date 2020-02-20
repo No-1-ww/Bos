@@ -61,55 +61,16 @@
 				</div>
 			</div>
 
-			<!-- 数据表格 -->
-			<!--<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="60">
-				    <col >
-				    <col >
-				    <col >
-				    <col >
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>编号</th>
-				      	<th>角色名</th>
-				      	<th>角色描述</th>
-					  	<th>状态</th>
-				    </tr>
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>1001</td>
-				      	<td>系统管理员</td>
-						<td>管理系统用户、角色与权限，保证系统正常运行</td>
-				      	<td>可用</td>
-				    </tr>
-					<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>1002</td>
-				      	<td>系统管理员</td>
-						<td>基础数据、受理、调度</td>
-				      	<td>可用</td>
-				    </tr>
-			  	</tbody>
-			</table>-->
 
-			<table class="layui-table">
-				<!--<colgroup>
+			<!--<table class="layui-table">
+				&lt;!&ndash;<colgroup>
 					<col width="50">
 					<col width="60">
 					<col >
 					<col >
 					<col >
 					<col >
-				</colgroup>-->
+				</colgroup>&ndash;&gt;
 				<thead>
 				<tr>
 					<th><input type="checkbox" name="check" lay-skin="primary"></th>
@@ -128,9 +89,13 @@
 						<td th:text="${roles.disabled}=='1'?'可用':'不可用'"></td>
 					</tr>
 				</tbody>
-			</table>
-		</div>
+			</table>-->
 		</form>
+				<div>
+					<!-- 数据表格 -->
+					<table class="layui-table" id="sysRoleinfo" lay-filter="tools"></table>
+				</div>
+
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -145,6 +110,33 @@ layui.use('form', function(){
 //加载'table'组件
 layui.use('table', function(){
   var table = layui.table;
+  table.render({
+		id:'alltable',
+	  	height:470,
+	    elem:'#sysRoleinfo',
+	  	url: '/findsysRoleAll',
+	  	page:true,
+	    limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+	    limit: 10,
+	  cols: [
+		  [ //表头
+			  {type: 'checkbox', fixed: 'left'}
+			  ,{field: 'id', title: '序号',width:200}
+			  ,{field: 'roleName', title: '角色名称',width:300}
+			  ,{field: 'roleDesc', title: '角色描述',width:550}
+			  ,{field: 'disabled', title: '状态',width:170}
+		  ]
+	  ],
+	  done:function (res,curr,count) {
+		  $("[data-field='disabled']").children().each(function () {
+			  if ($(this).text() == '1') {
+				  $(this).text("可用")
+			  }else{
+			  	$(this).text("不可用")
+			  }
+		  });
+	  }
+  })
 });
 
 //加载'laydate'时间组件
