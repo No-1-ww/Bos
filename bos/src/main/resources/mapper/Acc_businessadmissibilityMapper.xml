@@ -56,17 +56,21 @@
         from acc_businessadmissibility
         where
         <if test=" businessNoticeNo !='' and customCode !='' ">
-            businessNoticeNo =  #{businessNoticeNo} and customCode = #{customCode}
+            businessNoticeNo like "%"#{businessNoticeNo}"%" and customCode like "%"#{customCode}"%"
         </if>
         <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
-             businessNoticeNo =  #{businessNoticeNo}
+             businessNoticeNo like  "%"#{businessNoticeNo}"%"
         </if>
         <if test=" customCode !='' and customCode !=null">
-             customCode = #{customCode}
+             customCode like "%"#{customCode}"%"
         </if>
     </select>
 
     <update id="update_afterSingleNum" parameterType="String">
         update acc_workorder set afterSingleNum=afterSingleNum+1 where businessNoticeNo=#{businessNoticeNo}
     </update>
+
+    <select id="totalAcc_admin" resultType="Acc_businessadmissibility">
+        select count(*) from acc_businessadmissibility
+    </select>
 </mapper>

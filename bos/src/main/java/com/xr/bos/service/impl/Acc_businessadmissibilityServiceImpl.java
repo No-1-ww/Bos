@@ -22,6 +22,11 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
     }
 
     @Override
+    public int totalAcc_admin() {
+        return acc_businessadmissibilityMapper.totalAcc_admin();
+    }
+
+    @Override
     public int addBusin(Acc_businessadmissibility acc_businessadmissibility) {
         return acc_businessadmissibilityMapper.addBusin(acc_businessadmissibility);
     }
