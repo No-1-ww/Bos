@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,38 @@ public class SorStorageController {
     @ResponseBody
     public String query(){
         List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll();
+        List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
+        String s = JSONArray.toJSONString(acceptDate);
+        return s;
+    }
+
+    /**
+     * 按条件查询
+     * @param sorStorage
+     * @param aPerson
+     * @param dPerson
+     * @return
+     */
+    @RequestMapping(value = "/sortingManagement/queryWhere",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String queryWhere(SorStorage sorStorage,String aPerson,String dPerson,String date){
+        //把员工姓名变成ID
+        if(aPerson!=""){
+            SyEmp check = syEmpService.check(aPerson);
+            sorStorage.setAcceptPerson(check.getID());
+        }
+        if(dPerson!=""){
+            SyEmp check1 = syEmpService.check(dPerson);
+            sorStorage.setDeliveryPerson(check1.getID());
+        }
+        if(!date.equals("")&&date!=null){
+            //把时间转换为Date类型赋给实体
+            Date date1 = Date.valueOf(date);
+            sorStorage.setAcceptDate(date1);
+        }
+        System.out.println("####################################################################"+sorStorage);
+        //返回数据后，格式化时间
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryWhere(sorStorage);
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
         String s = JSONArray.toJSONString(acceptDate);
         return s;
@@ -280,8 +313,6 @@ public class SorStorageController {
      */
     @RequestMapping("/upDateSorStoage")
     public ModelAndView updateSorStoage(String aPerson,String dPerson,SorStorage sorStorage,HttpSession session){
-        System.out.println("收货人"+aPerson);
-        System.out.println("发货人："+dPerson);
 
         ModelAndView mv = new ModelAndView();
         //根据员工姓名查询ID
@@ -289,7 +320,6 @@ public class SorStorageController {
         SyEmp check1 = syEmpService.check(dPerson);
         sorStorage.setAcceptPerson(check.getID());
         sorStorage.setDeliveryPerson(check1.getID());
-        System.out.println("更改后的对象：：：：：：：：：：：：：：：：：："+sorStorage);
         //调用修改方法
         sorStorageService.updateStorage(sorStorage);
         mv.setViewName("/sortingManagement/invoiceComparisonTable_add");

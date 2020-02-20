@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class DateFormat {
     public static String format(String column){
-        //第一个字段为列名
         SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = myFmt.format(column);
         return date;

@@ -22,6 +22,11 @@ public class SorStorageServiceImpl implements SorStorageService {
     }
 
     @Override
+    public List<Map<String, Object>> queryWhere(SorStorage sorStorage) {
+        return sorStorageMapper.queryWhere(sorStorage);
+    }
+
+    @Override
     public String queryMaxID() {
         return sorStorageMapper.queryMaxID();
     }

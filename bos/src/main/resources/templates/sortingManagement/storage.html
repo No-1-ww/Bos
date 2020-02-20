@@ -22,24 +22,24 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">入库交接单:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" name="title" placeholder="入库交接单号" autocomplete="off" class="layui-input">
+                        <input type="text" name="ID" placeholder="入库交接单号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-inline">
                     <label class="layui-form-label" >接货时间:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" name="title" placeholder="请输入接货时间" autocomplete="off" class="layui-input">
+                        <input type="date" name="acceptDate" placeholder="请输入接货时间" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <!-- 查询按钮组 -->
                 <div class="layui-inline">
-                    <button type="button" class="layui-btn btnQuery">
+                    <button id="queryWhere" type="button" class="layui-btn btnQuery">
                         <i class="layui-icon">&#xe615;</i> 查询
                     </button>
 
-                    <button type="button" class="layui-btn btnOther">
+                    <button type="button" id="refresh" class="layui-btn btnOther">
                         <i class="layui-icon">&#x1002;</i> 重置
                     </button>
 
@@ -56,58 +56,28 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">接货人:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="接货人（接方经手人）" autocomplete="off" class="layui-input">
+                            <input type="text" name="aPerson" placeholder="接货人（接方经手人）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">接收单位:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="接收单位（接方单位）" autocomplete="off" class="layui-input">
+                            <input type="text" name="acceptCompany" placeholder="接收单位（接方单位）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">发货人</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="发货人（交方经手人）" autocomplete="off" class="layui-input">
+                            <input type="text" name="dPerson" placeholder="发货人（交方经手人）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">发货单位</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="发货单位（交方单位）" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">工作单状态:</label>
-                        <div class="layui-input-block" style="width: 150px;">
-                            <select name="city" lay-verify="required">
-                                <option value=""></option>
-                                <option value="0">中转入库</option>
-                                <option value="1">二次入库</option>
-                                <option value="1">初始入库</option>
-                                <option value="1">有货无单</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label">单号:</label>
-                        <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="单号" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label">合包号</label>
-                        <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="title" placeholder="合包号" autocomplete="off" class="layui-input">
+                            <input type="text" name="deliveryCompany" placeholder="发货单位（交方单位）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -175,6 +145,88 @@
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+
+    $("#refresh").click(function () {
+        layui.use(['form','layer'], function() {
+            var layer = layui.layer,
+                form = layui.form;
+            layer.msg("重置完成");
+            $.ajax({
+                url: "/sortingManagement/query",
+                type: "POST",
+                success: function (data) {
+                    var result = eval(data);
+                    $("#stoBody").empty();
+                    for (var i = 0; i < result.length; i++) {
+
+                        $("#stoBody").append('<tr>' +
+                            '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                            '                    <td >' + result[i].id + '</td>' +
+                            '                    <td >' + result[i].acceptDate + '</td>' +
+                            '                    <td >' + result[i].acceptPerson + '</td>' +
+                            '                    <td >' + result[i].acceptCompany + '</td>' +
+                            '                    <td >' + result[i].deliveryPerson + '</td>' +
+                            '                    <td >' + result[i].deliveryCompany + '</td>' +
+                            '                    <td>' +
+                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                            '                    </td>' +
+                            '                </tr>')
+                    }
+                    form.render();
+
+                }
+            });
+
+        });
+    })
+
+    //按条件查询
+    $("#queryWhere").click(function () {
+        var ID = $("input[name=ID]").val();
+        var acceptDate = $("input[name=acceptDate]").val();
+        var aPerson = $("input[name=aPerson]").val();
+        var acceptCompany = $("input[name=acceptCompany]").val();
+        var dPerson = $("input[name=dPerson]").val();
+        var deliveryCompany = $("input[name=deliveryCompany]").val();
+        if(ID==""&&acceptDate==""&&aPerson==""&&acceptCompany==""&&dPerson==""&&deliveryCompany==""){
+            layui.use('layer',function () {
+                var layer = layui.layer;
+                layer.msg("请至少填写一个查询条件");
+
+            });
+            return;
+        }
+        $.ajax({
+            url:"/sortingManagement/queryWhere",
+            type:"POST",
+            data:{"ID":ID,"date":acceptDate,"aPerson":aPerson,"acceptCompany":acceptCompany,"dPerson":dPerson,"deliveryCompany":deliveryCompany},
+            success:function (data) {
+                layui.use(['form','layer'], function() {
+                    var layer = layui.layer,
+                        form = layui.form;
+                    layer.msg("查询成功！");
+                    var result = eval(data);
+                    $("#stoBody").empty();
+                    for (var i = 0; i < result.length; i++) {
+                        $("#stoBody").append('<tr>' +
+                            '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
+                            '                    <td >' + result[i].id + '</td>' +
+                            '                    <td >' + result[i].acceptDate + '</td>' +
+                            '                    <td >' + result[i].acceptPerson + '</td>' +
+                            '                    <td >' + result[i].acceptCompany + '</td>' +
+                            '                    <td >' + result[i].deliveryPerson + '</td>' +
+                            '                    <td >' + result[i].deliveryCompany + '</td>' +
+                            '                    <td>' +
+                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                            '                    </td>' +
+                            '                </tr>')
+                    }
+                    form.render();
+                });
+            }
+        })
+    })
+
 
     //layUI分页
     /*layui.use(['layer', 'laypage'], function() {

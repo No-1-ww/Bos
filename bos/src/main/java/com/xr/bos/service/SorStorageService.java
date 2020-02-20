@@ -9,6 +9,10 @@ import java.util.Map;
 public interface SorStorageService {
     List<Map<String,Object>> queryAll();
 
+
+    List<Map<String,Object>> queryWhere(SorStorage sorStorage);
+
+
     String queryMaxID();
 
     Integer addStorage(SorStorage sorStorage);

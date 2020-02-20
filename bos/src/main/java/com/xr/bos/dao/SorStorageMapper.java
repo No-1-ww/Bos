@@ -12,6 +12,12 @@ public interface SorStorageMapper {
 
      List<Map<String,Object>> queryAll();
 
+
+     /**
+      * 根据条件查询
+      */
+     List<Map<String,Object>> queryWhere(SorStorage sorStorage);
+
      /**
       * 查询最大ID
       * @return
