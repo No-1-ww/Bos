@@ -20,6 +20,7 @@
         <result property="pickupTime" column="pickupTime"></result>
         <result property="customName" column="customName"></result>
         <result property="linKman" column="linKman"></result>
+        <result property="workGenerationTime" column="workGenerationTime"></result>
     </resultMap>
 
     <insert id="add_worksheet" parameterType="Acc_worksheet" useGeneratedKeys="true" keyProperty="id">
@@ -29,5 +30,26 @@
 
     <select id="querywork_ID" resultType="String">
         select MAX(workSheetNo) from acc_worksheet
+    </select>
+
+    <select id="querywhere_work" resultType="Acc_worksheet">
+        select b.id,c.workSheetNo,a.customCode,a.importantHints,c.destination,a.businessNoticeNo,s.empNo,s.empName,b.pickupTime,a.customName,a.linKman
+        from acc_businessadmissibility a,acc_workorder b,acc_worksheet c,sy_emp s
+        where a.BusinessNoticeNo=b.BusinessNoticeNo and a.PickerInfo=s.id and b.id=c.id
+        <if test="workSheetNo !='' and workGenerationTime !=''">
+          and  c.workSheetNo like "%"#{workSheetNo}"%" and b.workGenerationTime like "%"#{workGenerationTime}"%"
+        </if>
+        <if test="workSheetNo !='' and workSheetNo !=null">
+          and  c.workSheetNo like "%"#{workSheetNo}"%"
+        </if>
+        <if test="workGenerationTime !='' and workGenerationTime !=null">
+          and  b.workGenerationTime like "%"#{workGenerationTime}"%"
+        </if>
+    </select>
+
+    <select id="queryByid_work" resultMap="querywor">
+        select b.id,c.workSheetNo,a.customCode,a.importantHints,c.destination,a.businessNoticeNo,s.empNo,s.empName,b.pickupTime,a.customName,a.linKman
+        from acc_businessadmissibility a,acc_workorder b,acc_worksheet c,sy_emp s
+        where a.businessNoticeNo=b.businessNoticeNo and a.pickerInfo=s.id and b.id=c.id and c.workSheetNo=#{workSheetNo}
     </select>
 </mapper>

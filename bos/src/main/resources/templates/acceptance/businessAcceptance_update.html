@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form action="/busin_update" class="layui-form" method="post">
+	<form  lay-filter="stoForm" action="/busin_update" class="layui-form" method="post">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
@@ -83,6 +83,21 @@
 			var index=parent.getFrameIndex(window.name);
 			parent.layer.close(index);
         });
+
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on("submit(stoForm)",function(){
+                var deliveryPerson = $("#deliveryPerson").val();
+                if(deliveryPerson==""){
+                    $("#errDeliveryPerson").show();
+                    return false;
+                }
+
+                //提交完毕关闭窗口
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            })
+        })
 
     </script>
 </body>

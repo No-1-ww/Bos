@@ -29,4 +29,15 @@ public class Acc_worksheetServiceImpl implements Acc_worksheetService {
     public String querywork_ID() {
         return acc_worksheetMapper.querywork_ID();
     }
+
+    @Override
+    public List<Acc_worksheet> querywhere_work(Acc_worksheet acc_worksheet) {
+        return acc_worksheetMapper.querywhere_work(acc_worksheet);
+    }
+
+    @Override
+    public Map<String, Object> queryByid_work(String workSheetNo) {
+        return acc_worksheetMapper.queryByid_work(workSheetNo);
+    }
+
 }

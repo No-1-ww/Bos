@@ -170,11 +170,11 @@ public class Html {
     }
 */
     //工作单查询修改dispatchingPersonnelSet_update
-    @GetMapping("/dispatchingPersonnelSet_update")
+    /*@GetMapping("/dispatchingPersonnelSet_update")
     public String dispatchingPersonnelSet_update(){
         return "/acceptance/dispatchingPersonnelSet_update";
     }
-
+*/
 
     //查台转单
     @GetMapping("/dispatch/checkTable")
