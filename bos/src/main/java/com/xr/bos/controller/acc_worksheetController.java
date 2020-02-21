@@ -96,7 +96,7 @@ public class acc_worksheetController {
         }*/
        /* Map<String, Object> p = DateFormat.format(map, "pickupTime");*/
 
-        //mv.addObject("id",p.get("id"));
+
         mv.addObject("workSheetNo",p.get("workSheetNo"));
         mv.addObject("customCode",p.get("customCode"));
         mv.addObject("importantHints",p.get("importantHints"));
