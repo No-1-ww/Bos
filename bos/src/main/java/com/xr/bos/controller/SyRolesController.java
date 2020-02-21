@@ -24,6 +24,12 @@ public class SyRolesController {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
 
+    /**
+     * 角色管理所有数据
+     * @param responses
+     * @param page
+     * @param limit
+     */
     @RequestMapping(value = "/findsysRoleAll")
     public void findRolesAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入findRolesAll.....");
@@ -70,6 +76,46 @@ public class SyRolesController {
              // return mv;
     }
 
+    /**
+     * 根据条件查询
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/findRolesWhereRolesNameAndDisabled")
+    public void findRolesWhereRolesNameAndDisabled(SyRoles syRoles,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+        System.out.println("进入findRolesWhereRolesNameAndDisabled.....");
+        String a=null;
+        if (syRoles.getRoleName()==""){
+            a=syRoles.getRoleName();
+        }
+        if(syRoles.getDisabled()+" "==""){
+            a=String.valueOf(syRoles.getDisabled());
+        }
 
+
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<SyRoles> rolesList = syRolesService.findRolesWhereRolesNameAndDisabled(syRoles);
+        PageInfo pageInfo = new PageInfo(rolesList);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+pageInfo.getTotal()+",\"data\":[");
+        for (SyRoles b : rolesList) {
+            sb.append("{\"id\":" + "\"" + b.getId() + "\",\"roleName\":" + "\"" + b.getRoleName() + "\",\"roleDesc\":" + "\"" + b.getRoleDesc() + "\",\"disabled\":" + "\"" +b.getDisabled()+"\"},");
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 }

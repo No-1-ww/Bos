@@ -12,5 +12,7 @@ public interface SyRolesMapper {
     //	SELECT * from sy_roles
     List<SyRoles>  findRolesAll();
 
+    //根据条件查询
+    List<SyRoles> findRolesWhereRolesNameAndDisabled(SyRoles syRoles);
 
 }

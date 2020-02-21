@@ -18,11 +18,10 @@ public class Html {
     }
 
     //收派标准
-    /*@GetMapping("/basicData/deliveryStandard")
+    @GetMapping("/basicData/deliveryStandard")
     public String deliveryStandard(){
         return "/basicData/deliveryStandard";
     }
-*/
     //收派标准的添加
     @GetMapping("/deliveryStandard_add")
     public String deliveryStandard_add(){
@@ -34,36 +33,31 @@ public class Html {
         return "/basicData/deliveryStandard_update";
     }
 
-   /* //基础档案
+    //基础档案
     @GetMapping("/basicData/basicArchives")
     public String basicArchives(){
         return "/basicData/basicArchives";
     }
-*/
     //班车设置
-   /* @GetMapping("/basicData/shuttleBusSet")
+    @GetMapping("/basicData/shuttleBusSet")
     public String shuttleBusSet(){
         return "/basicData/shuttleBusSet";
     }
-*/
     //取派员设置
-   /* @GetMapping("/basicData/dispatchingPersonnelSet")
+    @GetMapping("/basicData/dispatchingPersonnelSet")
     public String dispatchingPersonnelSet(){
-        return "/basicData/shuttleBusSet";
+        return "/basicData/dispatchingPersonnelSet";
     }
-*/
     //区域设置
-   /* @GetMapping("/basicData/areaSet")
+    @GetMapping("/basicData/areaSet")
     public String areaSet(){
         return "/basicData/areaSet";
     }
-*/
     //管理分区
-  /*  @GetMapping("/basicData/partition")
+    @GetMapping("/basicData/partition")
     public String partition(){
         return "/basicData/partition";
     }
-*/
     //管理定区
     @GetMapping("/basicData/zone")
     public String zone(){
@@ -77,23 +71,20 @@ public class Html {
    }
 
     //收派时间管理
-    /*@GetMapping("/basicData/deliveryTime")
+    @GetMapping("/basicData/deliveryTime")
     public String deliveryTime(){
         return "/basicData/deliveryTime";
     }
-*/
     //单位管理
-   /* @GetMapping("/systemManagement/sysUnit")
+    @GetMapping("/systemManagement/sysUnit")
     public String sysUnit(){
         return "/systemManagement/sysUnit";
     }
-*/
     //员工管理
-    /*@GetMapping("/systemManagement/sysEmp")
+    @GetMapping("/systemManagement/sysEmp")
     public String sysEmp(){
         return "/systemManagement/sysEmp";
     }
-*/
     //单位管理增加/修改
     @GetMapping("sysUnit_add")
     public String sysUnit_add(){

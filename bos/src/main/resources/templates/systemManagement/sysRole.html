@@ -18,37 +18,44 @@
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
 		<form class="layui-form" action="">
-			<div class="layui-form-item">
+			<!--<div class="layui-form-item">
 
 				<div class="layui-inline">
 				    <label class="layui-form-label">角色名:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<input type="text" name="title" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+						<input type="text" name="title" placeholder="请输入角色名" autocomplete="off" class="layui-input" id="RoleName">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >是否禁用:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-						<select name="city" lay-verify="">
+						<select name="city" lay-verify="" id="disabled">
 							<option value="">请选择栏目</option>
 							<option value="1">否</option>
 							<option value="0">是</option>
 						</select>
 					</div>
 			    </div>
-
-				<!-- 查询按钮组 -->
-			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+				&lt;!&ndash; 查询按钮组 &ndash;&gt;
+				<div class="layui-inline">
+					<button type="submit" lay-submit class="layui-btn btnQuery" lay-filter="sreach">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="button" class="layui-btn btnOther" id="resetting">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
+
 				</div>
+			</div>-->
+			<div class="demoTable">
+				搜索ID：
+				<div class="layui-inline">
+					<input class="layui-input" name="id" id="demoReload" autocomplete="off">
+				</div>
+				<button class="layui-btn" data-type="reload">搜索</button>
 			</div>
 
 			<!-- 操作按扭组 -->
@@ -102,42 +109,131 @@
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+	/**
+	 * 重置 点击
+	 * */
+	$("#resetting").click(function(){
+
+		//刷新全部
+		/* window.parent.location.reload();*/
+
+		//刷当前页面
+		window.location.reload();
+
+	})
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
 
 });
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-  table.render({
-		id:'alltable',
-	  	height:470,
-	    elem:'#sysRoleinfo',
-	  	url: '/findsysRoleAll',
-	  	page:true,
-	    limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
-	    limit: 10,
-	  cols: [
-		  [ //表头
-			  {type: 'checkbox', fixed: 'left'}
-			  ,{field: 'id', title: '序号',width:200}
-			  ,{field: 'roleName', title: '角色名称',width:300}
-			  ,{field: 'roleDesc', title: '角色描述',width:550}
-			  ,{field: 'disabled', title: '状态',width:170}
-		  ]
-	  ],
-	  done:function (res,curr,count) {
-		  $("[data-field='disabled']").children().each(function () {
-			  if ($(this).text() == '1') {
-				  $(this).text("可用")
-			  }else{
-			  	$(this).text("不可用")
-			  }
-		  });
-	  }
-  })
+//加载'table'组件、
+/*var table;
+var layer;
+var form;
+var laydate;
+var element;*/
+		layui.use(['layer','laypage','table','element','form','laydate','element'], function(){
+  		var table = layui.table,
+		layer = layui.layer,
+		form = layui.form,
+		laydate = layui.laydate,
+		element = layui.element //元素操作
+
+		//监听Tab切换
+		element.on('tab(demo)', function(data){
+			layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+				tips: 1
+			});
+		});
+
+  		//执行一个 table 实例
+	  table.render({
+			id:'alltable',
+			height:470,
+			elem:'#sysRoleinfo',
+			url: '/findsysRoleAll',
+			page:true,
+			limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+			limit: 10,
+		  cols: [
+			  [ //表头
+				  {checkbox:true, fixed: 'left'}
+				  ,{field: 'id', title: '序号',width:200}
+				  ,{field: 'roleName', title: '角色名称',width:300}
+				  ,{field: 'roleDesc', title: '角色描述',width:550}
+				  ,{field: 'disabled', title: '状态',width:170}
+			  ]
+		  ],
+		  done:function (res,curr,count) {
+			  $("[data-field='disabled']").children().each(function () {
+				  if ($(this).text()=='1') {
+					  $(this).text("可用")
+				  }else if($(this).text()=='0'){
+					$(this).text("不可用")
+				  }
+			  });
+		  }
+
+	  })
+			//重载
+		/*var $=layui.$,active={
+	  		reload:function () {
+				var RoleName=$('#RoleName');
+				//执行重载
+				table.reload('alltable',{
+					page:{
+						curr:1
+					}
+					,where:{
+						key:{
+							roleName:RoleName.val()
+						}
+					}
+				},'data');
+			}
+		};
+
+			$('.demoTable .layui-btn').on('click', function(){
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});*/
+
+	/*//条件查询，监听提交
+	form.on('submit(sreach)',function (data) {
+			var RoleName=$("#RoleName").val();
+			var disabled=$("#disabled").val();
+			alert(RoleName);
+			table.reload('alltable',{url:'/findRolesWhereRolesNameAndDisabled',page:{curr:1}
+				//,totalRow: true //开启合计行
+				,cols: [
+					[ //表头
+						{type: 'checkbox', fixed: 'left'}
+						,{field: 'id', title: '序号',width:200}
+						,{field: 'roleName', title: '角色名称',width:300}
+						,{field: 'roleDesc', title: '角色描述',width:550}
+						,{field: 'disabled', title: '状态',width:170}
+					]
+				],
+				done:function (res,curr,count) {
+					$("[data-field='disabled']").children().each(function () {
+						if ($(this).text()=='1') {
+							$(this).text("可用")
+						}else if($(this).text()=='0'){
+							$(this).text("不可用")
+						}
+					});
+				}
+				,where:{"roleName":RoleName,"disabled":disabled}
+			})
+			return false;
+	})*/
+
 });
+
+
+
+
+
 
 //加载'laydate'时间组件
 layui.use('laydate', function(){
