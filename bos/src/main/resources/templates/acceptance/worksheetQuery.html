@@ -22,20 +22,20 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">工作单号:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+                        <input type="text" id="workSheetNo" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-inline">
                     <label class="layui-form-label">开单时间:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" name="title" placeholder="请输入开单时间" autocomplete="off" class="layui-input">
+                        <input type="text" id="workGenerationTime" placeholder="请输入开单时间" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <!-- 查询按钮组 -->
                 <div class="layui-inline">
-                    <button type="button" class="layui-btn btnQuery">
+                    <button id="cxwhere" type="button" class="layui-btn btnQuery">
                         <i class="layui-icon">&#xe615;</i> 查询
                     </button>
 
@@ -172,24 +172,15 @@
                     <th>收件人</th>
                 </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="bus : ${worlist}">
-                        <th><input type="checkbox" οnclick="checkboxOnclick(this)" lay-skin="primary"></th>
-                        <td th:text="${bus.id}"></td>
-                        <td th:text="${bus.workSheetNo}"></td>
-                        <td th:text="${bus.customCode}"></td>
-                        <td th:text="${bus.importantHints}"></td>
-                        <td th:text="${bus.destination}"></td>
-                        <td th:text="${bus.businessNoticeNo}"></td>
-                        <td th:text="${bus.empNo}"></td>
-                        <td th:text="${bus.empName}"></td>
-                        <td th:text="${bus.pickupTime}"></td>
-                        <td th:text="${bus.customName}"></td>
-                        <td th:text="${bus.linKman}"></td>
-                    </tr>
+                <tbody id="tBody">
+
                 </tbody>
             </table>
-    </div>
+            <center>
+                <div id="page_container">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+                </div>
+            </center>
     </form>
 </div>
 </div>
@@ -200,6 +191,80 @@
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+    //查询
+    $(function () {
+        $.ajax({
+            url:"/acceptance/worksheetQueryaAjax",
+            type:"POST",
+            success:function(data){
+                layui.use('form', function() {
+
+                    var form = layui.form;
+
+                    var result = eval(data);
+                    $("#tBody").empty();
+                    for (var i = 0; i < result.length; i++) {
+                        $("#tBody").append('<tr>' +
+                            '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
+                            '<td>' + result[i].id + '</td>' +
+                            '<td>' + result[i].workSheetNo + '</td>' +
+                            '<td>' + result[i].customCode + '</td>' +
+                            '<td>' + result[i].importantHints + '</td>' +
+                            '<td>' + result[i].destination + '</td>' +
+                            '<td>' + result[i].businessNoticeNo + '</td>' +
+                            '<td>' + result[i].empNo + '</td>' +
+                            '<td>' + result[i].empName + '</td>' +
+                            '<td>' + result[i].pickupTime + '</td>' +
+                            '<td>' + result[i].customName + '</td>' +
+                            '<td>' + result[i].linKman + '</td>' +
+                            '</tr>')
+                    }
+                    form.render();
+                })
+
+            }
+        })
+    });
+
+    //条件查询
+    $("#cxwhere").click(function() {
+        alert("进入")
+        if ($("#workSheetNo").val() == "" && $("#workGenerationTime").val() == "") {
+            alert("必须选择一项查询");
+            return false;
+        } else {
+            var workSheetNo = $("#workSheetNo").val();
+            var workGenerationTime = $("#workGenerationTime").val();
+            $.ajax({
+                url:"/work_querywhere",
+                type:"POST",
+                success:function(){
+                    layui.use('form', function() {
+                        var form = layui.form;
+                        var result = eval(data);
+                        $("#tBody").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            $("#tBody").append('<tr>' +
+                                '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
+                                '<td>' + result[i].id + '</td>' +
+                                '<td>' + result[i].workSheetNo + '</td>' +
+                                '<td>' + result[i].customCode + '</td>' +
+                                '<td>' + result[i].importantHints + '</td>' +
+                                '<td>' + result[i].destination + '</td>' +
+                                '<td>' + result[i].businessNoticeNo + '</td>' +
+                                '<td>' + result[i].empNo + '</td>' +
+                                '<td>' + result[i].empName + '</td>' +
+                                '<td>' + result[i].pickupTime + '</td>' +
+                                '<td>' + result[i].customName + '</td>' +
+                                '<td>' + result[i].linKman + '</td>' +
+                                '</tr>')
+                        }
+                        form.render();
+                    })
+                }
+            });
+        }
+    })
     //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
         //在加载form表单时为checkbox渲染事件
@@ -213,8 +278,9 @@
             //得到check属性
             var check = data.elem.checked;
             var id = $(che).parent().next().text();
-            alert(id);//获取勾选的值
+            //alert(id);//获取勾选的值
             $("#busID").val(id);
+    })
     });
 
     //加载'table'组件
@@ -231,14 +297,14 @@
         });
     });
 
-    $(function(){
+    $(function() {
         //显示、隐藏剩余的查询条件
-        $('#btnMore').click(function(){
+        $('#btnMore').click(function () {
             $("#hQuery").toggle();
         });
 
         //新增
-        $('#opAdd').click(function(){
+        $('#opAdd').click(function () {
             //页面层
             layer.open({
                 title: ['新增', 'color:#fff;background:#1da02b;'],
@@ -250,7 +316,7 @@
         });
 
         //编辑
-        $('#opUpdate').click(function(){
+        $('#opUpdate').click(function () {
 
             var busID = $("#busID").val();
             //页面层
@@ -259,24 +325,38 @@
                 type: 2,
                 //skin: 'layui-layer-rim', //加上边框
                 area: ['900px', '340px'], //宽高
-                content: '/dispatchingPersonnelSet_update?busID='+busID
+                content: '/dispatchingPersonnelSet_update?busID=' + busID
             });
         });
 
         //删除
-        $('#opDelete').click(function(){
+        $('#opDelete').click(function () {
             //询问框
             layer.confirm('确定是否删除？', {
-                btn: ['是','否'] //按钮
-            }, function(){
+                btn: ['是', '否'] //按钮
+            }, function () {
                 layer.msg('删除成功', {icon: 1});
-            }, function(){
+            }, function () {
 
             });
         });
-
     });
 
+    //分页
+    layui.use(['laypage', 'layer'], function() {
+        var laypage = layui.laypage//laypage的分页组件实例对象。
+            , layer = layui.layer;
+        //完整功能
+        laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+            elem: 'page_container'
+            , count: 100
+            ,limit:4
+            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+            , jump: function (obj) {
+                console.log(obj)
+            }
+        })
+    })
 </script>
 
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,31 +7,27 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form class="layui-form">
+	<form lay-filter="stoForm" class="layui-form">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="13%">工作单号</td>
 		      	<td width="22%">
-      			     <input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input" value="YWD1001" disabled>
+      			     <input type="text" name="workSheetNo" th:value="${workSheetNo}" placeholder="请输入工作单号" autocomplete="off" class="layui-input" value="YWD1001" disabled>
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">客户单号</td>
 		      	<td width="22%">
-					         <input type="text" name="title" placeholder="请输入客户单号" autocomplete="off" class="layui-input" value="">
+					         <input type="text" name="customCode" th:value="${customCode}" placeholder="请输入客户单号" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">产品</td>
 		      	<td width="22%">
-					         <input type="text" name="title" placeholder="请输入产品" autocomplete="off" class="layui-input" value="">
+					         <input type="text" name="importantHints" th:value="${importantHints}" placeholder="请输入产品" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		    </tr>
 		    <tr>
-		      	<td class="layui-bg-gray">到达地编码</td>
-		      	<td>
-					         <input type="text" name="title" placeholder="请输入到达地编码" autocomplete="off" class="layui-input" value="">
-		      	</td>
 		      	<td class="layui-bg-gray">到达地</td>
 		      	<td>
-  					       <input type="text" name="title" placeholder="请输入到达地" autocomplete="off" class="layui-input" value="">
+  					       <input type="text" name="destination" th:value="${destination}" placeholder="请输入到达地" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray"></td>
 		      	<td>
@@ -41,31 +37,31 @@
 		    <tr>
 		        <td class="layui-bg-gray">业务通知单</td>
     	      <td colspan="5">
-		              <input type="text" name="title" placeholder="请输入业务通知单" autocomplete="off" class="layui-input" value="">
+		              <input type="text" name="businessNoticeNo" th:value="${businessNoticeNo}" placeholder="请输入业务通知单" autocomplete="off" class="layui-input" value="">
             </td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">取件人工号</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入取件人工号" autocomplete="off" class="layui-input" value="">
+					       <input type="text" name="empNo" th:value="${empNo}" placeholder="请输入取件人工号" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">取货人姓名</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入取货人姓名" autocomplete="off" class="layui-input" value="">
+					       <input type="text" name="empName" th:value="${empName}" placeholder="请输入取货人姓名" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">取货时间</td>
 				<td>
-						   <input type="text" name="title" placeholder="请输入取货时间" autocomplete="off" class="layui-input" value="">
+						   <input type="text" name="pickupTime" th:value="${pickupTime}" placeholder="请输入取货时间" autocomplete="off" class="layui-input" value="">
 				</td>
 		    </tr>
         <tr>
 		      	<td class="layui-bg-gray">寄件人</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入寄件人间" autocomplete="off" class="layui-input" value="">
+					       <input type="text" name="customName" th:value="${customName}" placeholder="请输入寄件人间" autocomplete="off" class="layui-input" value="">
 		      	</td>
 				<td class="layui-bg-gray">收件人</td>
 				<td>
-					       <input type="text" name="title" placeholder="请输入收件人" autocomplete="off" class="layui-input" value="">
+					       <input type="text" name="linKman" th:value="${linKman}" placeholder="请输入收件人" autocomplete="off" class="layui-input" value="">
 				</td>
 		</tr>      	
 

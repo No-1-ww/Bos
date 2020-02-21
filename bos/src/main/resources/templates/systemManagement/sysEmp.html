@@ -60,37 +60,6 @@
 				</div>
 			</div>
 
-			<!-- 数据表格 -->
-			<!--<table class="layui-table">
-				<colgroup>
-					<col width="50">
-				    <col width="60">
-				    <col >
-				    <col >
-				    <col >
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>编号</th>
-				      	<th>用户名</th>
-				      	<th>角色</th>
-					  	<th>状态</th>
-				    </tr>
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>1001</td>
-				      	<td>admin</td>
-						<td>系统管理员</td>
-				      	<td>可用</td>
-				    </tr>
-			  	</tbody>
-			</table>-->
 			<!--<table class="layui-table">
 				&lt;!&ndash;<colgroup>
 					<col width="50">
@@ -128,7 +97,10 @@
 			</table>-->
 
 		</form>
-	</div>
+		<div>
+			<!-- 数据表格 -->
+			<table class="layui-table" id="sysEmpinfo" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -143,6 +115,34 @@ layui.use('form', function(){
 //加载'table'组件
 layui.use('table', function(){
   var table = layui.table;
+	table.render({
+		id:'alltable',
+		height:400,
+		elem:'#sysEmpinfo',
+		url: '/findEmpAll',
+		page:true,
+		limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+		limit: 10,
+		cols: [
+			[ //表头
+				{type: 'checkbox', fixed: 'left'}
+				,{field: 'ID', title: '序号',width:200}
+				,{field: 'EmpNo', title: '编号',width:300}
+				,{field: 'EmpName', title: '用户名',width:350}
+				,{field: 'RoleName', title: '角色',width:170}
+				,{field: 'Disabled', title: '状态',width:215}
+			]
+		],
+		done:function (res,curr,count) {
+			$("[data-field='Disabled']").children().each(function () {
+				if ($(this).text() == 'true') {
+					$(this).text("可用")
+				}else if($(this).text()=='false'){
+					$(this).text("不可用")
+				}
+			});
+		}
+	})
 });
 
 //加载'laydate'时间组件

@@ -14,4 +14,11 @@ public interface Acc_worksheetService {
 
     //查询最大的工作单号
     String querywork_ID();
+
+    //条件查询
+    List<Acc_worksheet> querywhere_work(Acc_worksheet acc_worksheet);
+
+    //根据id查询
+    Map<String,Object> queryByid_work(String workSheetNo);
+
 }
