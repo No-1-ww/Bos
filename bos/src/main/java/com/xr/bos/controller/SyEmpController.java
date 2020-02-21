@@ -1,5 +1,8 @@
 package com.xr.bos.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.service.SyEmpService;
 import com.xr.bos.util.DuanxinPhone;
@@ -18,9 +21,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class SyEmpController {
@@ -112,16 +119,49 @@ public class SyEmpController {
         return mv;
     }
 
-    //查询所有员工
-    //aa
-    @RequestMapping(value = "/systemManagement/sysEmp")
-    public ModelAndView findEmpAll(){
+    /**
+     * 查询所有员工
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/findEmpAll")
+    public void  findEmpAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入查询员工放法findEmpAll.......");
+        PageHelper.startPage(Integer.parseInt(page),Integer.parseInt(limit));
         List<Map<String, Object>> mapList = syEmpService.findEmpAll();
-        ModelAndView mv=new ModelAndView();
-        mv.addObject("emps",mapList);
-        mv.setViewName("/systemManagement/sysEmp");
-        return mv;
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(mapList);
+        StringBuffer sb=new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
+        for (Map<String, Object> map : mapList) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("},");
+
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 }

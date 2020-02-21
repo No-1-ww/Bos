@@ -111,7 +111,12 @@ public class SyMenusController {
 
     }
 
-    //查询所有的菜单
+    /**
+     * 查询所有的菜单
+     * @param responses
+     * @param page
+     * @param limit
+     */
     @RequestMapping(value = "/findMenusAll")
     public void findMenusAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入findMenusAll方法。。。。");

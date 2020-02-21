@@ -41,7 +41,7 @@
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="button" class="layui-btn btnOther" id="resetting">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -83,108 +83,6 @@
 			<!--<table class="layui-table">
 				<colgroup>
 					<col width="50">
-				    <col width="60">
-				    <col width="140">
-				    <col width="140">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>时间名称</th>
-				      	<th>所属单位</th>
-				      	<th>平时上班时间</th>
-					  	<th>平时下班时间</th>
-						<th>周六上班时间</th>
-					  	<th>周六下班时间</th>
-					  	<th>周如上班时间</th>
-					  	<th>周日下班时间</th>
-				    </tr>
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>时间名称</td>
-				      	<td>总公司</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				      	<td>14:31</td>
-				    </tr>
-
-			  	</tbody>
-			</table>-->
-			<table class="layui-table">
-				<colgroup>
-					<col width="50">
 					<col width="60">
 					<col width="140">
 					<col width="140">
@@ -222,15 +120,36 @@
 						<td th:text="${time.SundayClosingTime}"></td>
 					</tr>
 				</tbody>
-			</table>
-		</div>
+			</table>-->
+
 		</form>
+		<div>
+			<!-- 数据表格 -->
+			<table class="layui-table" id="deliveryTimeinfo" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript">     
+<script type="text/javascript">
+	/**
+	 * 重置 点击
+	 * */
+	$("#resetting").click(function(){
+
+		//刷新全部
+		/* window.parent.location.reload();*/
+
+		//刷当前页面
+		window.location.reload();
+
+	})
+
+
+
+
+
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
    
@@ -239,6 +158,30 @@ layui.use('form', function(){
 //加载'table'组件
 layui.use('table', function(){
   var table = layui.table;
+	table.render({
+		id:'alltable',
+		height:400,
+		elem:'#deliveryTimeinfo',
+		url: '/finddeliveryTimeAll',
+		page:true,
+		limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+		limit: 10,
+		cols: [
+			[ //表头
+				{type: 'checkbox', fixed: 'left'}
+				,{field: 'ID', title: '序号',width:100}
+				,{field: 'TimeName', title: '时间名称',width:100}
+				,{field: 'Uname', title: '所属单位',width:220}
+				,{field: 'WorkingTime', title: '平时上班时间',width:135}
+				,{field: 'ClosingTime', title: '平时下班时间',width:135}
+				,{field: 'SaturdayWorkingTime', title: '周六上班时间',width:135}
+				,{field: 'SaturdayClosingTime', title: '周六下班时间',width:135}
+				,{field: 'SundayWorkingTime', title: '周末下班时间',width:135}
+				,{field: 'SundayClosingTime', title: '周末下班时间',width:135}
+			]
+		]
+	})
+
 });
 
 //加载'laydate'时间组件

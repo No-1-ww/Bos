@@ -99,8 +99,8 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
-				<!--<colgroup>
+			<!--<table class="layui-table">
+				&lt;!&ndash;<colgroup>
 					<col width="50">
 					<col width="60">
 					<col width="150">
@@ -110,7 +110,7 @@
 					<col width="160">
 					<col width="160">
 					<col>
-				</colgroup>-->
+				</colgroup>&ndash;&gt;
 				<thead>
 				<tr>
 					<th><input type="checkbox" name="check" lay-skin="primary"></th>
@@ -118,7 +118,7 @@
 					<th>收派标准名称</th>
 					<th>最小重量</th>
 					<th>最大重量</th>
-					<!--<th>作废标志</th>-->
+					&lt;!&ndash;<th>作废标志</th>&ndash;&gt;
 					<th>操作人员</th>
 					<th>操作单位</th>
 					<th>操作时间</th>
@@ -138,10 +138,14 @@
 
 					</tr>
 				</tbody>
-			</table>
+			</table>-->
 
-		</div>
+
 		</form>
+		<div>
+			<!-- 数据表格 -->
+			<table class="layui-table" id="BasDeliverystandardinfo" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -156,6 +160,28 @@ layui.use('form', function(){
 //加载'table'组件
 layui.use('table', function(){
   var table = layui.table;
+	table.render({
+		id:'alltable',
+		height:400,
+		elem:'#BasDeliverystandardinfo',
+		url: '/findDeliverystandardAll',
+		page:true,
+		limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+		limit: 10,
+		cols: [
+			[ //表头
+				{type: 'checkbox', fixed: 'left'}
+				,{field: 'ID', title: '序号',width:150}
+				,{field: 'Dname', title: '收派标准名称',width:200}
+				,{field: 'MinWeight', title: '最小重量',width:150}
+				,{field: 'MaxWeight', title: '最大重量',width:150}
+				,{field: 'EmpName', title: '操作人员',width:150}
+				,{field: 'Uname', title: '单位名称',width:215}
+				,{field: 'OperationTime', title: '操作时间',width:220}
+			]
+		]
+	})
+
 });
 
 //加载'laydate'时间组件
