@@ -7,10 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface SorStorageService {
-    List<Map<String,Object>> queryAll();
+    List<Map<String,Object>> queryAll(int page,int limit);
+    //查询总数
+    Integer queryCount();
 
 
-    List<Map<String,Object>> queryWhere(SorStorage sorStorage);
+    List<Map<String,Object>> queryWhere(Map<String,Object> map);
+
+    //根据条件查询Count
+    Integer queryWhereCount(Map<String,Object> map);
 
 
     String queryMaxID();

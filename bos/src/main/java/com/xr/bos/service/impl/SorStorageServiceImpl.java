@@ -7,6 +7,7 @@ import com.xr.bos.service.SorStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,35 @@ public class SorStorageServiceImpl implements SorStorageService {
     private SorStorageMapper sorStorageMapper;
 
     @Override
-    public List<Map<String,Object>> queryAll() {
-        return sorStorageMapper.queryAll();
+    public List<Map<String,Object>> queryAll(int page,int limit) {
+        page=(page-1)*limit;
+        Map<String,Integer> map = new HashMap<>();
+        map.put("page",page);
+        map.put("limit",limit);
+        return sorStorageMapper.queryAll(map);
     }
 
     @Override
-    public List<Map<String, Object>> queryWhere(SorStorage sorStorage) {
-        return sorStorageMapper.queryWhere(sorStorage);
+    public Integer queryCount() {
+        return sorStorageMapper.queryCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> queryWhere(Map<String,Object> map) {
+        Object page = map.get("page");
+        Object limit = map.get("limit");
+        //page
+        int p = Integer.parseInt(page.toString());
+        //limit
+        int i = Integer.parseInt(limit.toString());
+        map.put("page",(p-1)*i);
+        return sorStorageMapper.queryWhere(map);
+    }
+
+    @Override
+    public Integer queryWhereCount(Map<String, Object> map) {
+
+        return sorStorageMapper.queryWhereCount(map);
     }
 
     @Override

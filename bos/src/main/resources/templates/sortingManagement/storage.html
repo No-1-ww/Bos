@@ -134,11 +134,17 @@
                     </td>
                 </tr>
                 </tbody>
-                <div id="pageDemo"></div>
+
             </table>
+            <center>
+                <div id="demo7"></div>
+            </center>
         </form>
     </div>
     <input type="hidden" id="upDateStoID"/>
+    <input type="hidden" th:value="${storCount}" id="count"/>
+    <!---->
+    <input type="hidden"  id="ajaxCount"/>
 </div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -146,39 +152,72 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
 
+    //重置
     $("#refresh").click(function () {
-        layui.use(['form','layer'], function() {
-            var layer = layui.layer,
-                form = layui.form;
-            layer.msg("重置完成");
-            $.ajax({
-                url: "/sortingManagement/query",
-                type: "POST",
-                success: function (data) {
-                    var result = eval(data);
-                    $("#stoBody").empty();
-                    for (var i = 0; i < result.length; i++) {
+        $.ajax({
+            url:"/sortingManagement/queryCount",
+             type:"POST",
+            async: false,
+            success:function(data) {
+                if(data!="null"){
+                    $("#count").val(data);
 
-                        $("#stoBody").append('<tr>' +
-                            '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
-                            '                    <td >' + result[i].id + '</td>' +
-                            '                    <td >' + result[i].acceptDate + '</td>' +
-                            '                    <td >' + result[i].acceptPerson + '</td>' +
-                            '                    <td >' + result[i].acceptCompany + '</td>' +
-                            '                    <td >' + result[i].deliveryPerson + '</td>' +
-                            '                    <td >' + result[i].deliveryCompany + '</td>' +
-                            '                    <td>' +
-                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
-                            '                    </td>' +
-                            '                </tr>')
-                    }
-                    form.render();
-
+                }else{
+                    layer.msg("查询条件输入有误！");
+                    return;
                 }
-            });
+            }
+        })
+        layui.use(['laypage', 'layer'], function() {
+            var laypage = layui.laypage//laypage的分页组件实例对象。
+                , layer = layui.layer;
+            //完整功能
+            //得到总数据条数
 
+            var count = $("#count").val();
+            laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+                elem: 'demo7'
+                , count: count
+                ,limit:5
+                ,limits:[5,10,15,20]
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , jump: function (obj,first) {
+                    $.ajax({
+                        url:"/sortingManagement/query",
+                        data:{"page":obj.curr,"limit":obj.limit},
+                        type:"POST",
+                        success:function(data) {
+                            layui.use('form', function () {
+                                var form = layui.form;
+                                var result = eval(data);
+                                $("#stoBody").empty();
+                                for (var i = 0; i < result.length; i++) {
+
+                                    $("#stoBody").append('<tr>' +
+                                        '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                                        '                    <td >' + result[i].id + '</td>' +
+                                        '                    <td >' + result[i].acceptDate + '</td>' +
+                                        '                    <td >' + result[i].acceptPerson + '</td>' +
+                                        '                    <td >' + result[i].acceptCompany + '</td>' +
+                                        '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                        '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                        '                    <td>' +
+                                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                        '                    </td>' +
+                                        '                </tr>')
+                                }
+                                form.render();
+
+                            });
+                        }
+                    })
+                }
+            })
+
+
+            layer.msg("重置完成");
         });
-    })
+    });
 
     //按条件查询
     $("#queryWhere").click(function () {
@@ -196,59 +235,122 @@
             });
             return;
         }
+        //如果填写了条件那么进入数据库查询总数,同步提交不能代码执行到下面的监听事件
         $.ajax({
-            url:"/sortingManagement/queryWhere",
-            type:"POST",
+            url:"/sortingManagement/queryWhereCount",
             data:{"ID":ID,"date":acceptDate,"aPerson":aPerson,"acceptCompany":acceptCompany,"dPerson":dPerson,"deliveryCompany":deliveryCompany},
-            success:function (data) {
-                layui.use(['form','layer'], function() {
-                    var layer = layui.layer,
-                        form = layui.form;
-                    layer.msg("查询成功！");
-                    var result = eval(data);
-                    $("#stoBody").empty();
-                    for (var i = 0; i < result.length; i++) {
-                        $("#stoBody").append('<tr>' +
-                            '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
-                            '                    <td >' + result[i].id + '</td>' +
-                            '                    <td >' + result[i].acceptDate + '</td>' +
-                            '                    <td >' + result[i].acceptPerson + '</td>' +
-                            '                    <td >' + result[i].acceptCompany + '</td>' +
-                            '                    <td >' + result[i].deliveryPerson + '</td>' +
-                            '                    <td >' + result[i].deliveryCompany + '</td>' +
-                            '                    <td>' +
-                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
-                            '                    </td>' +
-                            '                </tr>')
+            type:"POST",
+            async: false,
+            success:function(data) {
+                    if(data!="null"){
+                        $("#ajaxCount").val(data);
+
+                    }else{
+                        layer.msg("查询条件输入有误！");
+                        return;
                     }
-                    form.render();
-                });
             }
         })
+
+        layui.use(['laypage', 'layer'], function() {
+            var laypage = layui.laypage//laypage的分页组件实例对象。
+                , layer = layui.layer;
+            var count = $("#ajaxCount").val();
+            laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+                elem: 'demo7'
+                , count: count
+                ,limit:5
+                ,limits:[5,10,15,20]
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , jump: function (obj,first) {
+                    $.ajax({
+                        url:"/sortingManagement/queryWhere",
+                        data:{"ID":ID,"date":acceptDate,"aPerson":aPerson,"acceptCompany":acceptCompany,"dPerson":dPerson,"deliveryCompany":deliveryCompany,"page":obj.curr,"limit":obj.limit},
+                        type:"POST",
+                        success:function(data) {
+
+                            layui.use(['form','layer'], function() {
+                                var layer = layui.layer,
+                                    form = layui.form;
+                                if(data!="null"){
+                                    layer.msg("查询成功！");
+                                    var result = eval(data);
+                                    $("#stoBody").empty();
+                                    for (var i = 0; i < result.length; i++) {
+                                        $("#stoBody").append('<tr>' +
+                                            '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
+                                            '                    <td >' + result[i].id + '</td>' +
+                                            '                    <td >' + result[i].acceptDate + '</td>' +
+                                            '                    <td >' + result[i].acceptPerson + '</td>' +
+                                            '                    <td >' + result[i].acceptCompany + '</td>' +
+                                            '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                            '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                            '                    <td>' +
+                                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                            '                    </td>' +
+                                            '                </tr>')
+                                    }
+                                    form.render();
+
+                                }else{
+                                    layer.msg("查询条件输入有误！");
+                                }
+                            });
+                        }
+                    })
+                }
+            })
+        });
+
     })
 
 
     //layUI分页
-    /*layui.use(['layer', 'laypage'], function() {
-        var layer = layui.layer
-            , laypage=layui.laypage;
+    layui.use(['laypage', 'layer'], function() {
+        var laypage = layui.laypage//laypage的分页组件实例对象。
+            , layer = layui.layer;
+        //完整功能
+        //得到总数据条数
+        var count = $("#count").val();
+        laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+            elem: 'demo7'
+            , count: count
+            ,limit:5
+            ,limits:[5,10,15,20]
+            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+            , jump: function (obj,first) {
+                $.ajax({
+                    url:"/sortingManagement/query",
+                    data:{"page":obj.curr,"limit":obj.limit},
+                    type:"POST",
+                    success:function(data) {
+                        layui.use('form', function () {
+                            var form = layui.form;
+                            var result = eval(data);
+                            $("#stoBody").empty();
+                            for (var i = 0; i < result.length; i++) {
 
-        //分页
-        laypage({
-            cont: 'pageDemo' //分页容器的id
-            , pages: 100 //总页数
-            , skin: '#5FB878' //自定义选中色值
-            //,skip: true //开启跳页
-            , jump: function (obj, first) {
-                if (!first) {
-                    layer.msg('第' + obj.curr + '页');
-                }
+                                $("#stoBody").append('<tr>' +
+                                    '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                                    '                    <td >' + result[i].id + '</td>' +
+                                    '                    <td >' + result[i].acceptDate + '</td>' +
+                                    '                    <td >' + result[i].acceptPerson + '</td>' +
+                                    '                    <td >' + result[i].acceptCompany + '</td>' +
+                                    '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                    '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                    '                    <td>' +
+                                    '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                    '                    </td>' +
+                                    '                </tr>')
+                            }
+                            form.render();
+
+                        });
+                    }
+                })
             }
-        });
-    });*/
-
-
-
+        })
+    });
 
         //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function() {
@@ -366,8 +468,8 @@
         $("#opDelete").click(function () {
             //偷懒，和修改用的同一个变量
             var deleteStoID = $("#upDateStoID").val();
-            if(deleteStoID==""){
-                layui.use('layer',function () {
+            if (deleteStoID == "") {
+                layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.msg("请选中一行数据！");
 
@@ -375,11 +477,11 @@
                 return;
             }
             $.ajax({
-                url:"/deleteSorStoage",
-                type:"POST",
-                data:{"ID":deleteStoID},
-                success:function (data) {
-                    layui.use(['form','layer'], function() {
+                url: "/deleteSorStoage",
+                type: "POST",
+                data: {"ID": deleteStoID},
+                success: function (data) {
+                    layui.use(['form', 'layer'], function () {
                         var layer = layui.layer,
                             form = layui.form;
                         layer.msg("删除成功");
@@ -399,12 +501,67 @@
                                 '                    </td>' +
                                 '                </tr>')
                         }
-                                form.render();
+                        form.render();
                     });
                 }
-            })
 
-        });
+            });
+            $.ajax({
+                url:"/sortingManagement/queryCount",
+                type:"POST",
+                async: false,
+                success:function(data) {
+                    $("#count").val(data);
+
+                }
+            })
+            layui.use(['laypage', 'layer'], function() {
+                var laypage = layui.laypage//laypage的分页组件实例对象。
+                    , layer = layui.layer;
+                //完整功能
+                //得到总数据条数
+
+                var count = $("#count").val();
+                laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+                    elem: 'demo7'
+                    , count: count
+                    ,limit:5
+                    ,limits:[5,10,15,20]
+                    , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                    , jump: function (obj,first) {
+                        $.ajax({
+                            url:"/sortingManagement/query",
+                            data:{"page":obj.curr,"limit":obj.limit},
+                            type:"POST",
+                            success:function(data) {
+                                layui.use('form', function () {
+                                    var form = layui.form;
+                                    var result = eval(data);
+                                    $("#stoBody").empty();
+                                    for (var i = 0; i < result.length; i++) {
+
+                                        $("#stoBody").append('<tr>' +
+                                            '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                                            '                    <td >' + result[i].id + '</td>' +
+                                            '                    <td >' + result[i].acceptDate + '</td>' +
+                                            '                    <td >' + result[i].acceptPerson + '</td>' +
+                                            '                    <td >' + result[i].acceptCompany + '</td>' +
+                                            '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                            '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                            '                    <td>' +
+                                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                            '                    </td>' +
+                                            '                </tr>')
+                                    }
+                                    form.render();
+
+                                });
+                            }
+                        })
+                    }
+                })
+            });
+        })
 
 
         //查看明细
@@ -445,28 +602,59 @@
 
                         layer.msg("执行完毕");
                         $.ajax({
-                            url: "/sortingManagement/query",
-                            type: "POST",
-                            success: function (data) {
-                                var result = eval(data);
-                                $("#stoBody").empty();
-                                for (var i = 0; i < result.length; i++) {
+                            url:"/sortingManagement/queryCount",
+                            type:"POST",
+                            async: false,
+                            success:function(data) {
+                                $("#count").val(data);
 
-                                    $("#stoBody").append('<tr>' +
-                                        '                    <td><input type="checkbox" name="check" lay-skin="primary"></td>' +
-                                        '                    <td >' + result[i].id + '</td>' +
-                                        '                    <td >' + result[i].acceptDate + '</td>' +
-                                        '                    <td >' + result[i].acceptPerson + '</td>' +
-                                        '                    <td >' + result[i].acceptCompany + '</td>' +
-                                        '                    <td >' + result[i].deliveryPerson + '</td>' +
-                                        '                    <td >' + result[i].deliveryCompany + '</td>' +
-                                        '                    <td>' +
-                                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
-                                        '                    </td>' +
-                                        '                </tr>')
-                                }
-                                form.render();
                             }
+                        });
+                        layui.use(['laypage', 'layer'], function() {
+                            var laypage = layui.laypage//laypage的分页组件实例对象。
+                                , layer = layui.layer;
+                            //完整功能
+                            //得到总数据条数
+
+                            var count = $("#count").val();
+                            laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+                                elem: 'demo7'
+                                , count: count
+                                ,limit:5
+                                ,limits:[5,10,15,20]
+                                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                                , jump: function (obj,first) {
+                                    $.ajax({
+                                        url:"/sortingManagement/query",
+                                        data:{"page":obj.curr,"limit":obj.limit},
+                                        type:"POST",
+                                        success:function(data) {
+                                            layui.use('form', function () {
+                                                var form = layui.form;
+                                                var result = eval(data);
+                                                $("#stoBody").empty();
+                                                for (var i = 0; i < result.length; i++) {
+
+                                                    $("#stoBody").append('<tr>' +
+                                                        '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                                                        '                    <td >' + result[i].id + '</td>' +
+                                                        '                    <td >' + result[i].acceptDate + '</td>' +
+                                                        '                    <td >' + result[i].acceptPerson + '</td>' +
+                                                        '                    <td >' + result[i].acceptCompany + '</td>' +
+                                                        '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                                        '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                                        '                    <td>' +
+                                                        '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                                        '                    </td>' +
+                                                        '                </tr>')
+                                                }
+                                                form.render();
+
+                                            });
+                                        }
+                                    })
+                                }
+                            })
                         });
 
                     });

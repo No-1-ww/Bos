@@ -1,6 +1,9 @@
 package com.xr.bos.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.*;
 import com.xr.bos.service.*;
 import com.xr.bos.util.DateFormat;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +64,29 @@ public class SorStorageController {
         /*String key = "com.xr.bos.controller.SorStorageController.queryAll";
         Object list = redisTemplateUtil.getList(key);*/
         ModelAndView mv = new ModelAndView();
-        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll();
+        PageHelper.startPage(1, 5);
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll(1,5);
+
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
         mv.addObject("sorStorages",sorStorages);
         mv.setViewName("/sortingManagement/storage");
+        //查询总数绑定至前台
+        Integer storCount = sorStorageService.queryCount();
+        mv.addObject("storCount",storCount);
         String s = JSONArray.toJSONString(acceptDate);
         return mv;
     }
 
+    /**
+     * 查询总数
+     */
+    @RequestMapping(value = "/sortingManagement/queryCount",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String queryCount(){
+        //查询总数绑定至前台
+        Integer storCount = sorStorageService.queryCount();
+        return storCount.toString();
+    }
 
     /**
      * 查询所有，ajax方式
@@ -75,8 +94,10 @@ public class SorStorageController {
      */
     @RequestMapping(value = "/sortingManagement/query",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
     @ResponseBody
-    public String query(){
-        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll();
+    public String query(Integer page,Integer limit){
+
+        System.out.println("page:"+page+"limit:"+limit);
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll(page,limit);
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
         String s = JSONArray.toJSONString(acceptDate);
         return s;
@@ -91,27 +112,97 @@ public class SorStorageController {
      */
     @RequestMapping(value = "/sortingManagement/queryWhere",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
     @ResponseBody
-    public String queryWhere(SorStorage sorStorage,String aPerson,String dPerson,String date){
+    public String queryWhere(SorStorage sorStorage,String aPerson,String dPerson,String date,Integer page,Integer limit,HttpSession session){
         //把员工姓名变成ID
         if(aPerson!=""){
             SyEmp check = syEmpService.check(aPerson);
-            sorStorage.setAcceptPerson(check.getID());
+            if(check!=null){
+                sorStorage.setAcceptPerson(check.getID());
+            }else{
+                return "null";
+            }
+
         }
         if(dPerson!=""){
             SyEmp check1 = syEmpService.check(dPerson);
-            sorStorage.setDeliveryPerson(check1.getID());
+            if(check1!=null){
+                sorStorage.setDeliveryPerson(check1.getID());
+            }else{
+                return "null";
+            }
+
         }
         if(!date.equals("")&&date!=null){
             //把时间转换为Date类型赋给实体
             Date date1 = Date.valueOf(date);
             sorStorage.setAcceptDate(date1);
         }
-        System.out.println("####################################################################"+sorStorage);
         //返回数据后，格式化时间
-        List<Map<String,Object>>  sorStorages =  sorStorageService.queryWhere(sorStorage);
+        Map<String,Object> map = new HashMap<>();
+        map.put("acceptDate",sorStorage.getAcceptDate());
+        map.put("acceptPerson",sorStorage.getAcceptPerson());
+        map.put("acceptCompany",sorStorage.getAcceptCompany());
+        map.put("deliveryPerson",sorStorage.getDeliveryPerson());
+        map.put("deliveryCompany",sorStorage.getDeliveryCompany());
+        map.put("page",page);
+        map.put("limit",limit);
+        //由于需要分页，所以需要把sorStorage修改为Map集合
+        List<Map<String,Object>>  sorStorages =  sorStorageService.queryWhere(map);
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
+
+
+
         String s = JSONArray.toJSONString(acceptDate);
         return s;
+    }
+
+    /**
+     * 查询总数
+     * 当填写了查询条件，那么先会进入该方法去查询总数因为layuiPage的Count需要先查询出来
+     * @param sorStorage
+     * @param aPerson
+     * @param dPerson
+     * @param date
+     * @return
+     */
+    @RequestMapping(value = "/sortingManagement/queryWhereCount",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String queryWhereCount(SorStorage sorStorage,String aPerson,String dPerson,String date){
+        //把员工姓名变成ID
+        if(aPerson!=""){
+            SyEmp check = syEmpService.check(aPerson);
+            if(check!=null){
+                sorStorage.setAcceptPerson(check.getID());
+            }else{
+                return "null";
+            }
+
+        }
+        if(dPerson!=""){
+            SyEmp check1 = syEmpService.check(dPerson);
+            if(check1!=null){
+                sorStorage.setDeliveryPerson(check1.getID());
+            }else{
+                return "null";
+            }
+
+        }
+        if(!date.equals("")&&date!=null){
+            //把时间转换为Date类型赋给实体
+            Date date1 = Date.valueOf(date);
+            sorStorage.setAcceptDate(date1);
+        }
+        //返回数据后，格式化时间
+        Map<String,Object> map = new HashMap<>();
+        map.put("acceptDate",sorStorage.getAcceptDate());
+        map.put("acceptPerson",sorStorage.getAcceptPerson());
+        map.put("acceptCompany",sorStorage.getAcceptCompany());
+        map.put("deliveryPerson",sorStorage.getDeliveryPerson());
+        map.put("deliveryCompany",sorStorage.getDeliveryCompany());
+        //由于需要分页，所以需要把sorStorage修改为Map集合
+        //查询总数
+        Integer count = sorStorageService.queryWhereCount(map);
+        return count.toString();
     }
 
     /**
@@ -269,7 +360,6 @@ public class SorStorageController {
          ModelAndView mv = new ModelAndView();
         mv.setViewName("/sortingManagement/invoiceComparisonTable_add");
         Map<String,Object> map = sorStorageService.queryByIDStorage(upDateStoID);
-
         Map<String, Object> storage = DateFormat.format(map, "acceptDate");
         mv.addObject("stoID",storage.get("id"));
         mv.addObject("acceptDate",storage.get("acceptDate"));
@@ -337,7 +427,7 @@ public class SorStorageController {
 
         sorStorageService.deleteSorStorage(ID);
         sorStorageDetailsService.deleteSorStorageDetails(ID);
-        return query();
+        return query(1,5);
     }
 
 

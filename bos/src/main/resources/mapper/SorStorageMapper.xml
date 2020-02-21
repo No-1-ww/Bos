@@ -2,14 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SorStorageMapper">
-    <select id="queryAll" resultMap="SorStorageMap">
+    <select id="queryAll" parameterType="Map" resultMap="SorStorageMap">
         select s.ID,s.AcceptDate,se1.EmpName AcceptPerson ,s.AcceptCompany,se2.EmpName DeliveryPerson ,s.DeliveryCompany
         from sor_storage s
         inner join sy_emp se1 on s.AcceptPerson = se1.ID
         inner join sy_emp se2 on s.DeliveryPerson = se2.ID
-        order by s.ID
+        order by s.ID limit #{page},#{limit}
     </select>
-    <select id="queryWhere" parameterType="SorStorage" resultMap="SorStorageMap">
+    <select id="queryCount" resultType="Integer">
+        select count(*)
+        from sor_storage s
+        inner join sy_emp se1 on s.AcceptPerson = se1.ID
+        inner join sy_emp se2 on s.DeliveryPerson = se2.ID
+    </select>
+    <select id="queryWhere" parameterType="Map" resultMap="SorStorageMap">
         select s.ID,s.AcceptDate,se1.EmpName AcceptPerson ,s.AcceptCompany,se2.EmpName DeliveryPerson ,s.DeliveryCompany
         from sor_storage s
         inner join sy_emp se1 on s.AcceptPerson = se1.ID
@@ -81,9 +87,84 @@
             s.deliveryCompany=#{deliveryCompany}
         </if>
 
-        order by s.ID
+        order by s.ID limit #{page},#{limit}
         /*先用where条件查询，然后orderby进行排序*/
     </select>
+
+    <select id="queryWhereCount" parameterType="Map" resultType="Integer">
+        select count(*) from sor_storage s
+        inner join sy_emp se1 on s.AcceptPerson = se1.ID
+        inner join sy_emp se2 on s.DeliveryPerson = se2.ID
+        where
+        <if test=" ID !=null">
+            /*进了*/
+            s.ID =#{ID}
+            <if test="acceptDate !=null">
+                and s.acceptDate like '%${acceptDate}%'
+            </if>
+            <if test="acceptPerson !=null">
+                and s.acceptPerson=#{acceptPerson}
+            </if>
+            <if test="acceptCompany !=''">
+                and s.acceptCompany=#{acceptCompany}
+            </if>
+            <if test="deliveryPerson !=null">
+                and s.deliveryPerson=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and s.deliveryCompany=#{deliveryCompany}
+            </if>
+        </if>
+        <if test="acceptDate !=null and ID ==null">
+            s.acceptDate like '%${acceptDate}%'
+            <if test="acceptPerson !=null">
+                and s.acceptPerson=#{acceptPerson}
+            </if>
+            <if test="acceptCompany !=''">
+                and s.acceptCompany=#{acceptCompany}
+            </if>
+            <if test="deliveryPerson !=null">
+                and s.deliveryPerson=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and s.deliveryCompany=#{deliveryCompany}
+            </if>
+        </if>
+        <if test="acceptPerson !=null and acceptDate ==null and ID ==null">
+            s.acceptPerson=#{acceptPerson}
+            <if test="acceptCompany !=''">
+                and s.acceptCompany=#{acceptCompany}
+            </if>
+            <if test="deliveryPerson !=null">
+                and s.deliveryPerson=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and s.deliveryCompany=#{deliveryCompany}
+            </if>
+        </if>
+
+        <if test="acceptCompany !='' and acceptPerson ==null and acceptDate ==null and ID ==null ">
+            s.acceptCompany=#{acceptCompany}
+            <if test="deliveryPerson !=''">
+                and s.deliveryPerson=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and s.deliveryCompany=#{deliveryCompany}
+            </if>
+        </if>
+        <if test="deliveryPerson !=null and acceptCompany =='' and acceptPerson ==null and acceptDate ==null and ID ==null">
+            s.deliveryPerson=#{deliveryPerson}
+            <if test="deliveryCompany !=''">
+                and s.deliveryCompany=#{deliveryCompany}
+            </if>
+        </if>
+        <if test="deliveryCompany !='' and deliveryPerson ==null and acceptCompany =='' and acceptPerson ==null and acceptDate ==null and ID ==null">
+            s.deliveryCompany=#{deliveryCompany}
+        </if>
+
+        order by s.ID
+    </select>
+
     <resultMap id="SorStorageMap" type="Map">
         <id property="id" column="ID"></id>
         <result property="acceptDate" column="AcceptDate"></result>
