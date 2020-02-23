@@ -211,7 +211,7 @@
                 $.ajax({
 					url:"/queryUnitsName",
 					type:"POST",
-					data:{"EmpUnitID":id},
+					data:{"SyEmpId":id},
 					success:function (data) {
 						$("input[name=deliveryCompany]").val(data);
                     }

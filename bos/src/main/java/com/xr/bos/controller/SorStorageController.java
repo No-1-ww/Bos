@@ -64,7 +64,6 @@ public class SorStorageController {
         /*String key = "com.xr.bos.controller.SorStorageController.queryAll";
         Object list = redisTemplateUtil.getList(key);*/
         ModelAndView mv = new ModelAndView();
-        PageHelper.startPage(1, 5);
         List<Map<String,Object>>  sorStorages =  sorStorageService.queryAll(1,5);
 
         List<Map<String, Object>> acceptDate = DateFormat.formatMap(sorStorages, "acceptDate");
@@ -275,9 +274,9 @@ public class SorStorageController {
      */
     @RequestMapping(value = "/queryUnitsName",produces = "text/String;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String queryUnitsName(Integer EmpUnitID){
+    public String queryUnitsName(Integer SyEmpId){
         //传进来的
-        if(EmpUnitID==null){
+        if(SyEmpId==null){
             return "";
         }
         /*
@@ -295,7 +294,14 @@ public class SorStorageController {
         }else{
             return str.toString();
         }*/
+        //根据ID查询Emp表员工对应的公司ID
+        List<SyEmp> syEmps = syEmpService.querySyEmp(SyEmpId);
+        int EmpUnitID = 0 ;
+        for (SyEmp syEmp : syEmps) {
+            EmpUnitID = syEmp.getEmpUnit();
+        }
         SyUnits syUnits = syUnitsService.findID(EmpUnitID);
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+syUnits);
         String name = syUnits.getName();
         return name;
     }
