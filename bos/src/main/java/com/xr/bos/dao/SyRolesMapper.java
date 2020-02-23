@@ -15,4 +15,11 @@ public interface SyRolesMapper {
     //根据条件查询
     List<SyRoles> findRolesWhereRolesNameAndDisabled(SyRoles syRoles);
 
+    /**
+     * 添加角色
+     * @param syRoles
+     * @return
+     */
+    int addSysRoles(SyRoles syRoles);
+
 }

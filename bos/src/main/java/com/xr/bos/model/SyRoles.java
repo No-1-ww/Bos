@@ -10,13 +10,13 @@ public class SyRoles implements Serializable {
     private Integer id;
     private String roleName;
     private String roleDesc;
-    private  char  disabled;
+    private  int  disabled;
     public SyRoles(){
 
 
     }
 
-    public SyRoles(Integer id, String roleName, String roleDesc, char disabled) {
+    public SyRoles(Integer id, String roleName, String roleDesc, int disabled) {
         this.id = id;
         this.roleName = roleName;
         this.roleDesc = roleDesc;
@@ -48,11 +48,11 @@ public class SyRoles implements Serializable {
         this.roleDesc = roleDesc;
     }
 
-    public char getDisabled() {
+    public int getDisabled() {
         return disabled;
     }
 
-    public void setDisabled(char disabled) {
+    public void setDisabled(int disabled) {
         this.disabled = disabled;
     }
 

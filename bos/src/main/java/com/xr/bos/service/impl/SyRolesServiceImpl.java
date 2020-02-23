@@ -25,4 +25,9 @@ public class SyRolesServiceImpl implements SyRolesService {
     public List<SyRoles> findRolesWhereRolesNameAndDisabled(SyRoles syRoles) {
         return syRolesMapper.findRolesWhereRolesNameAndDisabled(syRoles);
     }
+
+    @Override
+    public int addSysRoles(SyRoles syRoles) {
+        return syRolesMapper.addSysRoles(syRoles);
+    }
 }

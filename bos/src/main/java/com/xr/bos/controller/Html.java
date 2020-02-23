@@ -121,12 +121,16 @@ public class Html {
         return "/systemManagement/sysRole_distribution";
     }
 
-    //添加角色/修改角色
+    //添加角色
     @GetMapping("/sysRole_add")
     public String sysRole_add(){
         return "/systemManagement/sysRole_add";
     }
-
+    //修改角色
+    @GetMapping("/sysRole_edit")
+    public String sysRole_edit(){
+        return "/systemManagement/sysRole_edit";
+    }
 
     //业务受理查询
     /*@GetMapping("/acceptance/businessAcceptance")

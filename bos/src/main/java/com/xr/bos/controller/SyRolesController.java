@@ -2,6 +2,7 @@ package com.xr.bos.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xr.bos.dao.SyRolesMapper;
 import com.xr.bos.model.Bigloglogisticscontroltable;
 import com.xr.bos.model.SyRoles;
 import com.xr.bos.service.SyRolesService;
@@ -9,11 +10,15 @@ import com.xr.bos.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -23,6 +28,9 @@ public class SyRolesController {
 
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
+
+    @Autowired
+    private SyRolesMapper syRolesMapper;
 
     /**
      * 角色管理所有数据
@@ -82,20 +90,27 @@ public class SyRolesController {
      * @param page
      * @param limit
      */
-    @RequestMapping(value = "/findRolesWhereRolesNameAndDisabled")
-    public void findRolesWhereRolesNameAndDisabled(SyRoles syRoles,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+    @RequestMapping(value = "/findRolesWhereRolesNameAndDisabled",method = RequestMethod.GET)
+    public void findRolesWhereRolesNameAndDisabled(SyRoles syRoles, HttpServletResponse responses, HttpServletRequest request, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入findRolesWhereRolesNameAndDisabled.....");
-        String a=null;
-        if (syRoles.getRoleName()==""){
-            a=syRoles.getRoleName();
-        }
-        if(syRoles.getDisabled()+" "==""){
-            a=String.valueOf(syRoles.getDisabled());
+        try {
+            request.setCharacterEncoding("utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
+       /* if (Integer.toString(syRoles.getDisabled())==""){
+           syRoles.setDisabled(1);
+        }*/
+        //System.out.println(syRoles.getDisabled());
+        //syRoles.setDisabled(Integer.parseInt(disabled));
 
+        System.out.println("角色名为"+syRoles.getRoleName()+"状态为"+syRoles.getDisabled());
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         List<SyRoles> rolesList = syRolesService.findRolesWhereRolesNameAndDisabled(syRoles);
+        for (SyRoles roles : rolesList) {
+            System.out.println(roles);
+        }
         PageInfo pageInfo = new PageInfo(rolesList);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+pageInfo.getTotal()+",\"data\":[");
         for (SyRoles b : rolesList) {
@@ -118,4 +133,20 @@ public class SyRolesController {
         }
     }
 
+    /**
+     * 添加角色
+     * @return
+     */
+    @RequestMapping(value = "/addSysRoles",method = RequestMethod.GET)
+    @ResponseBody
+    public  ModelAndView addSysRoles(SyRoles syRoles,String disabled){
+
+
+       String b="\"b";
+        System.out.println(syRoles.getRoleName()+"   "+syRoles.getRoleDesc()+"  "+syRoles.getDisabled());
+
+        syRolesService.addSysRoles(syRoles);
+        System.out.println("添加成功");
+        return new ModelAndView("/systemManagement/sysRole");
+    }
 }

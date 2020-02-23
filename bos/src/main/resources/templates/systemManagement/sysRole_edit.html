@@ -10,7 +10,7 @@
 <div class="layui-form">
 	<div class="layui-tab layui-tab-brief">
 		<ul class="layui-tab-title">
-			<li class="layui-this">新增角色</li>
+			<li class="layui-this">修改角色</li>
 		</ul>
 		<div class="layui-tab-content" style="height: 100px;">
 			<div class="layui-tab-item layui-show">
@@ -67,7 +67,7 @@ layui.use(['form','layer'], function(){
 		var form = layui.form
 			,layer=layui.layer;
 
-		//监听提交
+		//监听提交/保存
 		form.on('submit(suu)',function (data) {
 			var roleName=$('#roleName').val();
 			var disabled=$('#disabled').val();
