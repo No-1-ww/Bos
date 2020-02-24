@@ -127,11 +127,11 @@ public class Html {
         return "/systemManagement/sysRole_add";
     }
     //修改角色
-    @GetMapping("/sysRole_edit")
+  /*  @GetMapping("/sysRole_edit")
     public String sysRole_edit(){
         return "/systemManagement/sysRole_edit";
     }
-
+*/
     //业务受理查询
     /*@GetMapping("/acceptance/businessAcceptance")
     public String businessAcceptance(){

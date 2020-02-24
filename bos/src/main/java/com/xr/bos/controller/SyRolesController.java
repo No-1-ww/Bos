@@ -140,13 +140,81 @@ public class SyRolesController {
     @RequestMapping(value = "/addSysRoles",method = RequestMethod.GET)
     @ResponseBody
     public  ModelAndView addSysRoles(SyRoles syRoles,String disabled){
-
-
-       String b="\"b";
         System.out.println(syRoles.getRoleName()+"   "+syRoles.getRoleDesc()+"  "+syRoles.getDisabled());
 
         syRolesService.addSysRoles(syRoles);
         System.out.println("添加成功");
         return new ModelAndView("/systemManagement/sysRole");
     }
+
+    /**
+     * 打开编辑页面传值
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/findOpenById")
+    public ModelAndView findOpenById(String id){
+        System.out.println(id);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/systemManagement/sysRole_edit");
+        mv.addObject("id",id);
+        return mv;
+
+    }
+
+
+    /**
+     * 编辑页面的赋值
+     * @param syRoles
+     * @param responses
+     */
+    @RequestMapping(value = "/findRolesWhereUpdateById")
+    public void findRolesWhereUpdateById(SyRoles syRoles, HttpServletResponse responses){
+        System.out.println("=========="+syRoles);
+        List<SyRoles> rolesWhereUpdateById = syRolesService.findRolesWhereUpdateById(syRoles);
+        StringBuffer sb = new StringBuffer();
+        for (SyRoles b : rolesWhereUpdateById) {
+            sb.append("{\"id\":" + "\"" + b.getId() + "\",\"roleName\":" + "\"" + b.getRoleName() + "\",\"roleDesc\":" + "\"" + b.getRoleDesc() + "\",\"disabled\":" + "\"" +b.getDisabled()+"\"},");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 修改保存
+     * @param syRoles
+     * @return
+     */
+    @RequestMapping(value = "/updateSysRoles",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView updateSysRoles(SyRoles syRoles) {
+        System.out.println("进入修改方法。。。。。");
+        int i = syRolesService.updateSysRolesByid(syRoles);
+        ModelAndView mv=new ModelAndView();
+
+        if (i > 0) {
+            System.out.println("修改成功");
+             mv.setViewName("/systemManagement/sysRole");
+        }else{
+            System.out.println("修改失败");
+            mv.setViewName("/systemManagement/sysRole_edit");
+        }
+        System.out.println("查看i的值======" + i);
+        System.out.println(syRoles.getRoleName() + "======" + syRoles.getRoleDesc() + "=====" + syRoles.getDisabled());
+        return mv;
+    }
+
 }

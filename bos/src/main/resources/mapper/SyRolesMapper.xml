@@ -20,7 +20,15 @@
             </if>
     </select>
     <insert id="addSysRoles">
-        INSERT INTO `bos`.`sy_roles`( `RoleName`, `RoleDesc`, `Disabled`) VALUES ( #{roleName}, #{roleDesc}, #{disabled});
+        INSERT INTO sy_roles( `RoleName`, `RoleDesc`, `Disabled`) VALUES ( #{roleName}, #{roleDesc}, #{disabled});
 
     </insert>
+    <select id="findRolesWhereUpdateById" resultType="com.xr.bos.model.SyRoles">
+        select * from sy_roles where ID=#{id}
+
+    </select>
+    <update id="updateSysRolesByid">
+
+        UPDATE sy_roles SET `RoleName` =#{roleName}, `RoleDesc` = #{roleDesc}, `Disabled` =#{disabled} WHERE `ID` =#{id};
+    </update>
 </mapper>

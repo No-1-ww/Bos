@@ -17,8 +17,33 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
+
+		<!-- 查询 重置-->
+		<div class="layui-form-item">
+
+			<div class="layui-inline">
+				<label class="layui-form-label">单位名称:</label>
+				<div class="layui-input-block" style="width: 150px;">
+					<input type="text" name="title" id="Uname" placeholder="请输入单位名称" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<!--查询按钮组-->
+			<div class="layui-inline">
+				<button class="layui-btn  btnQuery" data-type="reload" lay-filter="sreach">
+					<i class="layui-icon">&#xe615;</i>查询
+				</button>
+				<button type="button" class="layui-btn btnOther" id="resetting">
+					<i class="layui-icon">&#x1002;</i> 重置
+				</button>
+
+			</div>
+		</div>
+
+
+
 		<form class="layui-form" action="">
-			<div class="layui-form-item">
+			<!--<div class="layui-form-item">
 
 				<div class="layui-inline">
 				    <label class="layui-form-label">单位名称:</label>
@@ -27,7 +52,7 @@
 				    </div>
 			    </div>
 
-				<!-- 查询按钮组 -->
+				 查询按钮组
 			    <div class="layui-inline">
 					<button type="button" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
@@ -38,7 +63,7 @@
 					</button>
 
 				</div>
-			</div>
+			</div>-->
 
 			<!-- 操作按扭组 -->
 			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
@@ -48,33 +73,6 @@
 					<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">删除</button>
 				</div>
 			</div>
-
-			<!--&lt;!&ndash; 数据表格 &ndash;&gt;
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<th>序号</th>
-						<th>单位名称</th>
-						<th>备注</th>
-						<th>操作人员</th>
-						<th>操作时间</th>
-
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="syunits:${syunits}">
-						<td><input type="checkbox" name="check" lay-skin="primary"></td>
-						<td th:text="${syunits.ID}"></td>
-						<td th:text="${syunits.Name}"></td>
-						<td th:text="${syunits.Remarks}"></td>
-						<td th:text="${syunits.EmpName}"></td>
-						<td th:text="${syunits.OperationTime}"></td>
-					</tr>
-				</tbody>
-
-			</table>-->
-
 		</form>
 		<div>
 			<!-- 数据表格 -->
@@ -86,14 +84,45 @@
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+
+	/**
+	 * 重置 点击
+	 * */
+	$("#resetting").click(function(){
+
+		//刷新全部
+		/* window.parent.location.reload();*/
+
+		//刷当前页面
+		window.location.reload();
+
+	})
 //加载'form'模块，使checkbox、select、radio初始化
 layui.use('form', function(){
 
 });
 
 //加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
+var table;
+var layer;
+var form;
+var laydate;
+var element;
+layui.use(['layer','laypage','table','element','form','laydate','element'], function(){
+	table = layui.table;
+	layer = layui.layer;
+	form = layui.form;
+	laydate = layui.laydate;
+	element = layui.element //元素操作
+
+	//监听Tab切换
+	element.on('tab(demo)', function(data){
+		layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+			tips: 1
+		});
+	});
+
+	//执行一个 table 实例
 	table.render({
 		id:'alltable',
 		height:400,
@@ -114,7 +143,14 @@ layui.use('table', function(){
 		]
 	})
 
+
+
 });
+
+
+
+
+
 
 //加载'laydate'时间组件
 layui.use('laydate', function(){
@@ -124,6 +160,12 @@ layui.use('laydate', function(){
     elem: '#opTime' //指定元素
   });
 });
+
+
+
+
+
+
 
 $(function(){
 	//显示、隐藏剩余的查询条件

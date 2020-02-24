@@ -25,6 +25,7 @@ public class SyUnitsServiceImpl implements SyUnitsService {
         return syUnitsMapper.findUntisAll();
     }
 
+    //根据单位名称查询单位资料
     @Override
     public List<Map<String, Object>> findUntiswhereAsname(String name) {
         return syUnitsMapper.findUntiswhereAsname(name);

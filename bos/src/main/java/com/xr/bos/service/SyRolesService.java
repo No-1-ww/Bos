@@ -19,4 +19,19 @@ public interface SyRolesService {
      * @return
      */
     int addSysRoles(SyRoles syRoles);
+
+    /**
+     * 编辑查询根据id获取值
+     * @param syRoles
+     * @return
+     */
+    List<SyRoles> findRolesWhereUpdateById(SyRoles syRoles);
+
+
+    /**
+     * 修改角色信息
+     * @param syRoles
+     * @return
+     */
+    int updateSysRolesByid(SyRoles syRoles);
 }

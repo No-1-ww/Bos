@@ -12,4 +12,5 @@ public interface SyUnitsService {
     List<Map<String,Object>> findUntisAll();
     //根据单位名称查询单位资料
     List<Map<String,Object>> findUntiswhereAsname(String name);
+
 }

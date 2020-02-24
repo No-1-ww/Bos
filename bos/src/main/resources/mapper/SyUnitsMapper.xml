@@ -19,7 +19,7 @@
     from
         sy_units u,sy_emp e
     where
-        u.OperatorID=e.ID and   `Name`=#{name}
+        u.OperatorID=e.ID and   `Name` like "%"#{name}"%"
 
     </select>
 

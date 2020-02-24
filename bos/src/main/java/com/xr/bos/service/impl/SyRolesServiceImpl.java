@@ -30,4 +30,15 @@ public class SyRolesServiceImpl implements SyRolesService {
     public int addSysRoles(SyRoles syRoles) {
         return syRolesMapper.addSysRoles(syRoles);
     }
+
+    @Override
+    public List<SyRoles> findRolesWhereUpdateById(SyRoles syRoles) {
+        return syRolesMapper.findRolesWhereUpdateById(syRoles);
+    }
+
+    @Override
+    public int updateSysRolesByid(SyRoles syRoles) {
+        System.out.println("进入serviceimpl......");
+        return syRolesMapper.updateSysRolesByid(syRoles);
+    }
 }
