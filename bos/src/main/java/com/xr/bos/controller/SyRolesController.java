@@ -139,7 +139,7 @@ public class SyRolesController {
      */
     @RequestMapping(value = "/addSysRoles",method = RequestMethod.GET)
     @ResponseBody
-    public  ModelAndView addSysRoles(SyRoles syRoles,String disabled){
+    public  ModelAndView addSysRoles(SyRoles syRoles){
         System.out.println(syRoles.getRoleName()+"   "+syRoles.getRoleDesc()+"  "+syRoles.getDisabled());
 
         syRolesService.addSysRoles(syRoles);
@@ -217,4 +217,10 @@ public class SyRolesController {
         return mv;
     }
 
+    @RequestMapping(value = "/delSysRolesByid")
+    public ModelAndView delSysRolesByid(String id){
+        System.out.println("rid===="+id);
+        syRolesService.delSysRolesByid(Integer.parseInt(id));
+        return new ModelAndView("//systemManagement/sysRole");
+    }
 }

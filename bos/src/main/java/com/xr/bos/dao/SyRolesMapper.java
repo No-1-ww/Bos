@@ -12,7 +12,7 @@ public interface SyRolesMapper {
     //	SELECT * from sy_roles
     List<SyRoles>  findRolesAll();
 
-    //根据条件查询
+    //根据条件查询，多条件
     List<SyRoles> findRolesWhereRolesNameAndDisabled(SyRoles syRoles);
 
     /**
@@ -35,5 +35,12 @@ public interface SyRolesMapper {
      * @return
      */
     int updateSysRolesByid(SyRoles syRoles);
+
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
+    int delSysRolesByid(Integer id);
 
 }

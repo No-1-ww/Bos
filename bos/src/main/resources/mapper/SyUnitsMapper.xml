@@ -22,5 +22,28 @@
         u.OperatorID=e.ID and   `Name` like "%"#{name}"%"
 
     </select>
+    <insert id="addUnits">
+
+        INSERT INTO `bos`.`sy_units`( `Name`, `Remarks`, `OperatorID`, `OperationTime`) VALUES (#{name}, #{reMarks}, #{operAtorID}, #{operationTime});
+
+    </insert>
+    <select id="findUntisUpdateByID" resultType="java.util.Map">
+        select
+        u.ID,u.`Name`,u.Remarks,e.EmpName,u.OperationTime
+        from
+        sy_units u,sy_emp e
+        where
+        u.OperatorID=e.ID and   u.ID =#{ID}
+
+    </select>
+
+    <update id="updateSyUntisByID">
+        UPDATE `bos`.`sy_units` SET `Name` = #{name}, `Remarks` = #{reMarks}, `OperatorID` = #{operAtorID}, `OperationTime` = #{operationTime} WHERE `ID` = #{ID};
+
+    </update>
+    <delete id="delSyUntisByID">
+            delete from sy_units where ID=#{ID}
+
+    </delete>
 
 </mapper>

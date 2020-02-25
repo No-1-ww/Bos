@@ -80,17 +80,27 @@ public class Html {
     public String sysUnit(){
         return "/systemManagement/sysUnit";
     }
-    //员工管理
-    @GetMapping("/systemManagement/sysEmp")
-    public String sysEmp(){
-        return "/systemManagement/sysEmp";
-    }
-    //单位管理增加/修改
+    //单位管理增加
     @GetMapping("sysUnit_add")
     public String sysUnit_add(){
         return
                 "/systemManagement/sysUnit_add";
     }
+
+
+
+    //员工管理
+    @GetMapping("/systemManagement/sysEmp")
+    public String sysEmp(){
+        return "/systemManagement/sysEmp";
+    }
+
+    //添加员工
+    @GetMapping("/sysEmp_add")
+    public String sysEmp_add(){
+        return "/systemManagement/sysEmp_add";
+    }
+
 
        //栏目管理
     @GetMapping("/systemManagement/sysMenu")

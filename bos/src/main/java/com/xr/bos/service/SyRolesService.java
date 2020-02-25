@@ -34,4 +34,11 @@ public interface SyRolesService {
      * @return
      */
     int updateSysRolesByid(SyRoles syRoles);
+
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
+    int delSysRolesByid(Integer id);
 }

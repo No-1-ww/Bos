@@ -10,7 +10,7 @@
 <div class="layui-form">
 	<div class="layui-tab layui-tab-brief">
 		<ul class="layui-tab-title">
-			<li class="layui-this">新增单位</li>
+			<li class="layui-this">修改单位</li>
 		</ul>
 		<div class="layui-tab-content" style="height: 100px;">
 			<div class="layui-tab-item layui-show">
@@ -50,7 +50,29 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
 
+	//修改的赋值
+layui.use(['form','layer'],function () {
+		var layer = layui.layer
+				, form = layui.form;
 
+		var ID=[[${ID}]];
+		//alert(ID);
+		$.ajax({
+			url:'/findUntisUpdateByID',
+			data:{"ID":ID},
+			type:"get",
+			success:function (data) {
+				console.log($.parseJSON(data).ID);
+				$("#name").val($.parseJSON(data).Name);
+				$("#reMarks").val($.parseJSON(data).Remarks);
+				form.render('select');
+			}
+		})
+
+	})
+
+
+	//保存修改
 	//加载'form'模块，使checkbox、select、radio初始化
 layui.use(['form','layer'], function(){
 		//渲染
@@ -61,16 +83,18 @@ layui.use(['form','layer'], function(){
 		form.on('submit(suu)',function (data) {
 			var name=$('#name').val();
 			var reMarks=$('#reMarks').val();
+			var ID=[[${ID}]];
 			alert(name+"  "+reMarks);
 			$.ajax({
-				url:'/addUntis',
+				url:'/updateSyUntis',
 				type:'get',
 				data:{
 					"name":name,
-					"reMarks":reMarks
+					"reMarks":reMarks,
+					"ID":ID
 				},
 				success:function (res) {
-					layer.alert("新增成功！", {icon: 6},function () {
+					layer.alert("修改成功！", {icon: 6},function () {
 						// 获得frame索引
 						var index = parent.layer.getFrameIndex(window.name);
 						parent.location.reload(); //刷新父页面

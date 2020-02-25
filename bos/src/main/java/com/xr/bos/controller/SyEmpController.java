@@ -1,9 +1,12 @@
 package com.xr.bos.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.SyEmp;
+import com.xr.bos.model.SyRoles;
+import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.SyEmpService;
 import com.xr.bos.util.DuanxinPhone;
 import com.xr.bos.util.RedisTemplateUtil;
@@ -126,10 +129,13 @@ public class SyEmpController {
      * @param limit
      */
     @RequestMapping(value = "/findEmpAll")
-    public void  findEmpAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+    public void  findEmpAll(HttpSession session,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入查询员工放法findEmpAll.......");
+        SyEmp syEmp =(SyEmp) session.getAttribute("SyEmp");
+        int id=syEmp.getID();
+        System.out.println("id======"+id);
         PageHelper.startPage(Integer.parseInt(page),Integer.parseInt(limit));
-        List<Map<String, Object>> mapList = syEmpService.findEmpAll();
+        List<Map<String, Object>> mapList = syEmpService.findEmpAll(id);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(mapList);
         StringBuffer sb=new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
         for (Map<String, Object> map : mapList) {
@@ -164,4 +170,117 @@ public class SyEmpController {
 
     }
 
+    /**
+     * 多条件查询
+     * @param syEmp
+     * @param session
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/findEmpByNameOrDisabled")
+    public void findEmpByNameOrDisabled(SyEmp syEmp,HttpSession session,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+        System.out.println("进入findEmpByNameOrDisabled。。。。。。。。");
+        SyEmp syEmps =(SyEmp) session.getAttribute("SyEmp");
+        int id=syEmps.getID();
+        syEmp.setID(id);
+        System.out.println("id======"+id);
+        System.out.println(syEmp.getEmpName()+"========  "+syEmp.getDisabled());
+        PageHelper.startPage(Integer.parseInt(page),Integer.parseInt(limit));
+        List<Map<String, Object>> mapList =syEmpService.findEmpByNameOrDisabled(syEmp);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(mapList);
+        StringBuffer sb=new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
+        for (Map<String, Object> map : mapList) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("},");
+
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 下拉框查询 角色名
+     * @return
+     */
+    @RequestMapping(value = "/selectedRolesByRolesName",method = RequestMethod.GET)
+    @ResponseBody
+    public void selectedRolesByRolesName(HttpServletResponse responses){
+        List<SyRoles> syRoles = syEmpService.selectedRolesByRolesName();
+        String s = JSON.toJSONString(syRoles);
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(s);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(s);
+            PrintWriter out = responses.getWriter();
+            out.print(s);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 单位下拉框查询
+     * @param responses
+     */
+    @RequestMapping(value = "/selectedUntisByName",method = RequestMethod.GET)
+    @ResponseBody
+    public void selectedUntisByName(HttpServletResponse responses){
+        List<SyUnits> syUnits = syEmpService.selectedUntisByName();
+        String s = JSON.toJSONString(syUnits);
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(s);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(s);
+            PrintWriter out = responses.getWriter();
+            out.print(s);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+   /* @RequestMapping(value = "/findMaxByEmpNo")
+    public void findMaxByEmpNo(){
+        ModelAndView mv=new ModelAndView();
+        String empNo = syEmpService.findMaxByEmpNo();
+        String e=empNo.substring(0,1);
+        String num=empNo.substring(1);
+        int empno=Integer.parseInt(num)+1;
+        System.out.println("e==="+e+"   num===="+num+"  empno==="+empno);
+        String ee=e+empno;
+    }
+*/
 }

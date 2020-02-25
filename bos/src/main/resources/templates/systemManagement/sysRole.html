@@ -253,6 +253,48 @@ $(function(){
 		});
 	});
 
+
+
+	//删除
+	$('#opDelete').click(function () {
+		var checkStatus = table.checkStatus("alltable"),
+				data = checkStatus.data;
+
+		if(data.length>1){
+			layer.msg('只能同时删除一个');
+		}
+		else  if(data.length==1){
+			layer.confirm('确定要删除吗？', {
+				btn: ['是', '否'] //按钮
+
+			},function () {
+				layer.msg('删除成功', {icon: 1});
+				$.ajax({
+					url: '/delSysRolesByid',
+					type: 'get',
+					data: {'id': checkStatus.data[0].id},
+					success: function (a) {
+						location.reload();
+
+					}
+				});
+
+			},function () {
+				layer.msg("取消成功 ")
+			});
+		}else{
+			layer.msg("请选择需要删除的数据！")
+		}
+
+	})
+
+
+
+
+
+
+
+
 	//修改
 	$('#edit').click(function(){
 		var checkStatus = table.checkStatus("alltable"),

@@ -41,4 +41,14 @@ public class SyRolesServiceImpl implements SyRolesService {
         System.out.println("进入serviceimpl......");
         return syRolesMapper.updateSysRolesByid(syRoles);
     }
+
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
+    @Override
+    public int delSysRolesByid(Integer id) {
+        return syRolesMapper.delSysRolesByid(id);
+    }
 }

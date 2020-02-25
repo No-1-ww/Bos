@@ -30,4 +30,45 @@ public class SyUnitsServiceImpl implements SyUnitsService {
     public List<Map<String, Object>> findUntiswhereAsname(String name) {
         return syUnitsMapper.findUntiswhereAsname(name);
     }
+
+    /**
+     * 添加单位
+     * @param syUnits
+     * @return
+     */
+    @Override
+    public int addUnits(SyUnits syUnits) {
+        return syUnitsMapper.addUnits(syUnits);
+    }
+
+    /**
+     * 编辑的查询
+     * @param syUnits
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findUntisUpdateByID(SyUnits syUnits) {
+        return syUnitsMapper.findUntisUpdateByID(syUnits);
+    }
+
+    /**
+     * 修改单位信息
+     * @param syUnits
+     * @return
+     */
+    @Override
+    public int updateSyUntisByID(SyUnits syUnits) {
+        return syUnitsMapper.updateSyUntisByID(syUnits);
+    }
+
+    /**
+     * 删除单位
+     * @param ID
+     * @return
+     */
+    @Override
+    public int delSyUntisByID(Integer ID) {
+        return syUnitsMapper.delSyUntisByID(ID);
+    }
+
 }

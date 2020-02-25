@@ -45,7 +45,21 @@
     <select id="findEmpAll" resultType="map">
 select e.ID,e.EmpNo,e.EmpName,r.RoleName,e.Disabled
     from sy_emp e ,sy_roles r
-        where e.RoleID=r.ID
+        where e.RoleID=r.ID and e.ID !=#{id}
+    </select>
+
+    <select id="findEmpByNameOrDisabled" resultType="java.util.Map">
+        select e.ID,e.EmpNo,e.EmpName,r.RoleName,e.Disabled
+        from sy_emp e ,sy_roles r
+        where e.RoleID=r.ID and e.ID !=#{ID}
+        <if test="empName != null and empName != ''">
+            and e.empName=#{empName}
+        </if>
+        <if  test="disabled == 0 or disabled ==1">
+            and e.disabled=${disabled}
+        </if>
+
+
     </select>
 
 </mapper>

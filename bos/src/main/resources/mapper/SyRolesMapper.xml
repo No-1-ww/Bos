@@ -31,4 +31,8 @@
 
         UPDATE sy_roles SET `RoleName` =#{roleName}, `RoleDesc` = #{roleDesc}, `Disabled` =#{disabled} WHERE `ID` =#{id};
     </update>
+
+    <delete id="delSysRolesByid">
+            delete  from sy_roles where ID=#{id}
+    </delete>
 </mapper>
