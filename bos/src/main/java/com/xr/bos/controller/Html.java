@@ -80,17 +80,27 @@ public class Html {
     public String sysUnit(){
         return "/systemManagement/sysUnit";
     }
-    //员工管理
-    @GetMapping("/systemManagement/sysEmp")
-    public String sysEmp(){
-        return "/systemManagement/sysEmp";
-    }
-    //单位管理增加/修改
+    //单位管理增加
     @GetMapping("sysUnit_add")
     public String sysUnit_add(){
         return
                 "/systemManagement/sysUnit_add";
     }
+
+
+
+    //员工管理
+    @GetMapping("/systemManagement/sysEmp")
+    public String sysEmp(){
+        return "/systemManagement/sysEmp";
+    }
+
+    //添加员工
+    @GetMapping("/sysEmp_add")
+    public String sysEmp_add(){
+        return "/systemManagement/sysEmp_add";
+    }
+
 
        //栏目管理
     @GetMapping("/systemManagement/sysMenu")
@@ -121,13 +131,17 @@ public class Html {
         return "/systemManagement/sysRole_distribution";
     }
 
-    //添加角色/修改角色
+    //添加角色
     @GetMapping("/sysRole_add")
     public String sysRole_add(){
         return "/systemManagement/sysRole_add";
     }
-
-
+    //修改角色
+  /*  @GetMapping("/sysRole_edit")
+    public String sysRole_edit(){
+        return "/systemManagement/sysRole_edit";
+    }
+*/
     //业务受理查询
     /*@GetMapping("/acceptance/businessAcceptance")
     public String businessAcceptance(){

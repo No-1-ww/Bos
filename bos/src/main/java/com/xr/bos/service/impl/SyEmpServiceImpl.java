@@ -2,6 +2,8 @@ package com.xr.bos.service.impl;
 
 import com.xr.bos.dao.SyEmpMapper;
 import com.xr.bos.model.SyEmp;
+import com.xr.bos.model.SyRoles;
+import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.SyEmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,8 +60,47 @@ public class SyEmpServiceImpl implements SyEmpService {
     }
 
     @Override
-    public List<Map<String, Object>> findEmpAll() {
-        return syEmpMapper.findEmpAll();
+    public List<Map<String, Object>> findEmpAll(Integer id) {
+        return syEmpMapper.findEmpAll(id);
+    }
+
+
+    /**
+     * 多条件查询
+     * @param syEmp
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findEmpByNameOrDisabled(SyEmp syEmp) {
+        return syEmpMapper.findEmpByNameOrDisabled(syEmp);
+    }
+
+
+    /**
+     * 下拉框角色名 查询
+     * @return
+     */
+    @Override
+    public List<SyRoles> selectedRolesByRolesName() {
+        return syEmpMapper.selectedRolesByRolesName();
+    }
+
+    /**
+     * 下拉框单位查询
+     * @return
+     */
+    @Override
+    public List<SyUnits> selectedUntisByName() {
+        return syEmpMapper.selectedUntisByName();
+    }
+
+    /**
+     * 查询最大的工号
+     * @return
+     */
+    @Override
+    public String findMaxByEmpNo() {
+        return syEmpMapper.findMaxByEmpNo();
     }
 
 

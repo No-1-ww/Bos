@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -14,6 +15,7 @@
 		</ul>
 		<div class="layui-tab-content" style="height: 100px;">
 			<div class="layui-tab-item layui-show">
+				<form class="layui-form" action="" method="post" id="addEmp">
 				<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 					<tbody>
 					<tr>
@@ -23,11 +25,11 @@
 						</td>
 						<td class="layui-bg-gray" width="20%">角色</td>
 						<td width="30%">
-							<select name="city" lay-verify="">
+							<select name="roleName" lay-verify="" id="roleName">
 								<option value="">请选择角色</option>
-								<option value="1">系统管理员</option>
+								<!--<option value="1">系统管理员</option>
 								<option value="2">系统管理员</option>
-								<option value="3">系统管理员</option>
+								<option value="3">系统管理员</option>-->
 							</select>
 						</td>
 					</tr>
@@ -65,17 +67,17 @@
 						</td>
 						<td class="layui-bg-gray">工号</td>
 						<td>
-							<input type="password" name="title" placeholder="请输入工号" autocomplete="off" class="layui-input">
+							<input type="password" name="title" placeholder="请输入工号" id="empNo" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
 					
 					<tr>
 						<td class="layui-bg-gray">所属单位</td>
 						<td >
-							<select name="city" lay-verify="">
+							<select name="name" lay-verify="" id="name">
 								<option value="">请选择</option>
-								<option value="1">单位1</option>
-								<option value="2">单位2</option>
+								<!--<option value="1">单位1</option>
+								<option value="2">单位2</option>-->
 							</select>
 						</td>
 						<td class="layui-bg-gray">备注</td>
@@ -92,6 +94,7 @@
 					</tr>
 					</tbody>
 				</table>
+				</form>
 			</div>
 
 		</div>
@@ -106,6 +109,81 @@
 	layui.use('form', function(){
 
 	});
+
+	//下拉框的角色查询
+	layui.use('form', function(){
+		var form = layui.form;
+		$.ajax({
+			url: "/selectedRolesByRolesName",
+			type: "get",
+			datatype: 'json',
+			success: function (data) {
+				$("#roleName").empty();
+				$("#roleName").append("<option value=''>" + '选择角色' + "</option>");
+				var a = $.parseJSON(data);
+				console.log(a);
+				$.each(a, function (i, obj) {
+					$("#roleName").append("<option value='" + obj.id + "'>" + obj.roleName + "</option>");
+				});
+				form.render('select');
+			}
+		});
+	});
+
+	//下拉框的单位查询
+	layui.use('form', function(){
+		var form = layui.form;
+		$.ajax({
+			url: "/selectedUntisByName",
+			type: "get",
+			datatype: 'json',
+			success: function (data) {
+				$("#name").empty();
+				$("#name").append("<option value=''>" + '所属单位' + "</option>");
+				var a = $.parseJSON(data);
+				console.log(a);
+				$.each(a, function (i, obj) {
+					$("#name").append("<option value='" + obj.ID + "'>" + obj.name + "</option>");
+				});
+				form.render('select');
+			}
+		});
+	});
+
+	//
+	/*layui.use('form', function(){
+		var form = layui.form;
+		$.ajax({
+			url: "/findMaxByEmpNo",
+			type: "get",
+			datatype: 'json',
+			success: function (data) {
+				$("#empNo").empty();
+				$("#empNo").append("<input value=" + '所属单位' + ">");
+				var a = $.parseJSON(data);
+				console.log(a);
+				$.each(a, function (i, obj) {
+					$("#roleName").append("<input type=" + text +" name="+title+" placeholder="+请输入工号+" id="+empNo+" autocomplete="+off+" class="+ayui-input+"value="+obj.empNo+"readonly="+readonly+">");
+				});
+				form.render('select');
+			}
+		});
+	});*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 	layui.use('element', function(){

@@ -25,4 +25,30 @@ public class SyRolesServiceImpl implements SyRolesService {
     public List<SyRoles> findRolesWhereRolesNameAndDisabled(SyRoles syRoles) {
         return syRolesMapper.findRolesWhereRolesNameAndDisabled(syRoles);
     }
+
+    @Override
+    public int addSysRoles(SyRoles syRoles) {
+        return syRolesMapper.addSysRoles(syRoles);
+    }
+
+    @Override
+    public List<SyRoles> findRolesWhereUpdateById(SyRoles syRoles) {
+        return syRolesMapper.findRolesWhereUpdateById(syRoles);
+    }
+
+    @Override
+    public int updateSysRolesByid(SyRoles syRoles) {
+        System.out.println("进入serviceimpl......");
+        return syRolesMapper.updateSysRolesByid(syRoles);
+    }
+
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
+    @Override
+    public int delSysRolesByid(Integer id) {
+        return syRolesMapper.delSysRolesByid(id);
+    }
 }

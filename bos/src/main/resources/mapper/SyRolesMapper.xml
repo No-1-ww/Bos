@@ -11,12 +11,28 @@
     <!--根据角色名，是否禁用查询角色信息-->
     <select id="findRolesWhereRolesNameAndDisabled" resultType="com.xr.bos.model.SyRoles">
         select * from sy_roles
-            where
-            <if test="disabled != null and disabled !='' ">
-                disabled=#{disabled}
+            where 1=1
+            <if test="disabled == 0 or disabled ==1">
+                and disabled=#{disabled}
             </if>
             <if test=" roleName != null and roleName != '' ">
-                roleName like "%"#{roleName}"%"
+                and roleName = #{roleName}
             </if>
     </select>
+    <insert id="addSysRoles">
+        INSERT INTO sy_roles( `RoleName`, `RoleDesc`, `Disabled`) VALUES ( #{roleName}, #{roleDesc}, #{disabled});
+
+    </insert>
+    <select id="findRolesWhereUpdateById" resultType="com.xr.bos.model.SyRoles">
+        select * from sy_roles where ID=#{id}
+
+    </select>
+    <update id="updateSysRolesByid">
+
+        UPDATE sy_roles SET `RoleName` =#{roleName}, `RoleDesc` = #{roleDesc}, `Disabled` =#{disabled} WHERE `ID` =#{id};
+    </update>
+
+    <delete id="delSysRolesByid">
+            delete  from sy_roles where ID=#{id}
+    </delete>
 </mapper>

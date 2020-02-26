@@ -10,7 +10,7 @@
 <div class="layui-form">
 	<div class="layui-tab layui-tab-brief">
 		<ul class="layui-tab-title">
-			<li class="layui-this">新增角色</li>
+			<li class="layui-this">修改角色</li>
 		</ul>
 		<div class="layui-tab-content" style="height: 100px;">
 			<div class="layui-tab-item layui-show">
@@ -60,37 +60,62 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+layui.use(['form','layer'],function () {
+			var layer = layui.layer
+			, form = layui.form;
 
-	//加载'form'模块，使checkbox、select、radio初始化
+			var id=[[${id}]];
+			//alert(id);
+			$.ajax({
+				url:'/findRolesWhereUpdateById',
+				data:{"id":id},
+				type:"get",
+				success:function (data) {
+					console.log($.parseJSON(data).id);
+					$("#roleName").val($.parseJSON(data).roleName);
+					$("#roleDesc").val($.parseJSON(data).roleDesc);
+					$("#disabled").val($.parseJSON(data).disabled);
+					form.render('select');
+				}
+			})
+
+})
+
+
+//加载'form'模块，使checkbox、select、radio初始化
+//监听提交/保存
 layui.use(['form','layer'], function(){
-		//渲染
-		var form = layui.form
+	//渲染
+	var form = layui.form
 			,layer=layui.layer;
 
-		//监听提交
-		form.on('submit(suu)',function (data) {
-			var roleName=$('#roleName').val();
-			var disabled=$('#disabled').val();
-			var roleDesc=$('#roleDesc').val();
-			alert(roleName+"  "+disabled+"  "+roleDesc);
-			$.ajax({
-				url:'/addSysRoles',
-				type:'get',
-				data:{
-					"roleName":roleName,
-					"disabled":disabled,
-					"roleDesc":roleDesc
-				},
+	//监听提交/保存
+	form.on('submit(suu)',function (data) {
+		var roleName=$('#roleName').val();
+		var disabled=$('#disabled').val();
+		var roleDesc=$('#roleDesc').val();
+		var id=[[${id}]];
+
+		alert(id+"  "+roleName+"  "+disabled+"  "+roleDesc);
+		$.ajax({
+			url:'/updateSysRoles',
+			type:'get',
+			data:{
+				"roleName":roleName,
+				"disabled":disabled,
+				"roleDesc":roleDesc,
+				"id":id
+			},
 			success:function (res) {
-				layer.alert("新增成功！", {icon: 6},function () {
-					// 获得frame索引
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.location.reload(); //刷新父页面
-					//关闭当前frame
-					parent.layer.close(index);
-					$(".layui-form").submit();
-				});
-				return false;
+					layer.alert("修改成功！", {icon: 6},function () {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.location.reload(); //刷新父页面
+						//关闭当前frame
+						parent.layer.close(index);
+						$(".layui-form").submit();
+					});
+					return false;
 			}
 		})
 	})
@@ -103,6 +128,7 @@ layui.use(['form','layer'], function(){
 		parent.layer.close(index);
 	})
 });
+
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 layui.use('element', function(){

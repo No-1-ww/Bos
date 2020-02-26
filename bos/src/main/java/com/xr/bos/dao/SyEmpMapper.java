@@ -1,6 +1,9 @@
 package com.xr.bos.dao;
 
 import com.xr.bos.model.SyEmp;
+import com.xr.bos.model.SyRoles;
+import com.xr.bos.model.SyUnits;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,7 +32,36 @@ public interface SyEmpMapper {
     SyEmp check(String empName);
 
 
-    //查询所有员工
-    List<Map<String,Object>> findEmpAll();
+    //查询所有员工，登录的人看不到自己的信息
+    List<Map<String,Object>> findEmpAll(Integer id);
+
+    /**
+     * 多条件查询
+     * @param syEmp
+     * @return
+     */
+    List<Map<String,Object>> findEmpByNameOrDisabled(SyEmp syEmp);
+
+
+    /**
+     * 下拉框角色名 查询
+     * @return
+     */
+    @Select("SELECT ID,RoleName from sy_roles")
+    List<SyRoles> selectedRolesByRolesName();
+
+    /**
+     * 下拉框单位查询
+     * @return
+     */
+    @Select("SELECT ID,Name from sy_units")
+    List<SyUnits> selectedUntisByName();
+
+    /**
+     * 查询最大的工号
+     * @return
+     */
+    @Select(" SELECT MAX(EmpNo) FROM sy_emp")
+    String findMaxByEmpNo();
 
 }

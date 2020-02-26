@@ -2,21 +2,22 @@ package com.xr.bos.model;
 
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Component
 public class SyUnits {
     private Integer ID;
     private String name;
     private String reMarks;
-    private String operAtorID;
+    private Integer operAtorID;
     private Date operationTime;
 
     public SyUnits() {
 
     }
 
-    public SyUnits(Integer ID, String name, String reMarks, String operAtorID, Date operationTime) {
+    public SyUnits(Integer ID, String name, String reMarks, Integer operAtorID, Date operationTime) {
         this.ID = ID;
         this.name = name;
         this.reMarks = reMarks;
@@ -59,11 +60,11 @@ public class SyUnits {
         this.reMarks = reMarks;
     }
 
-    public String getOperAtorID() {
+    public Integer getOperAtorID() {
         return operAtorID;
     }
 
-    public void setOperAtorID(String operAtorID) {
+    public void setOperAtorID(Integer operAtorID) {
         this.operAtorID = operAtorID;
     }
 
