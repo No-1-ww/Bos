@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.SorOutBoundMapper">
+    <select id="queryAll" parameterType="Map" resultMap="query">
+        select so.OutBoundID,HandoverType,Line,su.Name Direction, se1.EmpName AcceptPerson, se2.EmpName Carriers,
+        se2.EmpName DeliveryPerson,DeliveryDate,DeliveryCompany,se1.EmpName EnterPerson,EnterDate
+        from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
+        inner join sy_emp se2 on so.DeliveryPerson = se2.ID
+        inner join sy_units su on so.Direction = su.ID
+        limit #{page},#{limit}
+    </select>
+    <resultMap id="query" type="Map">
+        <result column="OutBoundID" property="OutBoundID"></result>
+        <result column="HandoverType" property="HandoverType"></result>
+        <result column="Line" property="Line"></result>
+        <result column="Direction" property="Direction"></result>
+        <result column="AcceptPerson" property="AcceptPerson"></result>
+        <result column="Carriers" property="Carriers"></result>
+        <result column="DeliveryPerson" property="DeliveryPerson"></result>
+        <result column="DeliveryDate" property="DeliveryDate"></result>
+        <result column="DeliveryCompany" property="DeliveryCompany"></result>
+        <result column="EnterPerson" property="EnterPerson"></result>
+        <result column="EnterDate" property="EnterDate"></result>
+    </resultMap>
+</mapper>

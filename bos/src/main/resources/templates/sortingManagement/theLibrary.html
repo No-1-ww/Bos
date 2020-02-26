@@ -11,7 +11,7 @@
 <!-- 外部整体 -->
 <div class="external">
     <!-- 标题 -->
-    <p class="ptitle">入库交接单</p>
+    <p class="ptitle">出库交接单</p>
     <!-- 操作区域 -->
     <div class="operation">
         <!-- 向上间距 -->
@@ -212,8 +212,8 @@
             </div>
 
             <!-- 数据表格 -->
-            <table class="layui-table">
-                <colgroup>
+            <table class="layui-table" id="SorOutBound">
+                <!--<colgroup>
                     <col width="50">
                     <col width="80">
                     <col width="160">
@@ -266,10 +266,11 @@
                         <button type="button" class="layui-btn layui-btn-small btnQuery" id="opQueryDetail">查看明细</button>
                     </td>
                 </tr>
-                </tbody>
+                </tbody>-->
             </table>
+        </form>
     </div>
-    </form>
+
 </div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -284,6 +285,30 @@
     //加载'table'组件
     layui.use('table', function(){
         var table = layui.table;
+        table.render({
+            elem:"#SorOutBound",
+            url:"/queryAllOutBound",
+            height: 400,
+            limit: 5,
+            limits:[5,10,15,20],
+            cols: [
+                [
+                    {type: 'checkbox'}
+                    ,{field: 'OutBoundID', title: '出库交接单号',width:150 , sort: true}
+                    ,{field: 'HandoverType', title: '交接单类型',width:105}
+                    ,{field: 'Line', title: '线路资源',width:130,  sort: true, totalRow: true}
+                    ,{field: 'Direction', title: '物流方向', width:103, sort: true}
+                    ,{field: 'AcceptPerson', title: '接货人', width:90, sort: true}
+                    ,{field: 'Carriers', title: '承运商', width:90, sort: true}
+                    ,{field: 'DeliveryPerson', title: '出货人', width:90, sort: true}
+                    ,{field: 'DeliveryDate', title: '出货时间', width:130, sort: true}
+                    ,{field: 'DeliveryCompany', title: '出货单位', width:100, sort: true}
+                    ,{field: 'EnterPerson', title: '确认人', width:100, sort: true}
+                    ,{field: 'EnterDate', title: '确认时间', width:130, sort: true}
+                ]
+            ],
+            page:true,
+        });
     });
 
     //加载'laydate'时间组件

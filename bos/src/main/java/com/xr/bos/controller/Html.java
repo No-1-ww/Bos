@@ -314,10 +314,6 @@ public class Html {
         return "/sortingManagement/storage";
     }*/
     //出库
-    @GetMapping("/sortingManagement/theLibrary")
-    public String theLibrary(){
-        return "/sortingManagement/theLibrary";
-    }
 
     //盘库
     @GetMapping("/sortingManagement/check")
