@@ -104,4 +104,45 @@ public class SyEmpServiceImpl implements SyEmpService {
     }
 
 
+    /**
+     * 新增员工
+     * @param syEmp
+     * @return
+     */
+    @Override
+    public int addEmp(SyEmp syEmp) {
+        return syEmpMapper.addEmp(syEmp);
+    }
+
+    /**
+     * 修改员工
+     * @param syEmp
+     * @return
+     */
+    @Override
+    public int updateEmp(SyEmp syEmp) {
+        return syEmpMapper.updateEmp(syEmp);
+    }
+
+    /**
+     * 根据id查询
+     * @param syEmp
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findEmpByid(SyEmp syEmp) {
+        return syEmpMapper.findEmpByid(syEmp);
+    }
+
+
+    /**
+     * 删除员工
+     * @return
+     */
+    @Override
+    public int deleteEmpByid(Integer ID) {
+        return syEmpMapper.deleteEmpByid(ID);
+    }
+
+
 }

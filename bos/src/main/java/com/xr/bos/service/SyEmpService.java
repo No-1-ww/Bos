@@ -3,7 +3,10 @@ package com.xr.bos.service;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyRoles;
 import com.xr.bos.model.SyUnits;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -52,4 +55,33 @@ public interface SyEmpService {
      * @return
      */
     String findMaxByEmpNo();
+
+
+    /**
+     * 新增员工
+     * @param syEmp
+     * @return
+     */
+   int addEmp(SyEmp syEmp);
+
+    /**
+     * 修改员工
+     * @param syEmp
+     * @return
+     */
+    int updateEmp(SyEmp syEmp);
+
+    /**
+     * 根据id查询
+     * @param syEmp
+     * @return
+     */
+   List<Map<String,Object>> findEmpByid(SyEmp syEmp);
+
+
+    /**
+     * 删除员工
+     * @return
+     */
+    int deleteEmpByid(Integer ID);
 }

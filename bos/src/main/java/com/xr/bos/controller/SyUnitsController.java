@@ -87,6 +87,15 @@ public class SyUnitsController {
     //}
 
 }
+
+    /**
+     * 根据单位名查询
+     * @param name
+     * @param responses
+     * @param request
+     * @param page
+     * @param limit
+     */
     @RequestMapping(value = "/findsysUnitwhereAsname",method = RequestMethod.GET)
     public void findsysUnitwhereAsname(String name, HttpServletResponse responses, HttpServletRequest request, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         System.out.println("进入findsysUnitwhereAsname。。。。。。。"+"  "+"name==="+name);
@@ -202,6 +211,12 @@ public class SyUnitsController {
         }
     }
 
+    /**
+     * 修改单位
+     * @param syUnits
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/updateSyUntis")
     @ResponseBody
     public ModelAndView updateSyUntis(SyUnits syUnits,HttpSession session){

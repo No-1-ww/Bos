@@ -95,12 +95,12 @@ public class Html {
         return "/systemManagement/sysEmp";
     }
 
-    //添加员工
+  /*  //添加员工
     @GetMapping("/sysEmp_add")
     public String sysEmp_add(){
         return "/systemManagement/sysEmp_add";
     }
-
+*/
 
        //栏目管理
     @GetMapping("/systemManagement/sysMenu")
