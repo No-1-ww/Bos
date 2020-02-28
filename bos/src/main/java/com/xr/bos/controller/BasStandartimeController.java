@@ -2,6 +2,9 @@ package com.xr.bos.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xr.bos.model.BasStandartime;
+import com.xr.bos.model.SyMenus;
+import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.BasStandartimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,86 @@ public class BasStandartimeController {
         System.out.println("进入finddeliveryTimeAll方法。。。");
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         List<Map<String, Object>> list = basStandartimeService.findstandartimeAll();
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(list);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
+        for (Map<String, Object> map : list) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("},");
+
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 下拉框菜单查询
+     * @param responses
+     */
+    @RequestMapping(value = "/selectedFindUnitsName")
+    public void selectedFindUnitsName(HttpServletResponse responses){
+        List<SyUnits> list = basStandartimeService.selectedFindUnitsName();
+        StringBuffer sb=new StringBuffer("[");
+        for (SyUnits s : list) {
+            sb.append("{\"ID\":\"" +s.getID()+ "\", \"Name\":\"" +s.getName() + "\"},");
+        }
+        // 去掉最后一个,号
+        sb.append("]");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 多条件查询
+     * @param standartime
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/findstandartimeByTimeNameAndSubordinateUnit")
+    public void findstandartimeByTimeNameAndSubordinateUnit(BasStandartime standartime, HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+        System.out.println("进入findstandartimeByTimeNameAndSubordinateUnit方法。。。");
+       /* standartime.setSubordinateunit(1);
+        System.out.println(standartime.getSubordinateunit());*/
+
+    /*   standartime.setTimename("day1");*/
+        System.out.println(standartime.getSubordinateunit()+"    "+standartime.getTimename());
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<Map<String, Object>> list = basStandartimeService.findstandartimeByTimeNameAndSubordinateUnit(standartime);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(list);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
         for (Map<String, Object> map : list) {

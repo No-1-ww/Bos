@@ -14,49 +14,51 @@
 		</ul>
 		<div class="layui-tab-content" style="height: 100px;">
 			<div class="layui-tab-item layui-show">
-				<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-					<tbody>
-					<tr>
-						<td class="layui-bg-gray" width="20%">上级栏目</td>
-						<td width="30%">
-							<select name="city" lay-verify="">
-								<option value="">请选择</option>
-								<option value="1">无</option>
-								<option value="0">权限管理</option>
-							</select>
-						</td>
-						<td class="layui-bg-gray" width="20%">栏目名称</td>
-						<td width="30%">
-							<input type="text" name="title" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">栏目类型</td>
-						<td >
-							<input type="text" name="title" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
-						</td>
-						<td class="layui-bg-gray">栏目提示语</td>
-						<td>
-							<input type="text" name="title" placeholder="请输入栏目提示语" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="layui-bg-gray">栏目地址</td>
-						<td colspan="3">
-							<input type="text" name="title" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
-						</td>
-					</tr>
-					
-					<tr>
-						<td colspan="6">
-							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+				<form class="layui-form" action="" method="post" id="editMenus">
+					<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+						<tbody>
+						<tr>
+							<td class="layui-bg-gray" width="20%">上级栏目</td>
+							<td width="30%">
+								<select name="city" lay-verify="required"id="parentID" >
+									<option value="">请选择</option>
+									<option value="1">无</option>
+									<option value="0">权限管理</option>
+								</select>
+							</td>
+							<td class="layui-bg-gray" width="20%">栏目名称</td>
+							<td width="30%">
+								<input type="text" name="text" id="text" lay-verify="required" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="layui-bg-gray">栏目类型</td>
+							<td >
+								<input type="text" name="type" id="type" lay-verify="required" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
+							</td>
+							<td class="layui-bg-gray">栏目提示语</td>
+							<td>
+								<input type="text" name="tip" id="tip" lay-verify="required" placeholder="请输入栏目提示语" autocomplete="off" class="layui-input">
+							</td>
+						</tr>
+
+						<tr>
+							<td class="layui-bg-gray">栏目地址</td>
+							<td colspan="3">
+								<input type="text" name="url" id="url" lay-verify="required" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="6">
+								<input  type="button" lay-submit="" id="add"  class="layui-btn" style="background: #1da02b;" lay-filter="suu"  value="确定">
+								<button type="button" class="layui-btn layui-btn-primary">取消</button>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</form>
 			</div>
 
 		</div>
@@ -67,10 +69,107 @@
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
 
-	//加载'form'模块，使checkbox、select、radio初始化
+	//修改的赋值
+	layui.use(['form','layer'],function () {
+		var layer = layui.layer
+				, form = layui.form;
+
+		var ID=[[${ID}]];
+		//alert(ID);
+		$.ajax({
+			url:'/findMenusByid',
+			data:{"ID":ID},
+			type:"get",
+			success:function (data) {
+				console.log($.parseJSON(data).ID);
+				$("#parentID").val($.parseJSON(data).parentID);
+				$("#text").val($.parseJSON(data).text);
+				$("#type").val($.parseJSON(data).type);
+				$("#url").val($.parseJSON(data).url);
+				$("#tip").val($.parseJSON(data).tip);
+
+				form.render('select');
+			}
+		})
+
+	})
+
+
+
+
+	//下拉框的上级菜单查询
 	layui.use('form', function(){
+		var form = layui.form;
+		$.ajax({
+			url: "/selectedparent",
+			type: "get",
+			datatype: 'json',
+			success: function (data) {
+				$("#parentID").empty();
+				$("#parentID").append("<option value=''>" + '上级栏目' + "</option>");
+				var a = $.parseJSON(data);
+				console.log(a);
+				$.each(a, function (i, obj) {
+					$('#parentID').append(new Option(obj.text,obj.ID));//往下拉菜单里添加元素
+				});
+				form.render('select');
+			}
+		});
+	});
+
+	//加载'form'模块，使checkbox、select、radio初始化
+	layui.use(['form','layer'], function(){
+		//渲染
+		var form = layui.form
+				,layer=layui.layer;
+		//监听提交
+		form.on('submit(suu)',function (data) {
+			var ID=[[${ID}]];
+			var parentID=$('#parentID').val();
+			var text=$('#text').val();
+			var type=$('#type').val();
+			var tip=$('#tip').val();
+			var url=$('#url').val();
+			$.ajax({
+				url:'/updateMenus',
+				type:'get',
+				data:{
+					"ID":ID,
+					"parentID":parentID,
+					"text":text,
+					"type":type,
+					"tip":tip,
+					"url":url
+				},
+				success:function (res) {
+					layer.alert("修改成功！", {icon: 6},function () {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.location.reload(); //刷新父页面
+						//关闭当前frame
+						parent.layer.close(index);
+						$(".layui-form").submit();
+					});
+					return false;
+				}
+			})
+		})
+		/**
+		 * 取消 退出
+		 */
+		$("#exit").click(function(){
+
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.layer.close(index);
+		})
+
+
+
 
 	});
+
+
+
 
 	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
 	layui.use('element', function(){

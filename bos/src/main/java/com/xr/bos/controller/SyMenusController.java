@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import com.hazelcast.internal.json.Json;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyMenus;
+import com.xr.bos.model.SyRoles;
+import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.SyMenusService;
 import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,4 +147,149 @@ public class SyMenusController {
         }
     }
 
+    /**
+     * 查询上级菜单下拉框
+     * @param responses
+     */
+    @RequestMapping(value = "/selectedparent")
+    @ResponseBody
+    public void selectedparent(HttpServletResponse responses){
+        System.out.println("进入selectedparent方法");
+        List<SyMenus> list = syMenusService.selectedparent();
+        StringBuffer  sb=new StringBuffer("[");
+        for (SyMenus s : list) {
+            sb.append("{\"ID\":\"" +s.getID()+ "\", \"text\":\"" +s.getText() + "\"},");
+        }
+        // 去掉最后一个,号
+        sb.append("]");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 多条件查询
+     * @param syMenus
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/findMenusByparentIDAandText")
+    public void findMenusByparentIDAandText(SyMenus syMenus,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
+        System.out.println("进入findMenusByparentIDAandText方法。。。。");
+        System.out.println("paretID==="+syMenus.getParentID());
+        System.out.println(syMenus);
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<SyMenus> menusList = syMenusService.findMenusByparentIDAandText(syMenus);
+
+        PageInfo pageInfo = new PageInfo(menusList);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+pageInfo.getTotal()+",\"data\":[");
+        for (SyMenus s : menusList) {
+            sb.append("{\"ID\":" + "\"" + s.getID() + "\",\"parentID\":" + "\"" + s.getParentID() + "\",\"type\":" + "\"" +s.getType() + "\",\"text\":" + "\"" +s.getText()+"\",\"url\":"+"\""+s.getUrl()+"\",\"tip\":"+"\""+s.getTip()+"\"},");
+
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 添加菜单
+     * @param syMenus
+     * @return
+     */
+    @RequestMapping(value = "/addMenus")
+    public ModelAndView addMenus(SyMenus syMenus){
+        System.out.println("进入addMenus.......");
+        syMenusService.addMenus(syMenus);
+        return new ModelAndView("/systemManagement/sysMenu");
+    }
+
+    /**
+     * 打开编辑页面 传递id
+     * @param ID
+     * @return
+     */
+    @RequestMapping(value ="/openMenusedit")
+    public ModelAndView openMenusedit(String ID){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/systemManagement/sysMenu_edit");
+        mv.addObject("ID",ID);
+        return mv;
+    }
+
+    /**
+     * 编辑页赋值
+     * @param syMenus
+     * @param responses
+     */
+    @RequestMapping(value = "/findMenusByid")
+    public void findMenusByid(SyMenus syMenus,HttpServletResponse responses){
+        List<SyMenus> menusList = syMenusService.findMenusByID(syMenus);
+        StringBuffer sb = new StringBuffer();
+        for (SyMenus b : menusList) {
+            sb.append("{\"ID\":" + "\"" + b.getID() + "\",\"parentID\":" + "\"" + b.getParentID() + "\",\"type\":"+"\""+b.getType()+"\",\"text\":" + "\"" + b.getText() + "\",\"url\":" + "\"" +b.getUrl()+"\",\"tip\":"+"\""+b.getTip()+"\"},");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 修改菜单
+     * @param syMenus
+     * @return
+     */
+    @RequestMapping(value = "/updateMenus")
+    public ModelAndView updateMenus(SyMenus syMenus){
+        syMenusService.updateMenus(syMenus);
+        return new ModelAndView("/systemManagement/sysMenu");
+    }
+
+    /**
+     * 删除菜单
+     * @param ID
+     * @return
+     */
+    @RequestMapping(value = "/deleteMenusByid")
+    public ModelAndView deleteMenusByid(String ID){
+        syMenusService.deleteMenus(Integer.parseInt(ID));
+        return new ModelAndView("/systemManagement/sysMenu");
+    }
 }
