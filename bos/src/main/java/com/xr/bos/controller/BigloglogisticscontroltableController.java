@@ -57,7 +57,15 @@ public class BigloglogisticscontroltableController {
             e.printStackTrace();
         }
     }
-
+    @RequestMapping("/largeLogisticsManagement/invoiceComparisonTable_add")
+    public ModelAndView openadd(ModelAndView mv, HttpServletResponse responses) {
+        System.out.println("进入add");
+        Map<String, Object> selectmax = bts.selectmax();
+        System.out.println(selectmax.get("max(WorkSheetNo)"));
+        mv.addObject(selectmax.get("max(WorkSheetNo)"));
+        mv.setViewName("/largeLogisticsManagement/invoiceComparisonTable_add");
+        return mv;
+    }
     @RequestMapping("/largeLogisticsManagement/invoiceComparisonTable")
     public ModelAndView select(ModelAndView mv, HttpServletResponse responses) {
 
