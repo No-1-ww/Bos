@@ -321,7 +321,6 @@ public class Html {
         return "/largeLogisticsManagement/invoiceComparisonTable";
     }
 
-
     //入库
   /*  @GetMapping("/sortingManagement/storage")
     public String storage(){
