@@ -217,10 +217,15 @@ public class SyRolesController {
         return mv;
     }
 
+    /**
+     * 删除单位
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delSysRolesByid")
     public ModelAndView delSysRolesByid(String id){
         System.out.println("rid===="+id);
         syRolesService.delSysRolesByid(Integer.parseInt(id));
-        return new ModelAndView("//systemManagement/sysRole");
+        return new ModelAndView("/systemManagement/sysRole");
     }
 }

@@ -125,7 +125,7 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
+			<!--<table class="layui-table">
 				<colgroup>
 						<col width="50">
 				    <col width="60">
@@ -169,9 +169,11 @@
 				      	<td>二狗</td>
 				    </tr>
 			  	</tbody>
-			</table>
-		</div>
+			</table>-->
 		</form>
+		<div>
+			<table class="layui-table" id="ChekTale" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -185,7 +187,48 @@ layui.use('form', function(){
 
 //加载'table'组件
 layui.use('table', function(){
-  var table = layui.table;
+    var table = layui.table;
+    table.render({
+        id:'table',
+        height:370,
+        elem:'#ChekTale',
+        url: '/query_SigInput',
+        page:true,
+        limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+        limit: 3,
+        cols: [
+            [ //表头
+                {checkbox:true, fixed: 'left'}
+                ,{field: 'id', title: '序号',width:100}
+                ,{field: 'workSheetNo', title: '工作单号',width:140}
+                ,{field: 'workOrderType', title: '工作单类型',width:140}
+                ,{field: 'signType', title: '签收类型',width:120}
+                ,{field: 'Name', title: '录入单位',width:190}
+                ,{field: 'inputPersonCode', title: '录入人编码',width:130}
+                ,{field: 'empName', title: '录入人姓名',width:130}
+                ,{field: 'recipient', title: '签收人',width:130}
+                ,{field: 'courierName', title: '派送员工姓名',width:150}
+            ]
+        ],
+        done:function (res,curr,count) {
+            $("[data-field='workOrderType']").children().each(function () {
+                if ($(this).text() == 1) {
+                    $(this).text("返单")
+                }if($(this).text()==2){
+                    $(this).text("调单")
+                }if($(this).text()==3){
+                    $(this).text("正常数据")
+                }
+            });
+            $("[data-field='signType']").children().each(function () {
+                if ($(this).text() == true) {
+                    $(this).text("正常签收")
+                }if($(this).text()==2){
+                    $(this).text("反向签收")
+                }
+            });
+        }
+    })
 });
 
 //加载'laydate'时间组件

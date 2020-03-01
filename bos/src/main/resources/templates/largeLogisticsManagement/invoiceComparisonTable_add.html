@@ -13,33 +13,33 @@
 		<tr>
 			<td class="layui-bg-gray" width="17%">工作单号</td>
 			<td width="33%">
-				<input type="text" name="title" placeholder="工作单号+作废标志必须唯一" autocomplete="off" class="layui-input">
+				<input id="gzdh" type="text" var="${maxw}" name="title" placeholder="工作单号+作废标志必须唯一" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray" width="17%">类型</td>
 			<td width="33%">
-				<input type="text" name="title" placeholder="请输入类型" autocomplete="off" class="layui-input">
+				<input id="type" type="text" name="title" placeholder="请输入类型" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 		<tr>
 			<td class="layui-bg-gray">代理公司</td>
 			<td >
-				<input type="text" name="title" placeholder="请输入代理公司" autocomplete="off" class="layui-input">
+				<input id="dlgs" type="text" name="title" placeholder="请输入代理公司" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray">货票号</td>
 			<td>
-				<input type="text" name="title" placeholder="请输入货票号" autocomplete="off" class="layui-input">
+				<input id="hph" type="text" name="title" placeholder="请输入货票号" autocomplete="off" class="layui-input">
 			</td>
 		</tr>
 
 		<tr>
 			<td class="layui-bg-gray">备注</td>
 			<td colspan="3">
-				<textarea name="desc" placeholder="请输入备注" class="layui-textarea"></textarea>
+				<textarea id="bz" name="desc" placeholder="请输入备注" class="layui-textarea"></textarea>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="6">
-				<button class="layui-btn" style="background: #1da02b;">确定</button>
+				<button class="layui-btn" style="background: #1da02b;" onclick="xzBL()">确定</button>
 				<button type="button" class="layui-btn layui-btn-primary">取消</button>
 			</td>
 		</tr>
@@ -51,7 +51,26 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:"/max",
+			success:function (date) {
 
+				document.getElementById("gzdh").value= date.toString();
+			}
+		});
+
+
+
+	});
+	function xzBL(){
+		var gzdh = $("#gzdh").val();
+		var type = $("#type").val();
+		var dlgs = $("#dlgs").val();
+		var hph = $("#hph").val();
+		var bz = $("#bz").val();
+
+	}
 	//加载'form'模块，使checkbox、select、radio初始化
 	layui.use('form', function(){
 

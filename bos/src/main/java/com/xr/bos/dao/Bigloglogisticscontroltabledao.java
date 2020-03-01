@@ -10,8 +10,8 @@ import java.util.Map;
 
 @Repository
 public interface Bigloglogisticscontroltabledao {
-    List<Bigloglogisticscontroltable> select(int page,int limit);
-    List<Bigloglogisticscontroltable> selectwhere(@Param("WorkSheetNo") String WorkSheetNo, @Param("Corporation") String Corporation);
+    List<Bigloglogisticscontroltable> select();
+   List<Bigloglogisticscontroltable> selectwhere(@Param("WorkSheetNo") String WorkSheetNo, @Param("Corporation") String Corporation);
     Map<String,Object> selectmax();
      int insertBL(Bigloglogisticscontroltable blt);
 }

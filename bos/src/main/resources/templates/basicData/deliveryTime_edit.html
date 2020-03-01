@@ -88,6 +88,35 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
+
+
+		//修改的赋值
+		layui.use(['form','layer'],function () {
+			var layer = layui.layer
+					, form = layui.form;
+
+			var ID=[[${ID}]];
+			$.ajax({
+				url:'/finddeliverytimeByID',
+				data:{"id":ID},
+				type:"get",
+				success:function (data) {
+					console.log($.parseJSON(data).id);
+					$("#timename").val($.parseJSON(data).TimeName);
+					$("#subordinateunit").val($.parseJSON(data).SubordinateUnit);
+					$("#workingtime").val($.parseJSON(data).WorkingTime);
+					$("#closingtime").val($.parseJSON(data).ClosingTime);
+					$("#sundayworkingtime").val($.parseJSON(data).SaturdayWorkingTime);
+					$("#sundayclosingtime").val($.parseJSON(data).SaturdayClosingTime);
+					$("#saturdayworkingtime").val($.parseJSON(data).SundayWorkingTime);
+					$("#saturdayclosingtime").val($.parseJSON(data).SundayClosingTime);
+					form.render('select');
+				}
+			})
+
+		})
+
+
 		//下拉框的上级菜单查询
 		layui.use('form', function(){
 			var form = layui.form;
@@ -153,13 +182,14 @@
 		});
 
         //加载'form'模块，使checkbox、select、radio初始化
-		//加载'form'模块，使checkbox、select、radio初始化
+		//保存编辑
 		layui.use(['form','layer'], function(){
 			//渲染
 			var form = layui.form
 					,layer=layui.layer;
 			//监听提交
 			form.on('submit(suu)',function (data) {
+				var ID=[[${ID}]];
 				var timename=$('#timename').val();
 				var subordinateunit=$('#subordinateunit').val();
 				var workingtime=$('#workingtime').val();
@@ -168,11 +198,11 @@
 				var sundayclosingtime=$('#sundayclosingtime').val();
 				var saturdayworkingtime=$('#saturdayworkingtime').val();
 				var saturdayclosingtime=$('#saturdayclosingtime').val();
-				alert(workingtime);
 				$.ajax({
-					url:'/addBastandartime',
+					url:'/updateBastandartime',
 					type:'get',
 					data:{
+						"id":ID,
 						"timename":timename,
 						"subordinateunit":subordinateunit,
 						"workingtime":workingtime,
@@ -183,7 +213,7 @@
 						"saturdayclosingtime":saturdayclosingtime
 					},
 					success:function (res) {
-						layer.alert("新增成功！", {icon: 6},function () {
+						layer.alert("修改成功！", {icon: 6},function () {
 							// 获得frame索引
 							var index = parent.layer.getFrameIndex(window.name);
 							parent.location.reload(); //刷新父页面

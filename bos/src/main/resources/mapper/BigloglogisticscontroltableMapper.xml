@@ -6,12 +6,12 @@
         SELECT bl.ID,bl.WorkSheetNo,bl.CType,bl.Corporation,bl.WaybillID,s.EmpName,bl.InputDate,bl.Remarks from biglog_logisticscontroltable bl, sy_emp s where bl.InputPerson = s.ID
     </select>
     <select id="selectwhere" resultType="Bigloglogisticscontroltable">
-        select * from biglog_logisticscontroltable where 1=1
+        SELECT bl.ID,bl.WorkSheetNo,bl.CType,bl.Corporation,bl.WaybillID,s.EmpName,bl.InputDate,bl.Remarks from biglog_logisticscontroltable bl, sy_emp s where bl.InputPerson = s.ID
 
-            <if test="WorkSheetNo!=null">
+            <if test="WorkSheetNo!=null and WorkSheetNo!=''">
               and  WorkSheetNo = #{WorkSheetNo}
             </if>
-            <if test="Corporation!=null">
+            <if test="Corporation!=null and Corporation!=''">
                and Corporation=#{Corporation}
             </if>
     </select>

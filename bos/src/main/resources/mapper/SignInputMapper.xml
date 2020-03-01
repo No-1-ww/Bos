@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.SignInputMapper">
+    <select id="queryall" resultMap="querySig">
+        select b.id,a.workSheetNo,b.workOrderType,b.signType,u.`Name`
+               ,b.inputPersonCode,s.empName,b.recipient,b.courierName
+        from dis_workordersign b,acc_worksheet a,sy_emp s,sy_units u
+        where a.workSheetNo=b.workSheetNo and b.inputPersonID=s.id and b.inputID=u.id
+     </select>
+    <resultMap id="querySig" type="Map">
+        <result property="id" column="id"></result>
+        <result property="workSheetNo" column="workSheetNo"></result>
+        <result property="workOrderType" column="workOrderType"></result>
+        <result property="signType" column="signType"></result>
+        <result property="Name" column="Name"></result>
+        <result property="inputPersonCode" column="inputPersonCode"></result>
+        <result property="empName" column="empName"></result>
+        <result property="recipient" column="recipient"></result>
+        <result property="courierName" column="courierName"></result>
+    </resultMap>
+</mapper>

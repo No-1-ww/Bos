@@ -229,15 +229,20 @@ public class SyEmpController {
     @ResponseBody
     public void selectedRolesByRolesName(HttpServletResponse responses){
         List<SyRoles> syRoles = syEmpService.selectedRolesByRolesName();
-        String s = JSON.toJSONString(syRoles);
+        StringBuffer  sb=new StringBuffer("[");
+        for (SyRoles s : syRoles) {
+            sb.append("{\"id\":\"" +s.getId()+ "\", \"roleName\":\"" + s.getRoleName() + "\"},");
+        }
+        // 去掉最后一个,号
+        sb.append("]");
+        sb.deleteCharAt(sb.lastIndexOf(","));
         responses.setCharacterEncoding("utf-8");
         responses.setContentType("text/html;charset=utf-8");
-        System.out.println(s);
         try {
             //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
-            System.out.println(s);
+            System.out.println(sb);
             PrintWriter out = responses.getWriter();
-            out.print(s);
+            out.print(sb);
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -255,15 +260,20 @@ public class SyEmpController {
     @ResponseBody
     public void selectedUntisByName(HttpServletResponse responses){
         List<SyUnits> syUnits = syEmpService.selectedUntisByName();
-        String s = JSON.toJSONString(syUnits);
+        StringBuffer  sb=new StringBuffer("[");
+        for (SyUnits s : syUnits) {
+            sb.append("{\"ID\":\"" +s.getID()+ "\", \"name\":\"" + s.getName() + "\"},");
+        }
+        // 去掉最后一个,号
+        sb.append("]");
+        sb.deleteCharAt(sb.lastIndexOf(","));
         responses.setCharacterEncoding("utf-8");
         responses.setContentType("text/html;charset=utf-8");
-        System.out.println(s);
         try {
             //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
-            System.out.println(s);
+            System.out.println(sb);
             PrintWriter out = responses.getWriter();
-            out.print(s);
+            out.print(sb);
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -272,15 +282,111 @@ public class SyEmpController {
         }
     }
 
-   /* @RequestMapping(value = "/findMaxByEmpNo")
-    public void findMaxByEmpNo(){
+    /**
+     * 打开新增页面 并查询最大工号加1
+     * @return
+     */
+    @RequestMapping(value = "/sysEmp_add")
+    public ModelAndView opensysEmp_add(){
         ModelAndView mv=new ModelAndView();
         String empNo = syEmpService.findMaxByEmpNo();
         String e=empNo.substring(0,1);
         String num=empNo.substring(1);
         int empno=Integer.parseInt(num)+1;
-        System.out.println("e==="+e+"   num===="+num+"  empno==="+empno);
-        String ee=e+empno;
+        System.out.println("e==="+e+"   num===="+num+"  empno==="+empno+"===="+(e+empno));
+        mv.addObject("empno",e+empno);
+        mv.setViewName("/systemManagement/sysEmp_add");
+        return  mv;
     }
-*/
+
+    /**
+     * 新增员工
+     * @param syEmp
+     * @return
+     */
+    @RequestMapping(value = "/addEmp")
+    public ModelAndView addEmp(SyEmp syEmp){
+        System.out.println("进入addEmp。。。。");
+        System.out.println("syEmp==============="+syEmp);
+        syEmpService.addEmp(syEmp);
+        return new  ModelAndView("/systemManagement/sysEmp");
+    }
+
+    /**
+     * 打开编辑页面
+     * @param ID
+     * @return
+     */
+    @RequestMapping(value = "/findOpensysEmpeditById")
+    public ModelAndView findOpensysEmpeditById(String ID){
+        System.out.println(ID);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/systemManagement/sysEmp_edit");
+        mv.addObject("ID",ID);
+        return mv;
+    }
+
+    /**
+     * 编辑页赋值
+     * @param syEmp
+     * @param responses
+     */
+    @RequestMapping(value = "/findEmpByid")
+    public void findEmpByid(SyEmp syEmp,HttpServletResponse responses){
+        System.out.println("semp+==="+syEmp);
+        List<Map<String, Object>> list = syEmpService.findEmpByid(syEmp);
+        StringBuffer sb=new StringBuffer();
+        //多表查询
+        for (Map<String, Object> map : list) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("}");
+
+        }
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 修改员工
+     * @param syEmp
+     * @return
+     */
+    @RequestMapping(value = "/updateEmp")
+    @ResponseBody
+    public ModelAndView updateEmp(SyEmp syEmp){
+        System.out.println("进入updateEmp方法。。。。。");
+        syEmpService.updateEmp(syEmp);
+        return new  ModelAndView("/systemManagement/sysEmp");
+    }
+
+    /**
+     * 删除员工
+     * @param ID
+     * @return
+     */
+    @RequestMapping(value = "/deleteEmpByid")
+    public  ModelAndView deleteEmpByid(String ID){
+        syEmpService.deleteEmpByid(Integer.parseInt(ID));
+        return new  ModelAndView("/systemManagement/sysEmp");
+    }
 }

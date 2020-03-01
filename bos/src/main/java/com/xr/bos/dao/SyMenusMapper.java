@@ -2,6 +2,10 @@ package com.xr.bos.dao;
 
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyMenus;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +36,51 @@ public interface SyMenusMapper {
     // (SELECT text from sy_menus WHERE s.parentID = ID) as shangjilanmu,
     // s.type,s.text,s.url,s.tip from sy_menus s
     List<SyMenus> findMenusAll();
+
+
+    /**
+     * 查询下拉框上级菜单
+     * @return
+     */
+    @Select("select ID,text from sy_menus")
+    List<SyMenus> selectedparent();
+
+
+
+    /**
+     * 多条件查询
+     */
+    List<SyMenus> findMenusByparentIDAandText(SyMenus syMenus);
+
+    /**
+     * 新增菜单
+     * @param syMenus
+     * @return
+     */
+    @Insert("INSERT INTO `bos`.`sy_menus`( `parentID`, `type`, `text`, `url`, `tip`, `icon`) VALUES ( #{parentID} , #{type} , #{text} , #{url} , #{tip}, #{icon} )")
+    int addMenus(SyMenus syMenus);
+
+    /**
+     * 修改页面赋值
+     * @return
+     */
+    @Select("select * from sy_menus where ID=#{ID} ")
+    List<SyMenus> findMenusByID(SyMenus syMenus);
+
+    /**
+     * 修改菜单
+     * @param syMenus
+     * @return
+     */
+    @Update("UPDATE `bos`.`sy_menus` SET `parentID` = #{parentID} , `type` = #{type} , `text` = #{text} , `url` = #{url} , `tip` = #{tip} , `icon` = #{icon}  WHERE `ID` =#{ID} ")
+    int updateMenus(SyMenus syMenus);
+
+    /**
+     * 删除菜单
+     * @param ID
+     * @return
+     */
+    @Delete("delete from sy_menus where ID=#{ID} ")
+    int deleteMenus(Integer ID);
+
 }
