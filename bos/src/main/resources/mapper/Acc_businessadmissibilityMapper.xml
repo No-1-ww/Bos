@@ -3,11 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.Acc_businessadmissibilityMapper">
 
-    <select id="queryAcc_businessadmissibility" resultMap="queryacc">
+    <select id="queryall" resultMap="queryacc">
         select a.businessNoticeNo ,a.customCode,a.customName,a.linkman,
             a.telPhone,a.pickupAddress,a.sendAddress,a.arriveCity,a.importantHints,a.reservationTime
         from acc_businessadmissibility a
     </select>
+   <!-- <select id="totalAcc_admin" resultType="Integer">
+        select count(*) from acc_businessadmissibility
+    </select>-->
     <resultMap id="queryacc" type="Map">
         <result property="businessNoticeNo" column="businessNoticeNo"></result>
         <result property="customCode" column="customCode"></result>
@@ -70,7 +73,5 @@
         update acc_workorder set afterSingleNum=afterSingleNum+1 where businessNoticeNo=#{businessNoticeNo}
     </update>
 
-    <select id="totalAcc_admin" resultType="Acc_businessadmissibility">
-        select count(*) from acc_businessadmissibility
-    </select>
+
 </mapper>

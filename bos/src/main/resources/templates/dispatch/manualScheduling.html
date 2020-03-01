@@ -106,7 +106,7 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
+			<!--<table class="layui-table">
 				<colgroup>
 					<col width="50">
 				    <col width="60">
@@ -137,13 +137,13 @@
 					  	<th>体积</th>
 						<th>重要提示</th>
 						<th>到达城市</th>
-						<!--
+						&lt;!&ndash;
 						<th>取货人员信息</th>
 						<th>派送地址</th>
 						<th>处理单位</th>
 						<th>通知单来源</th>
 						<th>客户单号修改标志</th>
-						 -->
+						 &ndash;&gt;
 				    </tr>
 			  	</thead>
 			  	<tbody>
@@ -163,19 +163,22 @@
 				      	<td>1</td>
 								<td>按时到达</td>
 								<td>深圳</td>
-								<!--
+								&lt;!&ndash;
 								<td>老张</td>
 								<td>深圳市福田保税区腾邦物流大厦</td>
 								<td>福田分部</td>
 								<td>电话</td>
 								<td>标志</td>
-							  -->
+							  &ndash;&gt;
 				    </tr>
 
 			  	</tbody>
-			</table>
-		</div>
+			</table>-->
+
 		</form>
+		<div>
+			<table class="layui-table" id="ChekTale" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -189,7 +192,38 @@ layui.use('form', function(){
 
 //加载'table'组件
 layui.use('table', function(){
-  var table = layui.table;
+    var table = layui.table;
+    table.render({
+        id:'table',
+        height:370,
+        elem:'#ChekTale',
+        url: '/query_Man',
+        page:true,
+        limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+        limit: 3,
+        cols: [
+            [ //表头
+                {checkbox:true, fixed: 'left'}
+                ,{field: 'id', title: '序号',width:80}
+                ,{field: 'jObNo', title: '通知单号',width:100}
+                ,{field: 'reservationTime', title: '预约收件时间',width:120}
+                ,{field: 'customName', title: '客户名称',width:100}
+                ,{field: 'pickupAddress', title: '取件地址',width:120}
+                ,{field: 'customCode', title: '客户编号',width:100}
+                ,{field: 'linkman', title: '联系人',width:100}
+                ,{field: 'telPhone', title: '联系电话',width:100}
+                ,{field: 'weight', title: '重量',width:100}
+                ,{field: 'volume', title: '体积',width:100}
+                ,{field: 'importantHints', title: '重要提示',width:100}
+                ,{field: 'arriveCity', title: '到达城市',width:140}
+                ,{field: 'empName', title: '取货人',width:100}
+                ,{field: 'sendAddress', title: '派送地址',width:140}
+                ,{field: 'Name', title: '处理单位',width:140}
+                ,{field: 'notificationSource', title: '通知单来源',width:120}
+                ,{field: 'customNoModifyFlag', title: '客户单号修改标志',width:120}
+            ]
+        ]
+    })
 });
 
 //加载'laydate'时间组件

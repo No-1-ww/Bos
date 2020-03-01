@@ -3,6 +3,7 @@ package com.xr.bos.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.Bigloglogisticscontroltable;
 import com.xr.bos.service.Bigloglogisticscontroltableservice;
 import com.xr.bos.util.RedisTemplateUtil;
@@ -25,14 +26,19 @@ public class BigloglogisticscontroltableController {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
 
+
+
     @RequestMapping("/selectBL")
     public void select1(ModelAndView mv, HttpServletResponse responses,String page,String limit) {
         responses.setCharacterEncoding("utf-8");
         responses.setContentType("text/html:charset=utf-8");
         System.out.println("page的值为"+page+"limit的值为"+limit);
         Page p = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
-        List<Bigloglogisticscontroltable> list = bts.select(Integer.parseInt(page), Integer.parseInt(limit));
-        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":1000,\"data\":[");
+        List<Bigloglogisticscontroltable> list = bts.select();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo(list);
+        /*
+        StringBuffer sb = new StringBuffer("{\"code\":\"0\",\"msg\":\"\",\"count\":1000,\"data\":[");*/
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+ pageInfo.getTotal() +",\"data\":[");
         for (Bigloglogisticscontroltable b : list) {
             sb.append("{\"ID\":" + "\"" + b.getId() + "\",\"WorkSheetNo\":" + "\"" + b.getWorkSheetNo() + "\",\"Corporation\":" + "\"" + b.getCorporation() + "\",\"WaybillID\":" + "\"" + b.getWaybillID() + "\",\"InputPerson\":" + "\"" + b.getInputPerson() + "\",\"InputDate\":" + "\"" + b.getInputDate() + "\",\"Remarks\":" + "\"" + b.getRemarks() + "\"},");
             System.out.println(b.getId() + b.getWorkSheetNo() + b.getCorporation() + b.getWaybillID() + b.getInputPerson() + b.getInputDate() + b.getRemarks());
@@ -51,7 +57,15 @@ public class BigloglogisticscontroltableController {
             e.printStackTrace();
         }
     }
-
+    @RequestMapping("/largeLogisticsManagement/invoiceComparisonTable_add")
+    public ModelAndView openadd(ModelAndView mv, HttpServletResponse responses) {
+        System.out.println("进入add");
+        Map<String, Object> selectmax = bts.selectmax();
+        System.out.println(selectmax.get("max(WorkSheetNo)"));
+        mv.addObject("maxw",selectmax.get("max(WorkSheetNo)"));
+        mv.setViewName("/largeLogisticsManagement/invoiceComparisonTable_add");
+        return mv;
+    }
     @RequestMapping("/largeLogisticsManagement/invoiceComparisonTable")
     public ModelAndView select(ModelAndView mv, HttpServletResponse responses) {
 
@@ -103,17 +117,37 @@ public class BigloglogisticscontroltableController {
     }
 
     @RequestMapping("selectBLwhere")
-    public void selectwhere(String WorkSheetNo,String Corporation){
+    public void selectwhere(ModelAndView mv, HttpServletResponse responses,String page,String limit,String WorkSheetNo,String Corporation){
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html:charset=utf-8");
+        System.out.println("page的值为"+page+"limit的值为"+limit);
+        Page p = PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         if(WorkSheetNo=="null"){
             WorkSheetNo=null;
         }if (Corporation==""){
             Corporation=null;
         }
-        List<Bigloglogisticscontroltable> li = bts.selectwhere(WorkSheetNo, Corporation);
-        System.out.println("action:"+li);
-        for (Bigloglogisticscontroltable b : li) {
-            System.out.println("开始："+b.getId()+b.getWorkSheetNo()+b.getCorporation()+b.getWaybillID()+b.getInputPerson()+b.getInputDate());
+        List<Bigloglogisticscontroltable> list = bts.selectwhere(WorkSheetNo,Corporation);
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo(list);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":"+ pageInfo.getTotal() +",\"data\":[");
+        for (Bigloglogisticscontroltable b : list) {
+            sb.append("{\"ID\":" + "\"" + b.getId() + "\",\"WorkSheetNo\":" + "\"" + b.getWorkSheetNo() + "\",\"Corporation\":" + "\"" + b.getCorporation() + "\",\"WaybillID\":" + "\"" + b.getWaybillID() + "\",\"InputPerson\":" + "\"" + b.getInputPerson() + "\",\"InputDate\":" + "\"" + b.getInputDate() + "\",\"Remarks\":" + "\"" + b.getRemarks() + "\"},");
+            System.out.println(b.getId() + b.getWorkSheetNo() + b.getCorporation() + b.getWaybillID() + b.getInputPerson() + b.getInputDate() + b.getRemarks());
         }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
     @RequestMapping("insertBL")
     public int insertBL(Bigloglogisticscontroltable blt){
@@ -126,10 +160,24 @@ public class BigloglogisticscontroltableController {
 
     }
     @RequestMapping("max")
-    public Map<String,Object> selectmax(){
+    public void selectmax(HttpServletResponse responses){
         Map<String, Object> map = bts.selectmax();
         System.out.println(map.get("max(WorkSheetNo)"));
         System.out.println(map.get("max(WaybillID)"));
-        return map;
+        String a = map.get("max(WorkSheetNo)").toString();
+        String b = a.substring(3);
+        System.out.println(b);
+        int i = Integer.parseInt(b);
+        i= i+1;
+        String s = a.substring(0, 3);
+        a = s+String.valueOf(i);
+
+        try {
+            PrintWriter out = responses.getWriter();
+            out.print(a);
+        }catch (Exception e){
+
+        }
+
     }
 }
