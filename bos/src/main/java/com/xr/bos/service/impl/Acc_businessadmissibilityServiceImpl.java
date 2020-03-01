@@ -7,6 +7,7 @@ import com.xr.bos.service.Acc_businessadmissibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,16 +17,17 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
    @Autowired
    private Acc_businessadmissibilityMapper acc_businessadmissibilityMapper;
 
-    @Override
-    public List<Map<String,Object>> queryAcc_businessadmissibility() {
-        return acc_businessadmissibilityMapper.queryAcc_businessadmissibility();
-    }
 
     @Override
-    public int totalAcc_admin() {
-        return acc_businessadmissibilityMapper.totalAcc_admin();
+    public List<Map<String, Object>> queryall() {
+        return acc_businessadmissibilityMapper.queryall();
     }
 
+    /* @Override
+        public Integer totalAcc_admin() {
+            return acc_businessadmissibilityMapper.totalAcc_admin();
+        }
+    */
     @Override
     public int addBusin(Acc_businessadmissibility acc_businessadmissibility) {
         return acc_businessadmissibilityMapper.addBusin(acc_businessadmissibility);

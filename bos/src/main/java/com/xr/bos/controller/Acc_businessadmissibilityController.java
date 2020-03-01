@@ -1,22 +1,26 @@
 package com.xr.bos.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.Acc_businessadmissibility;
 import com.xr.bos.service.Acc_businessadmissibilityService;
 
+import com.xr.bos.util.DateFormat;
 import com.xr.bos.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 业务处理
@@ -33,18 +37,90 @@ public class Acc_businessadmissibilityController {
     /*
         业务受理的查询
      */
-    @RequestMapping(value = "/acceptance/businessAcceptanceAjax",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
-    @ResponseBody
-    public String queryBus(){
+    /*@RequestMapping(value = "/acceptance/businessAcceptance")
+    public ModelAndView queryBus(){
         System.out.println("进入查询后台。。。");
-        List<Map<String,Object>> list = acc_businessadmissibilityService.queryAcc_businessadmissibility();
-        String s = JSONArray.toJSONString(list);
+        ModelAndView mv=new ModelAndView();
+        List<Map<String,Object>> list = acc_businessadmissibilityService.queryAcc_businessadmissibility(1,3);
+        mv.addObject("acc_lists",list);
+        mv.setViewName("/acceptance/businessAcceptance");
+
+        List<Map<String, Object>> list1 = DateFormat.formatMap(list, "reservationTime");
+        Integer count = acc_businessadmissibilityService.totalAcc_admin();
+        mv.addObject("count",count);//传给前台的总数
+        String s = JSONArray.toJSONString(list1);
+        return mv;
+    }*/
+
+    //使用Ajax的查询方法
+   /* @RequestMapping(value = "/querytotal",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String query(Integer page,Integer limit){
+        System.out.println("进入Ajax查询");
+        System.out.println("page:"+page+"limit:"+limit);
+        List<Map<String,Object>> list = acc_businessadmissibilityService.queryAcc_businessadmissibility(page,limit);
+        List<Map<String, Object>> list1 = DateFormat.formatMap(list, "reservationTime");
+        String s = JSONArray.toJSONString(list1);
         return s;
     }
-    @GetMapping("/acceptance/businessAcceptance")
-    public String businessAcceptance(){
-        return "/acceptance/businessAcceptance";
+*/
+
+    /*//查询总数
+    @RequestMapping(value = "/querytotal",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String queryCount(){
+        Integer i = acc_businessadmissibilityService.totalAcc_admin();
+        return i.toString();
     }
+*/
+
+    /**
+     * 受理，业务受理
+     *
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/queryAcc_busin")
+    public void select(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit) {
+        System.out.println("进入方法.....");
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<Map<String, Object>> queryall = acc_businessadmissibilityService.queryall();
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(queryall);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
+        for (Map<String, Object> map : queryall) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("},");
+
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
+        try {
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            //TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     /*
         条件查询

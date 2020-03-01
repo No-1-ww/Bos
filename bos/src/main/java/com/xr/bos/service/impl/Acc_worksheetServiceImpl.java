@@ -15,9 +15,10 @@ public class Acc_worksheetServiceImpl implements Acc_worksheetService {
     @Autowired
     private Acc_worksheetMapper acc_worksheetMapper;
 
+
     @Override
-    public List<Map<String, Object>> queryAcc_worksheetMapper() {
-        return acc_worksheetMapper.queryAcc_worksheetMapper();
+    public List<Map<String, Object>> queryall() {
+        return acc_worksheetMapper.queryall();
     }
 
     @Override

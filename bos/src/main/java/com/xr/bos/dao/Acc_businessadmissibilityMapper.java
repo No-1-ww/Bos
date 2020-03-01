@@ -13,9 +13,10 @@ import java.util.Map;
 @Repository
 public interface Acc_businessadmissibilityMapper {
     //查询
-    List<Map<String,Object>> queryAcc_businessadmissibility();
+    List<Map<String,Object>> queryall();
+
     //总数
-    int totalAcc_admin();
+    //Integer totalAcc_admin();
 
     //新增
     int addBusin(Acc_businessadmissibility acc_businessadmissibility);

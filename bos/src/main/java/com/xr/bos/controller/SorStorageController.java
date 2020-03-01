@@ -82,6 +82,7 @@ public class SorStorageController {
     @RequestMapping(value = "/sortingManagement/queryCount",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
     @ResponseBody
     public String queryCount(){
+
         //查询总数绑定至前台
         Integer storCount = sorStorageService.queryCount();
         return storCount.toString();

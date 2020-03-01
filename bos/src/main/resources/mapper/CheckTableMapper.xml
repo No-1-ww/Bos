@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.CheckTableMapper">
+    <select id="queryall" parameterType="Map" resultMap="queryCheck">
+        select a.id,a.jObNo,a.shortMessageInt,b.businessNoticeNo,a.workGenerationTime,
+                b.sendAddress,b.linkman,b.telPhone,a.afterSingleNum,s.`Name`
+        from acc_workorder a,acc_businessadmissibility b,sy_units s
+        where a.businessNoticeNo=b.businessNoticeNo and a.pickupUnit=s.id
+
+    </select>
+
+    <resultMap id="queryCheck" type="Map">
+        <result property="id" column="id"></result>
+        <result property="jObNo" column="jObNo"></result>
+        <result property="shortMessageInt" column="shortMessageInt"></result>
+        <result property="businessNoticeNo" column="businessNoticeNo"></result>
+        <result property="workGenerationTime" column="workGenerationTime"></result>
+        <result property="sendAddress" column="sendAddress"></result>
+        <result property="linkman" column="linkman"></result>
+        <result property="telPhone" column="telPhone"></result>
+        <result property="afterSingleNum" column="afterSingleNum"></result>
+        <result property="Name" column="Name"></result>
+    </resultMap>
+
+</mapper>
