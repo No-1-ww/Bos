@@ -52,4 +52,7 @@ public interface SyEmpService {
      * @return
      */
     String findMaxByEmpNo();
+
+
+    SyEmp queryByID(Integer id);
 }

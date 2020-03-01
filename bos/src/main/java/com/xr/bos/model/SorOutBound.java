@@ -1,16 +1,19 @@
 package com.xr.bos.model;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Date;
 
+@Component
 public class SorOutBound {
     private String outBoundID;//出库交接单号
-    private int handoverType;//出库交接单号
-    private String line;//交接单类型
-    private int direction;//线路资源
-    private int acceptPerson;//物流方向
-    private int carriers;//接货人
-    private int deliveryPerson;//承运商
-    private Date deliverDate;//出货人
+    private int handoverType;//交接单类型
+    private String line;//线路资源
+    private int direction;//物流方向
+    private int acceptPerson;//接货人
+    private int carriers;//承运商
+    private int deliveryPerson;//出货人
+    private Date deliverDate;//出货时间
     private String deliveryCompany;//出货单位
     private int enterPerson;//确认人
     private Date enterDate;//确认时间

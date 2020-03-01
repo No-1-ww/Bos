@@ -1,9 +1,9 @@
 package com.xr.bos.model;
 
-import com.mysql.fabric.xmlrpc.base.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 @Component
 public class Acc_workorder implements Serializable {
@@ -12,12 +12,12 @@ public class Acc_workorder implements Serializable {
     private Integer jobType;
     private Integer pickupStatus;
     private String shortMessageInt;
-    private Data workGenerationTime;
+    private Date workGenerationTime;
     private Integer afterSingleNum;
     private Integer smallMemberNum;
     private Integer pickupUnit;
     private String businessNoticeNo;
-    private Data pickupTime;
+    private Date pickupTime;
     private String sortingCode;
 
     public Acc_workorder() {
@@ -63,11 +63,11 @@ public class Acc_workorder implements Serializable {
         this.shortMessageInt = shortMessageInt;
     }
 
-    public Data getWorkGenerationTime() {
+    public Date getWorkGenerationTime() {
         return workGenerationTime;
     }
 
-    public void setWorkGenerationTime(Data workGenerationTime) {
+    public void setWorkGenerationTime(Date workGenerationTime) {
         this.workGenerationTime = workGenerationTime;
     }
 
@@ -103,11 +103,11 @@ public class Acc_workorder implements Serializable {
         this.businessNoticeNo = businessNoticeNo;
     }
 
-    public Data getPickupTime() {
+    public Date getPickupTime() {
         return pickupTime;
     }
 
-    public void setPickupTime(Data pickupTime) {
+    public void setPickupTime(Date pickupTime) {
         this.pickupTime = pickupTime;
     }
 
@@ -119,7 +119,7 @@ public class Acc_workorder implements Serializable {
         this.sortingCode = sortingCode;
     }
 
-    public Acc_workorder(Integer id, String jobNo, Integer jobType, Integer pickupStatus, String shortMessageInt, Data workGenerationTime, Integer afterSingleNum, Integer smallMemberNum, Integer pickupUnit, String businessNoticeNo, Data pickupTime, String sortingCode) {
+    public Acc_workorder(Integer id, String jobNo, Integer jobType, Integer pickupStatus, String shortMessageInt, Date workGenerationTime, Integer afterSingleNum, Integer smallMemberNum, Integer pickupUnit, String businessNoticeNo, Date pickupTime, String sortingCode) {
         this.id = id;
         this.jobNo = jobNo;
         this.jobType = jobType;

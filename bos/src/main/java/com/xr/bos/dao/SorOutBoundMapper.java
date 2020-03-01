@@ -10,4 +10,6 @@ public interface SorOutBoundMapper {
 
     //pageHelper失效暂时先用map集合page,limit代替
     List<Map<String,Object>> queryAll(Map<String,Integer> map);
+    //查询所有
+    Integer queryOutBoundCount();
 }

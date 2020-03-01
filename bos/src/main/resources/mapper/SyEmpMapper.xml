@@ -8,6 +8,12 @@
         select * from sy_emp where ID!= #{id}
     </select>
 
+
+    <select id="queryByID" resultType="SyEmp" parameterType="Integer">
+    /* 根据id查单个用户*/
+        select * from sy_emp where ID = #{id}
+    </select>
+
     <select id="select" resultType="SyEmp">
         select * from sy_emp
     </select>

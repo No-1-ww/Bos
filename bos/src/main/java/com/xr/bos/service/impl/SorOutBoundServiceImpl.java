@@ -18,4 +18,9 @@ public class SorOutBoundServiceImpl implements SorOutBoundService {
         //传入map集合暂时代替pageHelper
         return sorOutBoundMapper.queryAll(map);
     }
+
+    @Override
+    public Integer queryOutBoundCount() {
+        return sorOutBoundMapper.queryOutBoundCount();
+    }
 }

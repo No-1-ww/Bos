@@ -10,6 +10,12 @@
         inner join sy_units su on so.Direction = su.ID
         limit #{page},#{limit}
     </select>
+    <select id="queryOutBoundCount" resultType="Integer">
+        select count(*)
+        from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
+        inner join sy_emp se2 on so.DeliveryPerson = se2.ID
+        inner join sy_units su on so.Direction = su.ID
+    </select>
     <resultMap id="query" type="Map">
         <result column="OutBoundID" property="OutBoundID"></result>
         <result column="HandoverType" property="HandoverType"></result>

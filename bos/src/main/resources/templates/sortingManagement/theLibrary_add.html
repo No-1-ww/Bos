@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,69 +14,76 @@
         <div class="layui-inline">
             <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增明细行</button>
             <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailDelete">删除明细行</button>
-            <button type="button" class="layui-btn layui-btn-small btnOther" id="opSave">保存</button>
-            <button type="button" class="layui-btn layui-btn-small btnOther" id="opClose">关闭</button>
         </div>
     </div>
 </div>
-<form class="layui-form">
+<form lay-filter="stoOutForm" action="/addSorOutBound" class="layui-form" method="post">
     <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
         <tbody>
         <tr>
             <td class="layui-bg-gray" width="13%">交接单类型</td>
             <td width="20%">
-                <select name="city" lay-verify="required">
-                    <option value=""></option>
+                <select name="handoverType" lay-verify="required">
                     <option value="0">市内物流交接单</option>
                     <option value="1">长途物流交接单</option>
-                    <option value="1">派送清单</option>
-                    <option value="1">发货交接单</option>
+                    <option value="2">派送清单</option>
+                    <option value="3">发货交接单</option>
                 </select>
             </td>
             <td class="layui-bg-gray" width="13%">线路资源</td>
             <td width="20%">
-                <input type="text" name="title" placeholder="请输入线路资源" autocomplete="off" class="layui-input" value="">
+                <input type="text" name="line" placeholder="该列自动生成" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td class="layui-bg-gray" width="14%">物流方向</td>
             <td width="20%">
-                <input type="text" name="title" placeholder="请输入物流方向" autocomplete="off" class="layui-input" value="" disabled>
+                <!--接货人所在的公司就是物流方向-->
+                <input type="text" th:value="${syUnitName}" name="当前登录用户公司ID" placeholder="请输入物流方向" autocomplete="off" class="layui-input" value="" readonly>
             </td>
         </tr>
         <tr>
-            <td class="layui-bg-gray">运输方式</td>
-            <td>
-                <input type="text" name="title" placeholder="请输入运输方式" autocomplete="off" class="layui-input" value="">
-            </td>
+
             <td class="layui-bg-gray">承运商</td>
             <td>
-                <input type="text" name="title" placeholder="请输入承运商" autocomplete="off" class="layui-input" value="">
+                <label id="errCarriers"></label>
+                <select lay-filter="carriers" name="carriers" lay-verify="required">
+                    <option value=""></option>
+                    <option  th:each="syemp,userStat:${xianLu}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
+                </select>
             </td>
             <td class="layui-bg-gray">接货人</td>
             <td>
-                <input type="text" name="title" placeholder="请输入接货人" autocomplete="off" class="layui-input" value="">
+                <input type="text" th:value="${SyEmpName}" name="当前登录用户ID" placeholder="请输入接货人" autocomplete="off" class="layui-input" value="" readonly>
+
+            </td>
+            <td class="layui-bg-gray" width="13%">确认人</td>
+            <td width="20%">
+                <input type="text" th:value="${SyEmpName}" name="当前登录用户ID" placeholder="请输入确认人" autocomplete="off" class="layui-input" value="" readonly>
             </td>
         </tr>
         <tr>
 
             <td class="layui-bg-gray">交货人</td>
             <td>
-                <input type="text" name="title" placeholder="请输入交货人" autocomplete="off" class="layui-input" value="">
+                <label id="errDeliveryPerson"></label>
+                <select lay-filter="deliveryPerson" name="deliveryPerson" lay-verify="required">
+                    <option value=""></option>
+                    <option  th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
+                </select>
             </td>
             <td class="layui-bg-gray">交货时间</td>
             <td>
-                <input type="text" name="title" placeholder="请输入交货时间" autocomplete="off" class="layui-input" value="">
+                <input type="text" th:value="${Now}" name="deliverDate" placeholder="请输入交货时间" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td class="layui-bg-gray">交货单位</td>
             <td>
-                <input type="text" name="title" placeholder="请输入交货单位" autocomplete="off" class="layui-input" value="">
+                <input type="text" name="deliveryCompany" placeholder="该列自动生成" autocomplete="off" class="layui-input" value="" readonly>
             </td>
         </tr>
-
         </tbody>
     </table>
     <table class="layui-table" style="width: 98%;margin: 5px auto;text-align: center;">
         <colgroup>
-            <col width="60">
+            <col width="100">
             <col width="100">
             <col width="100">
             <col width="90">
@@ -88,7 +95,6 @@
         </colgroup>
         <thead>
         <tr>
-            <th>序号</th>
             <th>单号</th>
             <th>合包号</th>
             <th>重量</th>
@@ -101,38 +107,37 @@
         </thead>
         <tbody>
         <tr>
-            <td>1</td>
             <td>
-                <input type="text" name="title" placeholder="单号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="id" placeholder="单号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="text" name="title" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <input type="text" name="title" placeholder="重量" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <input type="text" name="title" placeholder="体积" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="100">
+                <input type="text" th:value="${Now}" name="sCanDateTime" placeholder="扫描时间" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="text" name="title" placeholder="扫描时间" autocomplete="off" class="layui-input" value="">
-            </td>
-            <td>
-                <select name="city" lay-verify="required">
+                <select name="isScan" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
                 </select>
             </td>
             <td>
-                <select name="city" lay-verify="required">
+                <select name="isNextStorage" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
                 </select>
             </td>
             <td>
-                <select name="city" lay-verify="required">
+                <select name="isDoubleStorage" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
@@ -140,56 +145,135 @@
             </td>
         </tr>
         <tr>
-            <td>2</td>
             <td>
-                <input type="text" name="title" placeholder="单号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="id" placeholder="单号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="text" name="title" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <input type="text" name="title" placeholder="重量" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <input type="text" name="title" placeholder="体积" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="100">
+                <input type="text" th:value="${Now}" name="sCanDateTime" placeholder="扫描时间" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="text" name="title" placeholder="扫描时间" autocomplete="off" class="layui-input" value="">
-            </td>
-            <td>
-                <select name="city" lay-verify="required">
+                <select name="isScan" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
                 </select>
             </td>
             <td>
-                <select name="city" lay-verify="required">
+                <select name="isNextStorage" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
                 </select>
             </td>
             <td>
-                <select name="city" lay-verify="required">
+                <select name="isDoubleStorage" lay-verify="required">
                     <option value=""></option>
                     <option value="0">否</option>
                     <option value="1">是</option>
                 </select>
             </td>
         </tr>
-
+        <tr>
+            <td class="layui-bg-gray" colspan="8">
+                <button class="layui-btn" style="background: #1da02b;">确定</button>
+                <button type="button" class="layui-btn layui-btn-primary">取消</button>
+            </td>
+        </tr>
         </tbody>
     </table>
 </form>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+var deliveryPerson = 0;
+var carriers = 0;
+var myDate = new Date();
 
-    //加载'form'模块，使checkbox、select、radio初始化
+$(function () {
+    $("input[name=sCanDateTime]").val(myDate.toLocaleDateString());
+})
+//加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
+        var form = layui.form;
+        /*form.render();*/
+        //监听select下拉框的值改变事件
+        form.on("select(deliveryPerson)",function (data) {
+
+            if(data.value==""){
+                $("#errDeliveryPerson").text("请选择交货人").css("color","red");
+                $("input[name=deliveryCompany]").val("");
+                $("input[name=line]").val("");
+                //赋值给deliveryPerson,用于提交表单时验证
+                deliveryPerson = 0;
+
+                return;
+            }else{
+                $("#errDeliveryPerson").text("");
+            }
+            var id = data.value;
+
+            //赋值给deliveryPerson,用于提交表单时验证
+            deliveryPerson = id;
+            //得到select框所选中的text
+            var text = data.elem[data.elem.selectedIndex].text;
+            $.ajax({
+                url:"/queryUnitsName",
+                type:"POST",
+                data:{"SyEmpId":id},
+                success:function (aa) {
+                    $("input[name=deliveryCompany]").val(aa);
+                    $("input[name=line]").val(text);
+                }
+            })
+        });
+        form.on("select(carriers)",function (data) {
+            if(data.value==""){
+                $("#errCarriers").text("请选择承运商").css("color","red");
+
+                carriers=0;
+                return;
+            }else{
+                $("#errCarriers").text("");
+                carriers = data.value;
+                return;
+            }
+        });
+
+        form.on("submit(stoOutForm)", function () {
+            var errCarriers = $("#errCarriers").text();
+            var errDeliveryPerson = $("#errDeliveryPerson").text();
+            if(errDeliveryPerson=="请选择交货人"){
+                return false;
+            }
+            if(errCarriers=="请选择承运商"){
+                return false;
+            }
+            if(carriers==0){
+                $("#errCarriers").text("请选择承运商").css("color","red");
+                return false;
+            }
+            if(deliveryPerson==0){
+                $("#errDeliveryPerson").text("请选择交货人").css("color","red");
+                return false;
+            }
+
+            //没有任意一个return false 关闭窗体
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        })
+
 
     });
+
 
 </script>
 </body>
