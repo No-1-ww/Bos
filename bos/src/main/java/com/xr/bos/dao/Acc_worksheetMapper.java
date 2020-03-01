@@ -9,7 +9,7 @@ import java.util.Map;
 @Repository
 public interface Acc_worksheetMapper {
     //查询
-    List<Map<String,Object>> queryAcc_worksheetMapper();
+    List<Map<String,Object>> queryall();
 
     //新增
     int add_worksheet(Acc_worksheet acc_worksheet);

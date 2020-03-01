@@ -143,10 +143,10 @@ public class Html {
     }
 */
     //业务受理查询
-    /*@GetMapping("/acceptance/businessAcceptance")
+    @GetMapping("/acceptance/businessAcceptance")
     public String businessAcceptance(){
         return "/acceptance/businessAcceptance";
-    }*/
+    }
 
     //业务受理新增businessAcceptance_add
     /*@GetMapping("/businessAcceptance_add")
@@ -169,11 +169,10 @@ public class Html {
     public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}
 */
     //工作单查询
-   /* @GetMapping("/acceptance/worksheetQuery")
+    @GetMapping("/acceptance/worksheetQuery")
     public String worksheetQuery(){
         return "/acceptance/worksheetQuery";
     }
-*/
     //工作单查询修改dispatchingPersonnelSet_update
     /*@GetMapping("/dispatchingPersonnelSet_update")
     public String dispatchingPersonnelSet_update(){
@@ -187,7 +186,7 @@ public class Html {
         return "/dispatch/checkTable";
     }
 
-    //查台转单的转单singleTurn
+    //查台转单的--转单singleTurn
     @GetMapping("/singleTurn")
     public String singleTurn(){return "/dispatch/singleTurn"; }
 
@@ -197,7 +196,7 @@ public class Html {
         return "/dispatch/manualScheduling";
     }
 
-    //人工调度distribution
+    //人工调度distribution---分配
     @GetMapping("/distribution")
     public String distribution(){return "/dispatch/distribution"; }
 
