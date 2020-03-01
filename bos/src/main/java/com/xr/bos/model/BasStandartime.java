@@ -1,11 +1,13 @@
 package com.xr.bos.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Time;
 import java.util.Date;
 
 @Data
@@ -34,36 +36,42 @@ public class BasStandartime {
     /**
      * 平时上班时间	只需要时分，不需要日期
      */
+   // @DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "WorkingTime")
-    private Date workingtime;
+    private Time workingtime;
 
     /**
      * 平时下班时间	只需要时分，不需要日期
      */
+    //@DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "ClosingTime")
-    private Date closingtime;
+    private Time closingtime;
 
     /**
      * 周六上班时间	只需要时分，不需要日期
      */
+    //@DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "SaturdayWorkingTime")
-    private Date saturdayworkingtime;
+    private Time saturdayworkingtime;
 
     /**
      * 周六下班时间	只需要时分，不需要日期
      */
+  //  @DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "SaturdayClosingTime")
-    private Date saturdayclosingtime;
+    private Time saturdayclosingtime;
 
     /**
      * 周日上班时间	只需要时分，不需要日期
      */
+   // @DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "SundayWorkingTime")
-    private Date sundayworkingtime;
+    private Time sundayworkingtime;
 
     /**
      * 周日下班时间	只需要时分，不需要日期
      */
+    //@DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "SundayClosingTime")
-    private Date sundayclosingtime;
+    private Time sundayclosingtime;
 }
