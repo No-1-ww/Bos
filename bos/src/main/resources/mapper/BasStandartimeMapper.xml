@@ -28,4 +28,21 @@ where
     s.SubordinateUnit=u.ID
 
     </select>
+    <select id="findstandartimeByTimeNameAndSubordinateUnit" resultType="java.util.Map">
+         select
+    s.ID,s.TimeName,u.`Name` as Uname ,s.SubordinateUnit,s.WorkingTime,s.ClosingTime,s.SaturdayWorkingTime,s.SaturdayClosingTime,s.SundayWorkingTime,s.SundayClosingTime
+from
+  bas_standartime s ,sy_units u
+where
+    s.SubordinateUnit=u.ID
+    <if test="timename != null and timename != ''">
+      and s.TimeName=#{timename}
+    </if>
+    <if test="subordinateunit !=null and subordinateunit !='' ">
+      and s.SubordinateUnit =#{subordinateunit}
+    </if>
+
+
+
+    </select>
 </mapper>

@@ -115,11 +115,11 @@ public class Html {
        }
 
     //  修改栏目
-    @GetMapping("/sysMenu_edit")
+    /*@GetMapping("/sysMenu_edit")
     public String sysMenu_edit(){
         return
                 "/systemManagement/sysMenu_edit";
-    }
+    }*/
     //角色管理
     @GetMapping("/systemManagement/sysRole")
     public String sysRole(){
@@ -319,7 +319,6 @@ public class Html {
     public String invoiceComparisonTable(){
         return "/largeLogisticsManagement/invoiceComparisonTable";
     }
-
 
     //入库
   /*  @GetMapping("/sortingManagement/storage")

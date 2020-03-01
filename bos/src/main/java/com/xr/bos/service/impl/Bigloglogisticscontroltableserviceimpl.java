@@ -15,13 +15,13 @@ public class Bigloglogisticscontroltableserviceimpl implements Bigloglogisticsco
     private Bigloglogisticscontroltabledao btd;
 
     @Override
-    public List<Bigloglogisticscontroltable> select(int page,int limit) {
-        page = page-1+5;
-        return btd.select(page,limit);
+    public List<Bigloglogisticscontroltable> select() {
+
+        return btd.select();
     }
 
     @Override
-    public List<Bigloglogisticscontroltable> selectwhere(String WorkSheetNo, String Corporation) {
+    public List<Bigloglogisticscontroltable> selectwhere(String WorkSheetNo,String Corporation) {
         return btd.selectwhere(WorkSheetNo,Corporation);
     }
 
