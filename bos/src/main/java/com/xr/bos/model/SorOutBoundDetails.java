@@ -3,6 +3,8 @@ package com.xr.bos.model;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 @Component
 public class SorOutBoundDetails {
     private Integer id;
@@ -10,7 +12,7 @@ public class SorOutBoundDetails {
     private String packageID;
     private double weight;
     private double volume;
-    private double scanDate;
+    private Date scanDate;
     private int isScan;
     private int isNextStorage;
     private int isDoubleStorage;
@@ -56,11 +58,11 @@ public class SorOutBoundDetails {
         this.volume = volume;
     }
 
-    public double getScanDate() {
+    public Date getScanDate() {
         return scanDate;
     }
 
-    public void setScanDate(double scanDate) {
+    public void setScanDate(Date scanDate) {
         this.scanDate = scanDate;
     }
 
@@ -92,7 +94,7 @@ public class SorOutBoundDetails {
 
     }
 
-    public SorOutBoundDetails(Integer id, String outBoundID, String packageID, double weight, double volume, double scanDate, int isScan, int isNextStorage, int isDoubleStorage) {
+    public SorOutBoundDetails(Integer id, String outBoundID, String packageID, double weight, double volume, Date scanDate, int isScan, int isNextStorage, int isDoubleStorage) {
         this.id = id;
         this.outBoundID = outBoundID;
         this.packageID = packageID;

@@ -1,6 +1,7 @@
 package com.xr.bos.service.impl;
 
 import com.xr.bos.dao.SorOutBoundMapper;
+import com.xr.bos.model.SorOutBound;
 import com.xr.bos.service.SorOutBoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,15 @@ public class SorOutBoundServiceImpl implements SorOutBoundService {
     @Override
     public Integer queryOutBoundCount() {
         return sorOutBoundMapper.queryOutBoundCount();
+    }
+
+    @Override
+    public String queryMaxOutBoundID() {
+        return sorOutBoundMapper.queryMaxOutBoundID();
+    }
+
+    @Override
+    public Integer addOutBound(SorOutBound sorOutBound) {
+        return sorOutBoundMapper.addOutBound(sorOutBound);
     }
 }

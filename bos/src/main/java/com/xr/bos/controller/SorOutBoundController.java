@@ -4,6 +4,7 @@ import com.xr.bos.model.SorOutBound;
 import com.xr.bos.model.SorOutBoundDetails;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyUnits;
+import com.xr.bos.service.SorOutBoundDetailsService;
 import com.xr.bos.service.SorOutBoundService;
 import com.xr.bos.service.SyEmpService;
 import com.xr.bos.service.SyUnitsService;
@@ -113,42 +114,58 @@ public class SorOutBoundController {
         return mv;
     }
 
+    @Autowired
+    private SorOutBoundDetails sorOutBoundDetails;
 
+    @Autowired
+    private SorOutBoundDetailsService sorOutBoundDetailsService;
 
     @RequestMapping(value = "/addSorOutBound",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
     @ResponseBody
     public String addSorOutBound(SorOutBound sorOutBound,String packageID,String weight,String volume,String isScan,
-                                 String isNextStorage,String isDoubleStorage,String sCanDateTime,HttpSession session){
+                                 String isNextStorage,String isDoubleStorage,HttpSession session){
         SyEmp syEmp1 = (SyEmp)session.getAttribute("SyEmp");
         //新增出库交接单以及出库详情
         sorOutBound.setAcceptPerson(syEmp1.getID());
         sorOutBound.setEnterPerson(syEmp1.getID());
         sorOutBound.setEnterDate(Date.valueOf(DateFormat.getNow()));
         sorOutBound.setDirection(syEmp1.getEmpUnit());
-        System.out.println("sorOutBound"+sorOutBound);
-        System.out.println(packageID);
-        System.out.println(weight);
-        System.out.println(volume);
-        System.out.println(isScan);
-        System.out.println(isNextStorage);
-        System.out.println(isDoubleStorage);
-        System.out.println(sCanDateTime);
+        //先查询到最大的出库交接单
+        String s = sorOutBoundService.queryMaxOutBoundID();
+        String d = s.substring(s.indexOf("D")+1);
+        int outID = Integer.parseInt(d);
+        outID++;
+        String outBoundID = "CKJJD"+outID;
+        //+1后绑定给出库交接单
+        sorOutBound.setOutBoundID(outBoundID);
+        //新增出库交接单
+        sorOutBoundService.addOutBound(sorOutBound);
+
+
         //得到订单的数据以后用split进行分割
         String[] packageIDs = packageID.split(",");
-
-        /**
-         * 解决订单详情的问题，订单详情有问题，传值到后台有误，时间不能readonly的原因（可能）
-         */
-        return "";
-    }
-    @RequestMapping(value = "/cheCKSorOutBound",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
-    @ResponseBody
-    public String cheCK(String packageID,String weight,String volume,String isScan,
-                        String isNextStorage,String isDoubleStorage,String sCanDateTime){
-        System.out.println(packageID);
-        if(packageID.equals("")||weight.equals("")||volume.equals("")||isScan.equals("")||isNextStorage.equals("")||isDoubleStorage.equals("")||sCanDateTime.equals("")){
-            return "error";
+        String[] weights = weight.split(",");
+        String[] volumes = volume.split(",");
+        String[] isScans = isScan.split(",");
+        String[] isNextStorages = isNextStorage.split(",");
+        String[] isDoubleStorages = isDoubleStorage.split(",");
+        System.out.println(Date.valueOf(DateFormat.getNow()));
+        //新增订单详情
+        for (int i=0;i<packageIDs.length;i++){
+            sorOutBoundDetails.setPackageID(packageIDs[i]);
+            sorOutBoundDetails.setWeight(Integer.parseInt(weights[i]));
+            sorOutBoundDetails.setVolume(Integer.parseInt(volumes[i]));
+            sorOutBoundDetails.setIsScan(Integer.parseInt(isScans[i]));
+            sorOutBoundDetails.setIsNextStorage(Integer.parseInt(isNextStorages[i]));
+            sorOutBoundDetails.setIsDoubleStorage(Integer.parseInt(isDoubleStorages[i]));
+            if(Integer.parseInt(isScans[i])==1){
+                sorOutBoundDetails.setScanDate(Date.valueOf(DateFormat.getNow()));
+            }
+            sorOutBoundDetails.setOutBoundID(outBoundID);
+            sorOutBoundDetailsService.addSorOutBoundDetails(sorOutBoundDetails);
         }
+
+
         return "ok";
     }
 
