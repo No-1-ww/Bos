@@ -141,6 +141,16 @@ public class SorOutBoundController {
          */
         return "";
     }
+    @RequestMapping(value = "/cheCKSorOutBound",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String cheCK(String packageID,String weight,String volume,String isScan,
+                        String isNextStorage,String isDoubleStorage,String sCanDateTime){
+        System.out.println(packageID);
+        if(packageID.equals("")||weight.equals("")||volume.equals("")||isScan.equals("")||isNextStorage.equals("")||isDoubleStorage.equals("")||sCanDateTime.equals("")){
+            return "error";
+        }
+        return "ok";
+    }
 
 
 

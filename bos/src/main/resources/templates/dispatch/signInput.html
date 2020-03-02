@@ -211,6 +211,13 @@ layui.use('table', function(){
             ]
         ],
         done:function (res,curr,count) {
+            $("[data-field='signType']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("正常签收")
+                }if($(this).text()=="false"){
+                    $(this).text("反向签收")
+                }
+            });
             $("[data-field='workOrderType']").children().each(function () {
                 if ($(this).text() == 1) {
                     $(this).text("返单")
@@ -220,13 +227,7 @@ layui.use('table', function(){
                     $(this).text("正常数据")
                 }
             });
-            $("[data-field='signType']").children().each(function () {
-                if ($(this).text() == true) {
-                    $(this).text("正常签收")
-                }if($(this).text()==2){
-                    $(this).text("反向签收")
-                }
-            });
+
         }
     })
 });

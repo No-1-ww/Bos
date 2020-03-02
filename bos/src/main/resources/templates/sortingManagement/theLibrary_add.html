@@ -265,6 +265,31 @@ $(function () {
                 $("#errDeliveryPerson").text("请选择交货人").css("color","red");
                 return false;
             }
+            var packageID = $("input[name=packageID]").val();
+            var weight = $("input[name=weight]").val();
+            var volume = $("input[name=volume]").val();
+            var isScan = $("input[name=isScan]").val();
+            var isNextStorage = $("input[name=isNextStorage]").val();
+            var isDoubleStorage = $("input[name=isDoubleStorage]").val();
+            var sCanDateTime = $("input[name=sCanDateTime]").val();
+            var start = "";
+            $.ajax({
+                url:"/cheCKSorOutBound",
+                type:"POST",
+                async:false,
+                data:{"packageID":packageID,"weight":weight,"volume":volume,"isScan":isScan,"isNextStorage":isNextStorage,"isDoubleStorage":isDoubleStorage,"sCanDateTime":sCanDateTime},
+                success:function (data) {
+                    start = data;
+                }
+            });
+            if(start=="error"){
+
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请填写完所有的订单详情数据！");
+                });
+                return false;
+            }
 
             //没有任意一个return false 关闭窗体
             var index = parent.layer.getFrameIndex(window.name);
