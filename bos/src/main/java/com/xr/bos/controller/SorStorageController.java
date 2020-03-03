@@ -296,13 +296,9 @@ public class SorStorageController {
             return str.toString();
         }*/
         //根据ID查询Emp表员工对应的公司ID
-        List<SyEmp> syEmps = syEmpService.querySyEmp(SyEmpId);
-        int EmpUnitID = 0 ;
-        for (SyEmp syEmp : syEmps) {
-            EmpUnitID = syEmp.getEmpUnit();
-        }
-        SyUnits syUnits = syUnitsService.findID(EmpUnitID);
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+syUnits);
+        SyEmp syEmps = syEmpService.queryByID(SyEmpId);
+
+        SyUnits syUnits = syUnitsService.findID(syEmps.getEmpUnit());
         String name = syUnits.getName();
         return name;
     }

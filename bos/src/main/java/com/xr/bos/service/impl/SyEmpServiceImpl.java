@@ -103,6 +103,11 @@ public class SyEmpServiceImpl implements SyEmpService {
         return syEmpMapper.findMaxByEmpNo();
     }
 
+    @Override
+    public SyEmp queryByID(Integer id) {
+        return syEmpMapper.queryByID(id);
+    }
+
 
     /**
      * 新增员工

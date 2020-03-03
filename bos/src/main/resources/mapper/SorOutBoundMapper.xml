@@ -8,8 +8,26 @@
         from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
         inner join sy_emp se2 on so.DeliveryPerson = se2.ID
         inner join sy_units su on so.Direction = su.ID
+        order by so.OutBoundID
         limit #{page},#{limit}
     </select>
+    <select id="queryOutBoundCount" resultType="Integer">
+        select count(*)
+        from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
+        inner join sy_emp se2 on so.DeliveryPerson = se2.ID
+        inner join sy_units su on so.Direction = su.ID
+    </select>
+
+    <!--查询最大ID-->
+    <select id="queryMaxOutBoundID" resultType="String">
+        select max(OutBoundID) from sor_outbound
+    </select>
+
+    <insert id="addOutBound" parameterType="SorOutBound" keyColumn="OutBoundID" useGeneratedKeys="true" keyProperty="outBoundID">
+        insert into sor_outbound(OutBoundID,HandoverType,Line,Direction,AcceptPerson,Carriers,DeliveryPerson,DeliveryDate,DeliveryCompany,EnterPerson,EnterDate)
+        values (#{outBoundID},#{handoverType},#{line},#{direction},#{acceptPerson},#{carriers},#{deliveryPerson},#{deliverDate},#{deliveryCompany},#{enterPerson},#{enterDate})
+    </insert>
+
     <resultMap id="query" type="Map">
         <result column="OutBoundID" property="OutBoundID"></result>
         <result column="HandoverType" property="HandoverType"></result>

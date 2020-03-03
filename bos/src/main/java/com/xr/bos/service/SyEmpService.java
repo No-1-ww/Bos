@@ -84,4 +84,6 @@ public interface SyEmpService {
      * @return
      */
     int deleteEmpByid(Integer ID);
+
+    SyEmp queryByID(Integer id);
 }

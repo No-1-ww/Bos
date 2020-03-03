@@ -35,9 +35,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://112.124.15.177:3306/bos?serverTimezone=UTC
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.102:3306/bos
 
 
 server:

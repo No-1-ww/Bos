@@ -13,7 +13,7 @@
 		<tr>
 			<td class="layui-bg-gray" width="17%">工作单号</td>
 			<td width="33%">
-				<input id="gzdh" type="text" value="${max(WorkSheetNo)}" name="title" placeholder="工作单号+作废标志必须唯一" autocomplete="off" class="layui-input">
+				<input id="gzdh" type="text" var="${maxw}" name="title" placeholder="工作单号+作废标志必须唯一" autocomplete="off" class="layui-input">
 			</td>
 			<td class="layui-bg-gray" width="17%">类型</td>
 			<td width="33%">
@@ -51,6 +51,18 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:"/max",
+			success:function (date) {
+
+				document.getElementById("gzdh").value= date.toString();
+			}
+		});
+
+
+
+	});
 	function xzBL(){
 		var gzdh = $("#gzdh").val();
 		var type = $("#type").val();

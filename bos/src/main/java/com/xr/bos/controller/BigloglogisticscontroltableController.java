@@ -62,7 +62,7 @@ public class BigloglogisticscontroltableController {
         System.out.println("进入add");
         Map<String, Object> selectmax = bts.selectmax();
         System.out.println(selectmax.get("max(WorkSheetNo)"));
-        mv.addObject(selectmax.get("max(WorkSheetNo)"));
+        mv.addObject("maxw",selectmax.get("max(WorkSheetNo)"));
         mv.setViewName("/largeLogisticsManagement/invoiceComparisonTable_add");
         return mv;
     }
@@ -160,10 +160,24 @@ public class BigloglogisticscontroltableController {
 
     }
     @RequestMapping("max")
-    public Map<String,Object> selectmax(){
+    public void selectmax(HttpServletResponse responses){
         Map<String, Object> map = bts.selectmax();
         System.out.println(map.get("max(WorkSheetNo)"));
         System.out.println(map.get("max(WaybillID)"));
-        return map;
+        String a = map.get("max(WorkSheetNo)").toString();
+        String b = a.substring(3);
+        System.out.println(b);
+        int i = Integer.parseInt(b);
+        i= i+1;
+        String s = a.substring(0, 3);
+        a = s+String.valueOf(i);
+
+        try {
+            PrintWriter out = responses.getWriter();
+            out.print(a);
+        }catch (Exception e){
+
+        }
+
     }
 }

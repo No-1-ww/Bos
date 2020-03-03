@@ -75,6 +75,16 @@ public class Html {
     public String deliveryTime(){
         return "/basicData/deliveryTime";
     }
+
+    //收派时间添加
+    @GetMapping("/deliveryTime_add")
+    public String deliveryTime_add(){
+        return "/basicData/deliveryTime_add";
+    }
+
+
+
+
     //单位管理
     @GetMapping("/systemManagement/sysUnit")
     public String sysUnit(){
@@ -295,7 +305,7 @@ public class Html {
         return "/packagingMaterialManagement/warehousingManagement";
     }
     //出库管理
-    @GetMapping("/packagingMaterialManagement/outboundManagement")
+    @GetMapping("/packa gingMaterialManagement/outboundManagement")
     public String outboundManagement(){
         return "/packagingMaterialManagement/outboundManagement";
     }

@@ -15,6 +15,13 @@ import java.util.Map;
 @Repository
 public interface SyEmpMapper {
 
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    SyEmp queryByID(Integer id);
+
     List<SyEmp> select();
 
     SyEmp logIn(String empNo);
