@@ -133,7 +133,7 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
+			<!--<table class="layui-table">
 				<colgroup>
 						<col width="50">
 						<col width="60">
@@ -177,11 +177,12 @@
 								<td>老王</td>
 						</tr>
 					</tbody>
-			</table>
-
-
-		</div>
+			</table>-->
 		</form>
+		<div>
+			<table class="layui-table" id="ChekTale" lay-filter="tools"></table>
+		</div>
+
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -195,7 +196,39 @@ layui.use('form', function(){
 
 //加载'table'组件
 layui.use('table', function(){
-  var table = layui.table;
+    var table = layui.table;
+    table.render({
+        id:'table',
+        height:370,
+        elem:'#ChekTale',
+        url: '/queryCan',
+        page:true,
+        limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+        limit: 3,
+        cols: [
+            [ //表头
+                {checkbox:true, fixed: 'left'}
+                ,{field: 'id', title: '序号',width:90}
+                ,{field: 'workSheetNo', title: '工作单号',width:120}
+                ,{field: 'applicationNo', title: '申请单号',width:120}
+                ,{field: 'signTime', title: '签收时间',width:110}
+                ,{field: 'signType', title: '签收状态',width:100}
+                ,{field: 'signUnit', title: '签收单位',width:200}
+                ,{field: 'empName', title: '申请人',width:100}
+                ,{field: 'inputTime', title: '申请时间',width:110}
+                ,{field: 'Name', title: '申请单位',width:200}
+                ,{field: 'personName', title: '确认人',width:100}
+            ]
+        ],
+        done:function (res,curr,count) {
+            $("[data-field='signType']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("正常签收")
+                }if($(this).text()=="false"){
+                    $(this).text("反向签收")
+                }
+            })
+    }
 });
 
 //加载'laydate'时间组件
@@ -236,7 +269,7 @@ $(function(){
 			content: '/cancelSignApplicationConfirmation_detail'
 		});
 	});
-
+});
 });
 
 </script>

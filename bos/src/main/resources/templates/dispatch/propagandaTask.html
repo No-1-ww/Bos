@@ -82,11 +82,8 @@
 				</div>
 			</div>
 
-		</div>
-		</form>
-
 		<!-- 数据表格 -->
-		<table class="layui-table">
+		<!--<table class="layui-table">
 			<colgroup>
 					<col width="50">
 					<col width="60">
@@ -127,7 +124,12 @@
 							<td>宣传内容</td>
 					</tr>
 				</tbody>
-		</table>
+		</table>-->
+		</form>
+		<div>
+			<table class="layui-table" id="ChekTale" lay-filter="tools"></table>
+		</div>
+
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -141,8 +143,36 @@ layui.use('form', function(){
 
 //加载'table'组件
 layui.use('table', function(){
-  var table = layui.table;
-});
+    var table = layui.table;
+    table.render({
+        id:'table',
+        height:370,
+        elem:'#ChekTale',
+        url: '/query_Pro',
+        page:true,
+        limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+        limit: 3,
+        cols: [
+            [ //表头
+                {checkbox:true, fixed: 'left'}
+                ,{field: 'id', title: '序号',width:90}
+                ,{field: 'outline', title: '宣传概要',width:120}
+                ,{field: 'releaseTime', title: '发布时间',width:200}
+                ,{field: 'failureTime', title: '失效时间',width:200}
+                ,{field: 'status', title: '状态',width:100}
+                ,{field: 'content', title: '宣传内容',width:520}
+            ]
+        ],
+        done:function (res,curr,count) {
+            $("[data-field='status']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("开启")
+                }if($(this).text()=="false"){
+                    $(this).text("关闭")
+                }
+            })
+        }
+    });
 
 //加载'laydate'时间组件
 layui.use('laydate', function(){
@@ -195,7 +225,7 @@ $(function(){
 		});
 	});
 
-});
+});});
 
 </script>
 

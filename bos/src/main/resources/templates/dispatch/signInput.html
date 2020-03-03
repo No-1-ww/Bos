@@ -221,9 +221,9 @@ layui.use('table', function(){
                 }
             });
             $("[data-field='signType']").children().each(function () {
-                if ($(this).text() == true) {
+                if ($(this).text() == "true") {
                     $(this).text("正常签收")
-                }if($(this).text()==2){
+                }if($(this).text()=="false"){
                     $(this).text("反向签收")
                 }
             });

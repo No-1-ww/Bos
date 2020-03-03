@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.ReturnApplyMapper">
+    <select id="queryall" resultMap="queryRet">
+        select r.id,r.applicationNo,r.workSheetNo,r.returnType,r.apLoss,r.entryTime,s.`Name`,invalidateSign,s.`Name`,s.`Name`,r.personName
+        from ret_returnlist r,sy_units s
+        where r.returnUnit=s.id and r.entryUnit=s.id and r.receivegUnit=s.id
+    </select>
+    <resultMap id="queryRet" type="Map">
+            <result property="id" column="id"></result>
+            <result property="applicationNo" column="applicationNo"></result>
+            <result property="workSheetNo" column="workSheetNo"></result>
+            <result property="returnType" column="returnType"></result>
+            <result property="apLoss" column="apLoss"></result>
+            <result property="entryTime" column="entryTime"></result>
+            <result property="Name" column="Name"></result>
+            <result property="invalidateSign" column="invalidateSign"></result>
+            <result property="Name" column="Name"></result>
+            <result property="Name" column="Name"></result>
+            <result property="personName" column="personName"></result>
+    </resultMap>
+
+
+
+    <!--第二个模板-->
+    <select id="queryaConfim" resultMap="queryRet1">
+         select r.id,r.ConfirmationTime,s.`Name`,r.ConfirmationPersonName,r.TreatmentState,r.ApReturnStatus,r.IdentificationSign,r.HandlingOpinions
+          from ret_returnlist r,sy_units s
+          where r.returnUnit=s.id and r.entryUnit=s.id and r.receivegUnit=s.id
+
+    </select>
+    <resultMap id="queryRet1" type="Map">
+        <result property="id" column="id"></result>
+        <result property="confirmationTime" column="confirmationTime"></result>
+        <result property="Name" column="Name"></result>
+        <result property="confirmationPersonName" column="confirmationPersonName"></result>
+        <result property="treatmentState" column="treatmentState"></result>
+        <result property="apReturnStatus" column="apReturnStatus"></result>
+        <result property="identificationSign" column="identificationSign"></result>
+        <result property="handlingOpinions" column="handlingOpinions"></result>
+    </resultMap>
+
+
+    <!--第三个模板-->
+    <select id="queryProduce" resultMap="queryduce">
+        select r.id,r.treatmentState,r.workSheetNo,a.importantHints,r.handlingOpinions
+        ,a.packagesNum,a.volume,a.sendAddress,a.customName,r.personName,r.confirmationPersonName
+        from acc_businessadmissibility a,ret_returnlist r,sy_emp e
+        where a.pickerInfo=e.id and r.personName=e.empName
+    </select>
+    <resultMap id="queryduce" type="Map">
+        <result property="id" column="id"></result>
+        <result property="treatmentState" column="treatmentState"></result>
+        <result property="workSheetNo" column="workSheetNo"></result>
+        <result property="importantHints" column="importantHints"></result>
+        <result property="handlingOpinions" column="handlingOpinions"></result>
+        <result property="packagesNum" column="packagesNum"></result>
+        <result property="volume" column="volume"></result>
+        <result property="sendAddress" column="sendAddress"></result>
+        <result property="customName" column="customName"></result>
+        <result property="personName" column="personName"></result>
+        <result property="confirmationPersonName" column="confirmationPersonName"></result>
+    </resultMap>
+
+</mapper>
