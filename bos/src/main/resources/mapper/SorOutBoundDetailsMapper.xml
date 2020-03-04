@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xr.bos.dao.SorStorageDetailsMapper">
+<mapper namespace="com.xr.bos.dao.SorOutBoundDetailsMapper">
     <select id="queryAll">
       select * from sor_outbounddetails
     </select>
+    <insert id="addSorOutBoundDetails" parameterType="SorStorageDetails">
+        insert into sor_outbounddetails(ID,OutBoundID,PackageID,Weight,Volume,ScanDate,IsScan,IsNextStorage,IsDoubleStorage)
+        values(null,#{outBoundID},#{packageID},#{weight},#{volume},#{scanDate},#{isScan},#{isNextStorage},#{isDoubleStorage})
+    </insert>
 </mapper>

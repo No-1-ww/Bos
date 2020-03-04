@@ -413,10 +413,16 @@
                 area: ['960px', '484px'], //宽高
                 content: '/sortingManagement/theLibrary_add',
                 end:function () {
-                    layui.use('layer',function () {
-                        var layer = layui.layer;
+                    layui.use(['layer','table'],function () {
+                        var layer = layui.layer
+                         ,table = layui.table;
                         layer.msg("执行完毕");
-                    })
+                        table.reload('TableSorOutBound', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                    });
                 }
             });
         });

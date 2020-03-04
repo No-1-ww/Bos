@@ -141,7 +141,7 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
+			<!--<table class="layui-table">
 				<colgroup>
 					<col width="50">
 				    <col width="60">
@@ -183,9 +183,11 @@
 						</td>
 				    </tr>
 			  	</tbody>
-			</table>
-		</div>
+			</table>-->
 		</form>
+		<div>
+			<table class="layui-table" id="ChekTale" lay-filter="tools"></table>
+		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -199,9 +201,56 @@ layui.use('form', function(){
 
 //加载'table'组件
 layui.use('table', function(){
-  var table = layui.table;
-});
-
+    var table = layui.table;
+    table.render({
+        id:'table',
+        height:370,
+        elem:'#ChekTale',
+        url: '/queryRetComfim',
+        page:true,
+        limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+        limit: 3,
+        cols: [
+            [ //表头
+                {checkbox:true, fixed: 'left'}
+                ,{field: 'id', title: '序号',width:120}
+                ,{field: 'confirmationTime', title: '确认时间',width:170}
+                ,{field: 'Name', title: '确认单位',width:250}
+                ,{field: 'confirmationPersonName', title: '确认人',width:120}
+                ,{field: 'treatmentState', title: '返货处理状态',width:120}
+                ,{field: 'apReturnStatus', title: '返货执行状态',width:120}
+                ,{field: 'identificationSign', title: '系统自动确认标志',width:120}
+                ,{field: 'handlingOpinions', title: '处理信息',width:120}
+            ]
+        ],
+        done:function (res,curr,count) {
+            $("[data-field='treatmentState']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("未确认")
+                }if($(this).text()=="false"){
+                    $(this).text("拒绝")
+                }
+            })
+        },
+        done:function (res,curr,count) {
+            $("[data-field='apReturnStatus']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("无")
+                }if($(this).text()=="false"){
+                    $(this).text("已返货")
+                }
+            })
+        },
+        done:function (res,curr,count) {
+            $("[data-field='identificationSign']").children().each(function () {
+                if ($(this).text() == "true") {
+                    $(this).text("否")
+                }if($(this).text()=="false"){
+                    $(this).text("是")
+                }
+            })
+        }
+    });
 //加载'laydate'时间组件
 layui.use('laydate', function(){
   var laydate = layui.laydate;
@@ -216,7 +265,7 @@ $(function(){
 	$('#btnMore').click(function(){
 		$("#hQuery").toggle();
 	});
-
+});
 });
 
 </script>

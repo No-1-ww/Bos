@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.CancelSignApplicationMapper">
+    <select id="queryall" resultMap="queryCan">
+        select r.id,r.workSheetNo,r.applicationNo,d.signTime
+        ,d.signType,d.signUnit,e.empName,d.inputTime,u.`Name`,r.personName
+        from dis_workordersign d,ret_returnlist r,sy_units u,sy_emp e
+        where d.inputPersonID=e.id and d.inputID=u.id
+    </select>
+    <resultMap id="queryCan" type="Map">
+        <result property="id" column="id"></result>
+        <result property="workSheetNo" column="workSheetNo"></result>
+        <result property="applicationNo" column="applicationNo"></result>
+        <result property="signTime" column="signTime"></result>
+        <result property="signType" column="signType"></result>
+        <result property="signUnit" column="signUnit"></result>
+        <result property="empName" column="empName"></result>
+        <result property="inputTime" column="inputTime"></result>
+        <result property="Name" column="Name"></result>
+        <result property="personName" column="personName"></result>
+    </resultMap>
+</mapper>

@@ -87,7 +87,6 @@
             <col width="100">
             <col width="100">
             <col width="90">
-            <col width="90">
             <col width="120">
             <col width="120">
             <col width="120">
@@ -95,11 +94,10 @@
         </colgroup>
         <thead>
         <tr>
-            <th>单号</th>
+            <th>序号</th>
             <th>合包号</th>
             <th>重量</th>
             <th>体积</th>
-            <th>扫描时间</th>
             <th>扫描</th>
             <th>下环节入库</th>
             <th>二次入库</th>
@@ -108,7 +106,7 @@
         <tbody>
         <tr>
             <td>
-                <input type="number" name="id" placeholder="单号" autocomplete="off" class="layui-input" value="" readonly>
+                <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
                 <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
@@ -116,37 +114,31 @@
             <td>
                 <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
             </td>
-            <td>
+            <td width="150">
                 <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
             </td>
-            <td width="100">
-                <input type="text" th:value="${Now}" name="sCanDateTime" placeholder="扫描时间" autocomplete="off" class="layui-input" value="" readonly>
-            </td>
-            <td>
-                <select name="isScan" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
+            <td width="150">
+                <select  name="isScan" lay-verify="required">
                     <option value="1">是</option>
+                    <option value="0">否</option>
                 </select>
             </td>
             <td>
                 <select name="isNextStorage" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
                     <option value="1">是</option>
+                    <option value="0">否</option>
                 </select>
             </td>
             <td>
                 <select name="isDoubleStorage" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
                     <option value="1">是</option>
+                    <option value="0">否</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>
-                <input type="number" name="id" placeholder="单号" autocomplete="off" class="layui-input" value="" readonly>
+                <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
                 <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
@@ -154,31 +146,26 @@
             <td>
                 <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
             </td>
-            <td>
+            <td width="150">
                 <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
             </td>
-            <td width="100">
-                <input type="text" th:value="${Now}" name="sCanDateTime" placeholder="扫描时间" autocomplete="off" class="layui-input" value="" readonly>
-            </td>
-            <td>
-                <select name="isScan" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
+            <td width="150">
+                <select  name="isScan" lay-verify="required">
                     <option value="1">是</option>
+                    <option value="0">否</option>
                 </select>
             </td>
             <td>
                 <select name="isNextStorage" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
                     <option value="1">是</option>
+                    <option value="0">否</option>
                 </select>
             </td>
             <td>
                 <select name="isDoubleStorage" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">否</option>
                     <option value="1">是</option>
+                    <option value="0">否</option>
+
                 </select>
             </td>
         </tr>
@@ -196,11 +183,14 @@
 <script type="text/javascript">
 var deliveryPerson = 0;
 var carriers = 0;
-var myDate = new Date();
-
-$(function () {
-    $("input[name=sCanDateTime]").val(myDate.toLocaleDateString());
-})
+    $(function () {
+        var index = 1;
+        //循环所有name=id的字段
+        $("input[name=id]").each(function () {
+            $(this).val(index);
+            index++;
+        });
+    });
 //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
         var form = layui.form;
@@ -264,7 +254,59 @@ $(function () {
             if(deliveryPerson==0){
                 $("#errDeliveryPerson").text("请选择交货人").css("color","red");
                 return false;
+            };
+
+            //定义status,公用一个变量，每循环一个就判断一次
+            var status = false;
+
+            $("input[name=packageID]").each(function () {
+                var packageID =  $(this).val();
+                if (packageID!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请填写完所有的订单详情数据！");
+                });
+                return false;
             }
+
+            $("input[name=weight]").each(function () {
+                var weight =  $(this).val();
+                if (weight!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请填写完所有的订单详情数据！");
+                });
+                return false;
+            }
+            $("input[name=volume]").each(function () {
+                var volume =  $(this).val();
+                if (volume!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+
+            if(status==false){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请填写完所有的订单详情数据！");
+                });
+                return false;
+            }
+
 
             //没有任意一个return false 关闭窗体
             var index = parent.layer.getFrameIndex(window.name);

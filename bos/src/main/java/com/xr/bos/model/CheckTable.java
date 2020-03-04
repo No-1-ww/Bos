@@ -1,10 +1,11 @@
 package com.xr.bos.model;
 
-import com.mysql.fabric.xmlrpc.base.Data;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+@Data
 @Component
 public class CheckTable implements Serializable {
     private Integer id;
