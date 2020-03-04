@@ -1,69 +1,190 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>收派标准</title> 
-    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
-</head> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>收派标准</title>
+	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head>
 <body>
-	<form class="layui-form">
+<form class="layui-form">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-	  	<tbody>
-		    <tr>
-		    	<td class="layui-bg-gray" width="15%">标准名称</td>
-		      	<td width="35%">
-      				<input type="text" name="title" placeholder="请输入收派标准名称" autocomplete="off" class="layui-input" value="0-10公斤">
-		      	</td>
-		      	<td class="layui-bg-gray" width="15%">作废标志</td>
-		      	<td width="35%">
-					<input type="radio" name="del" value="1" title="是">
-					<input type="radio" name="del" value="0" title="否" checked>
-		      	</td>
-		    </tr>
-		    <tr>
-		      	<td class="layui-bg-gray">最小重量</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入最小重量" autocomplete="off" class="layui-input" value="0">
-		      	</td>
-		      	<td class="layui-bg-gray">最大重量</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入最大重量" autocomplete="off" class="layui-input" value="10">
-		      	</td>
-		    </tr>
-		    <tr>
-		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td>张三</td>
-		      	<td class="layui-bg-gray">操作单位</td>
-		      	<td>总公司</td>
-		    </tr>
-			<tr>
-		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td> 2017-10-23 16:17:10 </td>
-		      	<td class="layui-bg-gray"></td>
-		      	<td> </td>
-		    </tr>
-		    <tr>
-		      	<td colspan="4">
-					<button class="layui-btn " style="background: #1da02b;">确定</button>
-					<button type="button" class="layui-btn layui-btn-primary">取消</button>
-		      	</td>
-		    </tr>
-		    
-	  	</tbody>
+		<tbody>
+		<tr>
+			<td class="layui-bg-gray" width="15%">标准名称</td>
+			<td width="35%">
+				<input type="text" name="name" id="name" lay-verify="required" placeholder="请输入收派标准名称" autocomplete="off" class="layui-input">
+			</td>
+			<td class="layui-bg-gray" width="15%">作废标志</td>
+			<td width="35%">
+				<input type="radio" name="invalidatemark" value="false" title="是">
+				<input type="radio" name="invalidatemark" value="true" title="否" >
+
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray">最小重量</td>
+			<td>
+				<input type="text" name="minweight" id="minweight" lay-verify="required|biyibi" placeholder="请输入最小重量" autocomplete="off" class="layui-input">
+			</td>
+			<td class="layui-bg-gray">最大重量</td>
+			<td>
+				<input type="text" name="maxweight" id="maxweight" lay-verify="required|max" placeholder="请输入最大重量" autocomplete="off" class="layui-input">
+			</td>
+		</tr>
+		<tr >
+			<td class="layui-bg-gray">操作人员</td>
+			<td >
+				<input type="text" id="operatorid"  class="layui-input" readonly="readonly"/>
+			</td>
+			<td class="layui-bg-gray">操作单位</td>
+			<td >
+				<input type="text"  id="operationunitid"  class="layui-input" readonly="readonly"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="layui-bg-gray">操作时间</td>
+			<td >
+				<div class="layui-inline layui-input-inline layui-form-item">
+					<input type="text" name="operationtime" id="operationtime"  class="layui-input" readonly="readonly"/>
+				</div>
+			</td>
+			<td class="layui-bg-gray"></td>
+			<td>  </td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<input  type="button" lay-submit="" id="add"  class="layui-btn" style="background: #1da02b;" lay-filter="suu"  value="确定">
+				<button type="button" id="exit" class="layui-btn  layui-btn-primary">取消</button>
+			</td>
+		</tr>
+		</tbody>
 	</table>
-	</form>
-	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript">
-        
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-           
-        });
-      
-    </script>
-</body> 
+</form>
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+
+
+	//修改的赋值
+	layui.use(['form','layer'],function () {
+		var layer = layui.layer
+				, form = layui.form;
+
+		var ID=[[${ID}]];
+		$.ajax({
+			url:'/finddeliveryStandardByid',
+			data:{"ID":ID},
+			type:"get",
+			success:function (data) {
+				console.log($.parseJSON(data).ID);
+				$("#name").val($.parseJSON(data).Dname);
+				$("#minweight").val($.parseJSON(data).MinWeight);
+				$("#maxweight").val($.parseJSON(data).MaxWeight);
+				$("#operatorid").val($.parseJSON(data).EmpName);
+				$("#operationunitid").val($.parseJSON(data).Uname);
+				$("#operationtime").val($.parseJSON(data).OperationTime);
+				var s=$.parseJSON(data).InvalidateMark;
+				//alert($.parseJSON(data).InvalidateMark);
+				$("input[name='invalidatemark'][value="+s+"]").attr("checked","true");
+				//$("input[name=invalidatemark][value='true']").attr("checked", $.parseJSON(data).InvalidateMark == 'true' ? true : false);
+				//$("input[name='invalidatemark'][value="+$.parseJSON(data).InvalidateMark+"]").prop("checked","true");
+				/*$('input[name="invalidatemark"]:checked').val($.parseJSON(data).InvalidateMark);*/
+				/*$("input:radio[value='$.parseJSON(data).InvalidateMark']")*/
+			/*	$("#saturdayworkingtime").val($.parseJSON(data).SundayWorkingTime);
+				$("#saturdayclosingtime").val($.parseJSON(data).SundayClosingTime);*/
+				form.render();
+			}
+		})
+
+	})
+
+
+
+
+
+
+
+	//修改收派标准
+	layui.use(['form','layer'], function(){
+		//渲染
+		var form = layui.form
+				,layer=layui.layer;
+
+		//创建一个编辑器
+		//var editIndex = layedit.build('LAY_demo_editor');
+		//自定义验证规则
+		form.verify({
+			biyibi:function (value) {
+				if($('input[name=maxweight]').val() < value){
+
+					return '最小重量不得大于最大重量！';
+				}
+				/*if(value<=100000000000){
+                    return '重量过大';
+                }*/
+				/*if(/^[0-9]*$/.test(value)){
+                    return '只能为数字';
+                }*/
+			}
+			/*max:function (value) {
+                if(/^[0-9]*$/.test(value)){
+                    return '只能为数字';
+                }
+            }*/
+
+
+
+		});
+
+		//监听提交
+		form.on('submit(suu)',function (data) {
+			var ID=[[${ID}]];
+			var name=$('#name').val();
+			var minweight=$('#minweight').val();
+			var maxweight=$('#maxweight').val();
+			var operationtime=$('#operationtime').val();
+			var invalidatemark=$('input[name="invalidatemark"]:checked').val();
+			//alert("用户名"+empName+",工号"+empNo+",密码"+pwd+",查台密码"+queryPwd+",角色id"+roleID+",单位id"+empUnit+",备注"+reMarks+",状态"+disabled)
+			//alert(invalidatemark)
+			$.ajax({
+				url:'/updateBasDeliverstanrd',
+				type:'get',
+				data:{
+					"ID":ID,
+					"name":name,
+					"minweight":minweight,
+					"maxweight":maxweight,
+					"maxweight":maxweight,
+					"operationtime":operationtime,
+					"invalidatemark":invalidatemark
+				},
+				success:function (res) {
+					layer.alert("修改成功！", {icon: 6},function () {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.location.reload(); //刷新父页面
+						//关闭当前frame
+						parent.layer.close(index);
+						$(".layui-form").submit();
+					});
+					return false;
+				}
+			})
+		})
+		/**
+		 * 取消 退出
+		 */
+		$("#exit").click(function(){
+
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.layer.close(index);
+		})
+	});
+
+</script>
+</body>
 </html>
     
 

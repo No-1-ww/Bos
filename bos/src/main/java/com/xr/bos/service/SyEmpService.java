@@ -13,6 +13,13 @@ import java.util.Map;
 
 public interface SyEmpService {
     List<SyEmp> select();
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    SyEmp queryByID(Integer id);
+
 
     SyEmp logIn(String empNo);
 

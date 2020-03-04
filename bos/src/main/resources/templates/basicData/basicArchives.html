@@ -245,6 +245,9 @@
 			<!-- 数据表格 -->
 			<table class="layui-table" id="BasDeliverystandardinfo" lay-filter="tools"></table>
 		</div>
+		<script type="text/html" id="barDemo">
+			<button type="button" class="layui-btn layui-btn-small btnQuery" id="btnList" lay-event="btnList">查看列表</button>
+		</script>
 	</div>
 </div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -269,14 +272,15 @@ layui.use('table', function(){
 		cols: [
 			[ //表头
 				{checkbox:true, fixed: 'left'}
-				,{field: 'id', title: '序号',width:100}
-				,{field: 'BasicFileNumber', title: '基本档案编号	',width:130}
-				,{field: 'Bname', title: '基本档案名称',width:150}
-				,{field: 'Grade', title: '档案是否分级',width:150}
-				,{field: 'EmpName', title: '操作人员',width:130}
-				,{field: 'Uname', title: '单位名称',width:210}
-				,{field: 'Remarks', title: '备注',width:160}
-				,{field: 'OperationTime', title: '操作时间',width:200}
+				,{field: 'id', title: '序号',width:80}
+				,{field: 'BasicFileNumber', title: '基本档案编号	',width:120}
+				,{field: 'Bname', title: '基本档案名称',width:130}
+				,{field: 'Grade', title: '档案是否分级',width:140}
+				,{field: 'EmpName', title: '操作人员',width:120}
+				,{field: 'Uname', title: '单位名称',width:200}
+				,{field: 'Remarks', title: '备注',width:140}
+				,{field: 'OperationTime', title: '操作时间',width:120}
+				,{fixed: 'right', title: '操作', align: 'center', width: 170, toolbar: '#barDemo'}
 			]
 		],
 		done:function (res,curr,count) {
@@ -309,7 +313,7 @@ $(function(){
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['650px', '360px'], //宽高
-		  content: 'basicArchives_add.html'
+		  content: '/basicArchives_add'
 		});
 	});
 

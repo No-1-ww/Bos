@@ -32,6 +32,7 @@ public class BasSubstituteController {
         System.out.println("进入findBasSubstituteAll。。。方法");
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         List<Map<String, Object>> list = substituteService.findBasSubstituteAll();
+        System.out.println(list.size());
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(list);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
         for (Map<String, Object> map : list) {
