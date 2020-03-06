@@ -16,6 +16,11 @@ public class SyUnitsServiceImpl implements SyUnitsService {
     private SyUnitsMapper syUnitsMapper;
 
     @Override
+    public SyUnits queryByName(String syUnitName) {
+        return syUnitsMapper.queryByName(syUnitName);
+    }
+
+    @Override
     public SyUnits findID(Integer ID) {
         return syUnitsMapper.findID(ID);
     }

@@ -8,7 +8,7 @@
         from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
         inner join sy_emp se2 on so.DeliveryPerson = se2.ID
         inner join sy_units su on so.Direction = su.ID
-        order by so.OutBoundID
+        order by so.OutBoundID desc
         limit #{page},#{limit}
     </select>
     <select id="queryOutBoundCount" resultType="Integer">
@@ -27,6 +27,14 @@
         insert into sor_outbound(OutBoundID,HandoverType,Line,Direction,AcceptPerson,Carriers,DeliveryPerson,DeliveryDate,DeliveryCompany,EnterPerson,EnterDate)
         values (#{outBoundID},#{handoverType},#{line},#{direction},#{acceptPerson},#{carriers},#{deliveryPerson},#{deliverDate},#{deliveryCompany},#{enterPerson},#{enterDate})
     </insert>
+
+    <!--修改-->
+    <update id="upDateOutBound" parameterType="SorOutBound" keyColumn="OutBoundID" useGeneratedKeys="true" keyProperty="outBoundID">
+        update sor_outbound set HandoverType=#{handoverType},Line=#{line},Direction=#{direction},AcceptPerson=#{acceptPerson},
+        Carriers=#{carriers},DeliveryPerson=#{deliveryPerson},DeliveryDate=#{deliverDate},DeliveryCompany=#{deliveryCompany},
+        EnterPerson=#{enterPerson}
+        where OutBoundID = #{outBoundID};
+    </update>
 
     <resultMap id="query" type="Map">
         <result column="OutBoundID" property="OutBoundID"></result>

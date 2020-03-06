@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+<div class="external">
+    <!-- 操作按扭组 -->
+</div>
+<form lay-filter="stoOutForm" action="/updateOutBound" class="layui-form" method="post">
+    <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+        <tbody>
+        <tr>
+            <td class="layui-bg-gray" width="13%">交接单类型</td>
+            <td width="20%">
+                <select  name="handoverType" lay-verify="required">
+                    <option value="0">市内物流交接单</option>
+                    <option value="1">长途物流交接单</option>
+                    <option value="2">派送清单</option>
+                    <option value="3">发货交接单</option>
+                </select>
+            </td>
+            <td class="layui-bg-gray" width="13%">线路资源</td>
+            <td width="20%">
+                <label style="color: red;display: none" ></label>
+                <input  type="text" th:value="${Line}" name="line" placeholder="请输入线路资源人" autocomplete="off" class="layui-input" value="" >
+            </td>
+            <td class="layui-bg-gray" width="14%">物流方向</td>
+            <td width="20%">
+                <!--接货人所在的公司就是物流方向-->
+                <input type="text" th:value="${Direction}" name="direction" placeholder="该列自动生成" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
+        </tr>
+        <tr>
+
+            <td class="layui-bg-gray">承运商</td>
+            <td>
+                <label style="color: red;display: none" ></label>
+                <input  type="text" th:value="${Carriers}" name="carriers" placeholder="请输入承运商" autocomplete="off" class="layui-input" value="" >
+
+            </td>
+            <td class="layui-bg-gray">接货人</td>
+            <td>
+                <label style="color: red;display: none" ></label>
+                <input  type="text" th:value="${AcceptPerson}" name="acceptPerson" placeholder="请输入接货人" autocomplete="off" class="layui-input" value="" >
+
+            </td>
+            <td class="layui-bg-gray" width="13%">确认人</td>
+            <td width="20%">
+                <label style="color: red;display: none" ></label>
+                <input  type="text" th:value="${EnterPerson}" name="enterPerson" placeholder="请输入确认人" autocomplete="off" class="layui-input" value="" >
+            </td>
+        </tr>
+        <tr>
+
+            <td class="layui-bg-gray">交货人</td>
+            <td>
+                <label style="color: red;display: none" ></label>
+                <input  type="text" th:value="${DeliveryPerson}" name="deliveryPerson" placeholder="请输入交货人" autocomplete="off" class="layui-input" value="" >
+
+            </td>
+            <td class="layui-bg-gray">交货时间</td>
+            <td>
+                <input type="text" th:value="${DeliveryDate}" name="deliveryDate" placeholder="请输入交货时间" autocomplete="off" class="layui-input" value="" readonly >
+            </td>
+            <td class="layui-bg-gray">交货单位</td>
+            <td>
+                <input type="text" th:value="${DeliveryCompany}" name="deliveryCompany" placeholder="" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td class="layui-bg-gray" colspan="6">
+                <button class="layui-btn" style="background: #1da02b;">确定</button>
+                <button type="button" class="layui-btn layui-btn-primary">取消</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<input type="hidden" id="selected" th:value="${HandoverType}" />
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("option").each(function () {
+           var opt =  $(this).text();
+           var selected = $("#selected").val();
+            if(opt==selected){
+                $(this).attr("selected","selected");
+            }
+        })
+    })
+
+//失去焦点提示错误信息
+$(".layui-input").blur(function () {
+    var data = $(this).val();
+    var placeholder = $(this).attr("placeholder");
+    if(data==""){
+        var prev = $(this).prev();
+        $(prev).text(placeholder);
+        $(prev).show();
+    }else{
+        $(prev).val("");
+        var prev = $(this).prev();
+        $(prev).hide();
+        //填写的不为空进入后台查看是否有该员工
+
+        var dName = $("input[name=deliveryPerson]").val();
+        var aName = $("input[name=acceptPerson]").val();
+        if($(this).attr("name")=="acceptPerson"){
+            $.ajax({
+                url:"/invoiceComparisonTable_add/check",
+                type:"POST",
+                data:{"name":data},
+                success:function (syUnitName) {
+                    //姓名验证完成前台做验证
+                    if(syUnitName=="输入的姓名不存在"){
+                        $(prev).text("输入的姓名不存在");
+                        $("input[name=direction]").val("");
+                        $(prev).show();
+                    }else if(data==dName){
+                        $(prev).text("出货，交货人姓名不能一致");
+                        $(prev).show();
+                    }else{
+                        //将收货人的公司绑定给物流方向
+                        $("input[name=direction]").val(syUnitName);
+                        $(prev).text("");
+                        $(prev).hide();
+                    }
+
+
+                }
+            });
+        }
+        else if($(this).attr("name")=="deliveryPerson"){
+            $.ajax({
+                url:"/invoiceComparisonTable_add/check",
+                type:"POST",
+                data:{"name":data},
+                success:function (syUnitName) {
+                    //姓名验证完成前台做验证
+                    if(syUnitName=="输入的姓名不存在"){
+                        $(prev).text("输入的姓名不存在");
+                        $("input[name=deliveryCompany]").val("");
+                        $(prev).show();
+                    }else if(data==aName){
+                        $(prev).text("出货，交货人姓名不能一致");
+                        $(prev).show();
+                    }else{
+                        //将收货人的公司绑定至前台
+                        $("input[name=deliveryCompany]").val(syUnitName);
+                        $(prev).text("");
+                        $(prev).hide();
+                    }
+
+
+                }
+            });
+        }
+        else{
+            $.ajax({
+                url:"/invoiceComparisonTable_add/check",
+                type:"POST",
+                data:{"name":data},
+                success:function (syUnitName) {
+                    //姓名验证完成前台做验证
+                    if(syUnitName=="输入的姓名不存在"){
+                        $(prev).text("输入的姓名不存在");
+                        $(prev).show();
+                    }else{
+                        //将收货人的公司绑定至前台
+                        $(this).val(syUnitName);
+                        $(prev).text("");
+                        $(prev).hide();
+                    }
+
+
+                }
+            });
+        }
+
+    }
+
+
+});
+
+//加载'form'模块，使checkbox、select、radio初始化
+    layui.use(['form','layer'], function(){
+        var form = layui.form,
+            layer = layui.layer;
+        /*form.render();*/
+        //监听select下拉框的值改变事件
+
+
+        form.on("submit(stoOutForm)", function () {
+            //如果text通过了label循环，那么进入后台验证输入的数值是否正确
+            var text="";
+            $("label").each(function () {
+                text = $(this).text();
+                if(text!=""){
+                    return false;
+                }
+            });
+            if(text!=""){
+                layer.msg("请填写正确的数据！");
+                return false;
+            }
+
+
+
+           //没有任意一个return false 关闭窗体
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index)
+        })
+
+
+    });
+
+
+</script>
+</body>
+</html>
+
+

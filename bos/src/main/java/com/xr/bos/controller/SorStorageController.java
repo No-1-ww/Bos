@@ -259,6 +259,7 @@ public class SorStorageController {
     @RequestMapping("/addStorage")
     @ResponseBody
     public ModelAndView addStorage(SorStorage sorStorage, SorStorageDetails sorStorageDetails, HttpSession session){
+        System.out.println("sorStorage"+sorStorage);
         SyEmp syEmp = (SyEmp) session.getAttribute("SyEmp");
         //得到当前登录的用户来设置收货人id
         Integer id = syEmp.getID();
@@ -378,12 +379,11 @@ public class SorStorageController {
     /**
      *
      * @param name 员工姓名
-     * @param SyUnitsName 员工所在公司名称
      * @return
      */
     @RequestMapping(value = "/invoiceComparisonTable_add/check",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
     @ResponseBody
-    public String check(String name,String SyUnitsName){
+    public String check(String name){
         SyEmp check = syEmpService.check(name);
         if(check==null){
             return "输入的姓名不存在";

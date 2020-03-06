@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface SyUnitsService {
+
+    /**
+     * 根据公司名称来查询对应信息
+     * @param syUnitName
+     * @return
+     */
+    SyUnits queryByName(String syUnitName);
+
+
     SyUnits findID(Integer ID);
 
     //查询所有

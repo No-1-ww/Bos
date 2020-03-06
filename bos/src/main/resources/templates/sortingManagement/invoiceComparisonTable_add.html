@@ -64,7 +64,6 @@
 	    var name = $(this).val();
 
         var dName = $("input[name=dPerson]").val();
-		var SyUnitsName = $("input[name=acceptCompany]").val();
 		if(name==""){
                 $("#errAPerson").text("请输入接货人姓名").css("color","red");
 
@@ -73,7 +72,7 @@
 		$.ajax({
 			url:"/invoiceComparisonTable_add/check",
 			type:"POST",
-			data:{"name":name,"SyUnitsName":SyUnitsName},
+			data:{"name":name},
 			success:function (data) {
 				console.log(data);
 				//姓名验证完成前台做验证
@@ -85,15 +84,11 @@
                     //将收货人的公司绑定至前台
                     $("input[name=acceptCompany]").val(data);
                     $("#errAPerson").text("");
-                    layui.use('layer',function () {
-                        var layer = layui.layer;
-
-                    });
 				}
 
 
             }
-		})
+		});
     });
     $("input[name=dPerson]").blur(function () {
         var name = $(this).val();

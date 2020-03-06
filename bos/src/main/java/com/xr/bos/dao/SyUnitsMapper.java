@@ -10,6 +10,11 @@ import java.util.Map;
 public interface SyUnitsMapper {
 
     /**
+     * 根据公司名称来查询
+     */
+    SyUnits queryByName(String syUnitName);
+
+    /**
      * 根据ID来查询
      * @param ID
      * @return
