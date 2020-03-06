@@ -18,22 +18,26 @@
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">是否分级</td>
 		      	<td width="35%">
-					<input type="radio" name="Grade" value="1" title="是">
-					<input type="radio" name="Grade" value="0" title="否" checked>
+					<input type="radio" name="Grade" lay-verify="panduan" value="true" title="是">
+					<input type="radio" name="Grade" value="false" title="否" checked>
 		      	</td>
 		    </tr>
-		    <tr th:each="dd:${mps}">
+		    <tr>
 		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td th:text="${dd.EmpName}">张三</td>
+		      	<td >
+					<input type="text" id="operatorid"  class="layui-input" readonly="readonly"/>
+				</td>
 		      	<td class="layui-bg-gray">操作单位</td>
-		      	<td th:text="${dd.Uname}">总公司</td>
+		      	<td >
+					<input type="text"  id="operationunitid"  class="layui-input" readonly="readonly"/>
+				</td>
 		    </tr>
 			<tr>
 		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td th:text="${date}">
-					<!--<div class="layui-inline layui-input-inline layui-form-item">
-					<input type="text" name="operationtime" id="operationtime" th:value="${date}" class="layui-input" readonly="readonly"/>
-					</div>-->
+		      	<td >
+					<div class="layui-inline layui-input-inline layui-form-item">
+					<input type="text" name="operationtime" id="operationtime" class="layui-input" readonly="readonly"/>
+					</div>
 				</td>
 		      	<td class="layui-bg-gray"></td>
 		      	<td></td>
@@ -57,28 +61,74 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
-		//添加基础档案基本信息
+		//修改的赋值
+		layui.use(['form','layer'],function () {
+			var layer = layui.layer
+					, form = layui.form;
+
+			var id=[[${id}]];
+			$.ajax({
+				url:'/findBasicarchivesById',
+				data:{"id":id},
+				type:"get",
+				success:function (data) {
+					console.log($.parseJSON(data).ID);
+					$("#name").val($.parseJSON(data).Bname);
+					$("#operatorid").val($.parseJSON(data).EmpName);
+					$("#operationunitid").val($.parseJSON(data).Uname);
+					$("#operationtime").val($.parseJSON(data).OperationTime);
+					$("#Remarks").val($.parseJSON(data).Remarks)
+					var s=$.parseJSON(data).Grade;
+					//alert(s)
+					$("input[name='Grade'][value="+s+"]").attr("checked","true");
+					form.render();
+				}
+			})
+
+		})
+
+
+
+
+		//保存修改基础档案
 		layui.use(['form','layer'], function(){
 			//渲染
 			var form = layui.form
 					,layer=layui.layer;
 
+			//自定义验证规则
+			form.verify({
+				/*panduan:function (value) {
+					if($('input[name="Grade"]:checked').val()=='true'){
+
+						return '！';
+					}
+
+				}*/
+
+
+
+
+			});
+
 
 			//监听提交
 			form.on('submit(suu)',function (data) {
+				var id=[[${id}]];
 				var name=$('#name').val();
 				var Grade=$('input[name="Grade"]:checked').val();
 				var Remarks=$('#Remarks').val();
 				$.ajax({
-					url:'/addbasicArchives',
+					url:'/updateBasicarchivesById',
 					type:'get',
 					data:{
+						"id":id,
 						"name":name,
 						"remarks":Remarks,
 						"grade":Grade
 					},
 					success:function (res) {
-						layer.alert("新增成功！", {icon: 6},function () {
+						layer.alert("修改成功！", {icon: 6},function () {
 							// 获得frame索引
 							var index = parent.layer.getFrameIndex(window.name);
 							parent.location.reload(); //刷新父页面

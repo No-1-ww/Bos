@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.BasBasicarchivesentryMapper">
+  <resultMap id="BaseResultMap" type="com.xr.bos.model.BasBasicarchivesentry">
+    <!--@mbg.generated generated on Thu Mar 05 13:56:05 CST 2020.-->
+    <!--@Table bas_basicarchivesentry-->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="ParentID" jdbcType="INTEGER" property="parentid" />
+    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+    <result column="Available" jdbcType="BIT" property="available" />
+    <result column="Remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="OperatorID" jdbcType="INTEGER" property="operatorid" />
+    <result column="OperationUnitID" jdbcType="INTEGER" property="operationunitid" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+    <result column="Stats" jdbcType="BIT" property="stats" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Thu Mar 05 13:56:05 CST 2020.-->
+    ID, `Name`, ParentID, MnemonicCode, Available, Remarks, OperatorID, OperationUnitID, 
+    OperationTime, Stats
+  </sql>
+</mapper>

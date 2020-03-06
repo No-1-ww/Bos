@@ -39,10 +39,17 @@ public class Html {
         return "/basicData/basicArchives";
     }
 
-    @GetMapping("basicArchives_add")
+
+   /* @GetMapping("/basicArchives_list")
+    public String basicArchives_list(){
+        return "/basicData/basicArchives_list";
+    }
+*/
+
+    /*@GetMapping("basicArchives_add")
     public String basicArchives_add(){
         return "/basicData/basicArchives_add";
-    }
+    }*/
 
     //班车设置
     @GetMapping("/basicData/shuttleBusSet")

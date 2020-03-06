@@ -274,7 +274,7 @@ public class BasDeliverystandardController {
      * @param limit
      */
     @RequestMapping(value = "/findBasDeliverystandardByNameAndInvalidateMark")
-    public void findBasDeliverystandardByNameAndInvalidateMark( String operatorid,String name,String maxweight,String minweight,String operationtime,String invalidatemark,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit) throws ParseException{
+    public void findBasDeliverystandardByNameAndInvalidateMark( String operatorid,String name,String maxweight,String minweight,String operationtime,String invalidatemark,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         BasDeliverystandard deliverystandard =new BasDeliverystandard();
         BigDecimal min=null;
         if(minweight !=null && minweight !=""){
