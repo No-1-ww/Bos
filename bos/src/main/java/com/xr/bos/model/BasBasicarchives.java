@@ -21,7 +21,7 @@ public class BasBasicarchives {
     /**
     * 档案是否分级	1：是，0：否
     */
-    private Boolean grade;
+    private String grade;
 
     /**
     * 操作人员	外键，对应到用户表编号
@@ -42,4 +42,9 @@ public class BasBasicarchives {
     * 操作时间	当前操作时间
     */
     private Date operationtime;
+
+    /**
+     * 状态
+     */
+    private String invalidatemark;
 }

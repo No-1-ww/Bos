@@ -2,7 +2,7 @@ package com.xr.bos.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xr.bos.service.BasSubstituteService;
+import com.xr.bos.service.BasBasicarchivesentryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,22 +17,22 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-public class BasSubstituteController {
+public class BasBasicarchivesentryController {
     @Autowired
-    private BasSubstituteService substituteService;
+    private BasBasicarchivesentryService basicarchivesentryService;
 
-    /**
-     * 查询所有的取派设置数据
-     * @param responses
-     * @param page
-     * @param limit
-     */
-    @RequestMapping(value = "/findBasSubstituteAll")
-    public void findBasSubstituteAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
-        System.out.println("进入findBasSubstituteAll。。。方法");
+    @RequestMapping(value = "/basicArchives_list")
+    public ModelAndView basicArchives_list(String parentid){
+        System.out.println(parentid+"=====parentid");
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("parentid",parentid);
+        mv.setViewName("/basicData/basicArchives_list");
+        return mv;
+    }
+    @RequestMapping(value = "/findBasicarchivesentryAll")
+    public void findBasicarchivesentryAll(String parentid,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
-        List<Map<String, Object>> list = substituteService.findBasSubstituteAll();
-        System.out.println(list.size());
+        List<Map<String, Object>> list = basicarchivesentryService.findBasicarchivesentryAll(Integer.parseInt(parentid));
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(list);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
         for (Map<String, Object> map : list) {
@@ -55,7 +55,7 @@ public class BasSubstituteController {
         System.out.println(sb);
         try {
             //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
-            System.out.println(sb);
+            // System.out.println(sb);
             PrintWriter out = responses.getWriter();
             out.print(sb);
             out.flush();

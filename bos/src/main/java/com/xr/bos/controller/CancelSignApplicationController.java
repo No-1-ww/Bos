@@ -2,12 +2,11 @@ package com.xr.bos.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xr.bos.service.BasSubstituteService;
+import com.xr.bos.service.CancelSignApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -17,25 +16,22 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-public class BasSubstituteController {
-    @Autowired
-    private BasSubstituteService substituteService;
+public class CancelSignApplicationController {
 
-    /**
-     * 查询所有的取派设置数据
-     * @param responses
-     * @param page
-     * @param limit
-     */
-    @RequestMapping(value = "/findBasSubstituteAll")
-    public void findBasSubstituteAll(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
-        System.out.println("进入findBasSubstituteAll。。。方法");
+    @Autowired
+    private CancelSignApplicationService cancelSignApplicationService;
+
+    @RequestMapping(value = "/queryCan")
+    public void select(HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit) {
+        System.out.println("进入方法.....");
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
-        List<Map<String, Object>> list = substituteService.findBasSubstituteAll();
-        System.out.println(list.size());
-        PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(list);
+        List<Map<String, Object>> queryall = cancelSignApplicationService.queryall();
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String, Object>>(queryall);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
-        for (Map<String, Object> map : list) {
+        for (Map<String, Object> map : queryall) {
+
+           /* Object signType = map.get("signType");
+            System.out.println(signType+"&&&&&&&&&&&&&&&&&&&&&&&&");*/
             Set<String> set = map.keySet();
             Iterator<String> iterator = set.iterator();
             sb.append("{");
@@ -54,15 +50,16 @@ public class BasSubstituteController {
         responses.setContentType("text/html;charset=utf-8");
         System.out.println(sb);
         try {
-            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
             System.out.println(sb);
             PrintWriter out = responses.getWriter();
             out.print(sb);
             out.flush();
             out.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            //TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
+
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xr.bos.model.Bigloglogisticscontroltable;
+import com.xr.bos.model.SyEmp;
 import com.xr.bos.service.Bigloglogisticscontroltableservice;
 import com.xr.bos.util.RedisTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -150,14 +152,24 @@ public class BigloglogisticscontroltableController {
 
     }
     @RequestMapping("insertBL")
-    public int insertBL(Bigloglogisticscontroltable blt){
-        System.out.println(blt.getWorkSheetNo()+blt.getInputDate());
+    public int insertBL(Bigloglogisticscontroltable blt, HttpSession session){
+        System.out.println(blt.getWorkSheetNo());
+        SyEmp syEmp =(SyEmp) session.getAttribute("SyEmp");
+        int id=syEmp.getID();
+        blt.setInputPerson(id);
         int i = bts.insertBL(blt);
         if(i>0){
             return i;
         }
         return 0;
 
+    }
+   @RequestMapping("largeLogisticsManagement/invoiceComparisonTable_update")
+    public ModelAndView invoiceComparisonTable_add(ModelAndView mv,Bigloglogisticscontroltable b){
+        mv.addObject("b",b);
+       System.out.println("aaaaaaa"+b.getRemarks());
+        mv.setViewName("/largeLogisticsManagement/invoiceComparisonTable_update");
+        return mv;
     }
     @RequestMapping("max")
     public void selectmax(HttpServletResponse responses){

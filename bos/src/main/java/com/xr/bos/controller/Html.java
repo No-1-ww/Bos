@@ -23,21 +23,34 @@ public class Html {
         return "/basicData/deliveryStandard";
     }
     //收派标准的添加
-    @GetMapping("/deliveryStandard_add")
+    /*@GetMapping("/deliveryStandard_add")
     public String deliveryStandard_add(){
         return "/basicData/deliveryStandard_add";
-    }
-    //收派标准的编辑
+    }*/
+  /*  //收派标准的编辑
     @GetMapping("/deliveryStandard_update")
     public String deliveryStandard_update(){
         return "/basicData/deliveryStandard_update";
     }
-
+*/
     //基础档案
     @GetMapping("/basicData/basicArchives")
     public String basicArchives(){
         return "/basicData/basicArchives";
     }
+
+
+   /* @GetMapping("/basicArchives_list")
+    public String basicArchives_list(){
+        return "/basicData/basicArchives_list";
+    }
+*/
+
+    /*@GetMapping("basicArchives_add")
+    public String basicArchives_add(){
+        return "/basicData/basicArchives_add";
+    }*/
+
     //班车设置
     @GetMapping("/basicData/shuttleBusSet")
     public String shuttleBusSet(){
