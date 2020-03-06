@@ -20,6 +20,6 @@
     </select>
     <insert id="insertBL" parameterType="Bigloglogisticscontroltable">
       insert into biglog_logisticscontroltable(WorkSheetNo,CType,Corporation,WaybillID,Remarks,InputPerson,InputDate,InputCompany) values
-      (#{workSheetNo},#{cType},#{corporation},#{waybillID},#{remarks},#{inputPerson},#{inputDate},#{inputCompany})
+      (#{workSheetNo},#{cType},#{corporation},#{waybillID},#{remarks},#{inputPerson},now(),1)
     </insert>
 </mapper>
