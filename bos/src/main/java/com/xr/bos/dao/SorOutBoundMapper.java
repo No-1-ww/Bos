@@ -19,4 +19,7 @@ public interface SorOutBoundMapper {
 
     //新增
     Integer addOutBound(SorOutBound sorOutBound);
+
+    //修改
+    Integer upDateOutBound(SorOutBound sorOutBound);
 }

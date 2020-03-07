@@ -7,7 +7,7 @@
         from sor_storage s
         inner join sy_emp se1 on s.AcceptPerson = se1.ID
         inner join sy_emp se2 on s.DeliveryPerson = se2.ID
-        order by s.ID limit #{page},#{limit}
+        order by s.ID desc limit #{page},#{limit}
     </select>
     <select id="queryCount" resultType="Integer">
         select count(*)
@@ -87,7 +87,7 @@
             s.deliveryCompany=#{deliveryCompany}
         </if>
 
-        order by s.ID limit #{page},#{limit}
+        order by s.ID desc limit #{page},#{limit}
         /*先用where条件查询，然后orderby进行排序*/
     </select>
 

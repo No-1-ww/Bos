@@ -34,4 +34,9 @@ public class SorOutBoundServiceImpl implements SorOutBoundService {
     public Integer addOutBound(SorOutBound sorOutBound) {
         return sorOutBoundMapper.addOutBound(sorOutBound);
     }
+
+    @Override
+    public Integer upDateOutBound(SorOutBound sorOutBound) {
+        return sorOutBoundMapper.upDateOutBound(sorOutBound);
+    }
 }

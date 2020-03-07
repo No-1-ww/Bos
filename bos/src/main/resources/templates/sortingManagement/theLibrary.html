@@ -270,9 +270,13 @@
             </table>
         </form>
     </div>
+    <script type="text/html" id="abc">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </script>
+</div>
 
-</div>
-</div>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layer/layer.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
@@ -283,7 +287,7 @@
     //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
         var form = layui.form;
-        form.render("checkbox")
+        form.render();
     });
 
     //加载'table'组件
@@ -292,13 +296,14 @@
         table.render({
             id:"TableSorOutBound",
             elem:"#SorOutBound",
+            toolbar:"#abc",
             url:"/queryAllOutBound",
-            height: 400,
+            height: 400,//开启头部工具栏
             limit: 5,
             limits:[5,10,15,20],
             cols: [
                 [
-                    {checkbox:true}
+                    {checkbox:true,fixed: 'left'}
                     ,{field: 'OutBoundID', title: '出库交接单号',width:150 , sort: true}
                     ,{field: 'HandoverType', title: '交接单类型',width:105}
                     ,{field: 'Line', title: '线路资源',width:130,  sort: true, totalRow: true}
@@ -333,6 +338,9 @@
         //监听行内工具栏事件
         //lay-event="edit"这句代码为了找到对应的按钮，万一有多个就需要该属性
 
+
+
+
         table.on('tool(SorOutBound)',function (obj) {
             var data = obj.data;
             alert(data.OutBoundID);
@@ -343,7 +351,8 @@
                 area: ['860px', '340px'], //宽高
                 content: '/sortingManagement/theLibrary_list'
             });
-        })
+        });
+
 
     });
 
@@ -381,14 +390,42 @@
 
         //修改
         $('#opEdit').click(function(){
-            //页面层
-            layer.open({
-                title: ['修改', 'color:#fff;background:#1da02b;'],
-                type: 2,
-                //skin: 'layui-layer-rim', //加上边框
-                area: ['660px', '340px'], //宽高
-                content: '/systemManagement/theLibrary_add'
-            });
+            layui.use(['table','layer'],function () {
+                var table = layui.table,
+                    layer = layui.layer;
+                //由于是checkbox所以得到的是一个数组
+                var tableSorOutBoundRow =  table.checkStatus("TableSorOutBound");
+                 var data = tableSorOutBoundRow.data;
+                if(data.length==0){
+                    layer.msg("请选择一行数据");
+                }else if(data.length==1){
+                    layer.open({
+                        title: ['修改', 'color:#fff;background:#1da02b;'],
+                        type: 2,
+                        //skin: 'layui-layer-rim', //加上边框
+                        area: ['760px', '384px'], //宽高
+                        content: '/sortingManagement/theLibrary_Update?OutBoundID='+data[0].OutBoundID+'&HandoverType='+data[0].HandoverType+'&Line='+data[0].Line+'&Direction='+data[0].Direction+'&AcceptPerson='+data[0].AcceptPerson
+                            +'&Carriers='+data[0].Carriers+'&DeliveryPerson='+data[0].DeliveryPerson+'&DeliveryDate='+data[0].DeliveryDate+'&DeliveryCompany='+data[0].DeliveryCompany
+                            +'&EnterPerson='+data[0].EnterPerson+'&EnterDate='+data[0].EnterDate,
+                        end:function () {
+                            layui.use(['layer','table'],function () {
+                                var layer = layui.layer
+                                    ,table = layui.table;
+                                layer.msg("执行完毕");
+                                table.reload('TableSorOutBound', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }else{
+                    layer.msg("只能选择一行数据");
+                }
+                return ;
+            })
+
         });
 
         //查看明细

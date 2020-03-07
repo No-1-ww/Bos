@@ -14,4 +14,7 @@ public interface SorOutBoundService {
     String queryMaxOutBoundID();
 
     Integer addOutBound(SorOutBound sorOutBound);
+
+    //修改
+    Integer upDateOutBound(SorOutBound sorOutBound);
 }

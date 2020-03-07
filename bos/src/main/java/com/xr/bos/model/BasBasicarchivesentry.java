@@ -1,16 +1,15 @@
 package com.xr.bos.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
 
 @Data
-@Table(name = "bas_deliverystandard")
-public class BasDeliverystandard implements Serializable {
+@Table(name = "bas_basicarchivesentry")
+public class    BasBasicarchivesentry implements Serializable {
     /**
-     * 编号	自增
+     * OperationTime
      */
     @Id
     @Column(name = "ID")
@@ -18,25 +17,37 @@ public class BasDeliverystandard implements Serializable {
     private Integer id;
 
     /**
-     * 收派标准名称	唯一
+     * 档案名称	唯一
      */
     @Column(name = "`Name`")
     private String name;
 
     /**
-     * 最小重量	非负数
+     * 上级编码	本表ID
      */
-    @Column(name = "MinWeight")
-    private BigDecimal minweight;
+    @Column(name = "ParentID")
+    private Integer parentid;
 
     /**
-     * 最大重量	非负数且必须大于最小重量
+     * 助记码	唯一且只可为英文
      */
-    @Column(name = "MaxWeight")
-    private BigDecimal maxweight;
+    @Column(name = "MnemonicCode")
+    private String mnemoniccode;
 
     /**
-     * 操作人员	外键，对应到员工表编号
+     * 是否封存	1：是，0：否
+     */
+    @Column(name = "Available")
+    private Boolean available;
+
+    /**
+     * 备注
+     */
+    @Column(name = "Remarks")
+    private String remarks;
+
+    /**
+     * 操作人员	外键，对应到用户表编号
      */
     @Column(name = "OperatorID")
     private Integer operatorid;
@@ -53,8 +64,8 @@ public class BasDeliverystandard implements Serializable {
     @Column(name = "OperationTime")
     private Date operationtime;
 
-    @Column(name = "InvalidateMark")
-    private String invalidatemark;
+    @Column(name = "Stats")
+    private Boolean stats;
 
     private static final long serialVersionUID = 1L;
 }

@@ -55,6 +55,18 @@ public class SorOutBoundController {
         map.put("page",(page-1)*limit);
         map.put("limit",limit);
         List<Map<String, Object>> list = sorOutBoundService.queryAll(map);
+        for (Map<String, Object> stringObjectMap : list) {
+            int handoverType = Integer.parseInt(stringObjectMap.get("HandoverType").toString());
+            if (handoverType==0){
+                stringObjectMap.put("HandoverType","市内物流交接单");
+            }else if (handoverType==1){
+                stringObjectMap.put("HandoverType","长途物流交接单");
+            }else if (handoverType==2){
+                stringObjectMap.put("HandoverType","派送清单");
+            }else{
+                stringObjectMap.put("HandoverType","发货交接单");
+            }
+        }
         //格式化时间
         List<Map<String, Object>> list1 = DateFormat.formatMap(list, "EnterDate");
         //工具类原因只能格式化一个时间
@@ -167,6 +179,65 @@ public class SorOutBoundController {
 
 
         return "ok";
+    }
+
+    String updateOutBoundID = "";
+    //去修改页面
+    @RequestMapping("/sortingManagement/theLibrary_Update")
+    public  ModelAndView goUpDateOutBound( String OutBoundID,String HandoverType,String Line,String Direction,String AcceptPerson,String Carriers,String DeliveryPerson
+            ,String DeliveryDate,String DeliveryCompany,String EnterPerson,String EnterDate,HttpSession session){
+
+        updateOutBoundID = OutBoundID;
+
+        SyEmp syEmp1 = (SyEmp)session.getAttribute("SyEmp");
+        ModelAndView mv = new ModelAndView();
+        //查询当前登录用户外的所有用户（交货人）
+        List<SyEmp> syEmps = syEmpService.querySyEmp(syEmp1.getID());
+        List<SyEmp> select = syEmpService.select();
+        //绑定线路资源
+        mv.addObject("xianLu",select);
+        mv.addObject("SyEmps",syEmps);
+        mv.addObject("OutBoundID",OutBoundID);
+        mv.addObject("HandoverType",HandoverType);
+        mv.addObject("Line",Line);
+        mv.addObject("Direction",Direction);
+        mv.addObject("AcceptPerson",AcceptPerson);
+        mv.addObject("Carriers",Carriers);
+        mv.addObject("DeliveryPerson",DeliveryPerson);
+        mv.addObject("DeliveryDate",DeliveryDate);
+        mv.addObject("DeliveryCompany",DeliveryCompany);
+        mv.addObject("EnterPerson",EnterPerson);
+        mv.addObject("EnterDate",EnterDate);
+        mv.setViewName("/sortingManagement/theLibrary_update");
+        return mv;
+    }
+
+    @Autowired
+    private  SorOutBound outBound;
+
+    @RequestMapping(value = "/updateOutBound",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public  ModelAndView upDateOutBound(String handoverType,String line,String direction,String acceptPerson,String carriers,String deliveryPerson
+            ,String deliveryDate,String deliveryCompany,String enterPerson){
+        SyUnits syUnits = syUnitsService.queryByName(direction);
+        SyEmp check2 = syEmpService.check(acceptPerson);
+        SyEmp check3 = syEmpService.check(carriers);
+        SyEmp check4 = syEmpService.check(deliveryPerson);
+        SyEmp check5 = syEmpService.check(enterPerson);
+        outBound.setOutBoundID(updateOutBoundID);
+        outBound.setHandoverType(Integer.parseInt(handoverType));
+        outBound.setLine(line);
+        outBound.setDirection(syUnits.getID());
+        outBound.setAcceptPerson(check2.getID());
+        outBound.setCarriers(check3.getID());
+        outBound.setDeliveryPerson(check4.getID());
+        outBound.setDeliveryCompany(deliveryCompany);
+        outBound.setDeliverDate(Date.valueOf(deliveryDate));
+        outBound.setEnterPerson(check5.getID());
+        sorOutBoundService.upDateOutBound(outBound);
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sortingManagement/theLibrary_Update");
+        return mv;
     }
 
 

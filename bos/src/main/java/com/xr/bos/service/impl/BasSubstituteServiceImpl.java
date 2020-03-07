@@ -16,6 +16,7 @@ public class BasSubstituteServiceImpl implements BasSubstituteService {
 
     @Override
     public List<Map<String, Object>> findBasSubstituteAll() {
+        System.out.println("findBasSubstituteAllService");
         return basSubstituteMapper.findBasSubstituteAll();
     }
 }
