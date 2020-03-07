@@ -21,6 +21,11 @@ public class BasBasicarchivesentryController {
     @Autowired
     private BasBasicarchivesentryService basicarchivesentryService;
 
+    /**
+     * 打开条目列表
+     * @param parentid
+     * @return
+     */
     @RequestMapping(value = "/basicArchives_list")
     public ModelAndView basicArchives_list(String parentid){
         System.out.println(parentid+"=====parentid");
@@ -29,6 +34,13 @@ public class BasBasicarchivesentryController {
         mv.setViewName("/basicData/basicArchives_list");
         return mv;
     }
+    /**
+     * 查询所有详情
+     * @param parentid
+     * @param responses
+     * @param page
+     * @param limit
+     */
     @RequestMapping(value = "/findBasicarchivesentryAll")
     public void findBasicarchivesentryAll(String parentid,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit){
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
