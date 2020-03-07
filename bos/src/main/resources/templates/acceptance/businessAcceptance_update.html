@@ -95,7 +95,8 @@
 
                 //提交完毕关闭窗口
                 var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
+                parent.location.reload();//刷新父页
+                parent.layer.close(index);//关闭当前
             })
         })
 

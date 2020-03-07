@@ -11,7 +11,7 @@ public interface Acc_worksheetMapper {
     //查询
     List<Map<String,Object>> queryall();
 
-    //新增
+    //新增——工作单快速录入
     int add_worksheet(Acc_worksheet acc_worksheet);
 
     //查询最大的工作单号

@@ -39,4 +39,11 @@ public interface Acc_businessadmissibilityService {
 
     //追单
     int update_afterSingleNum(String businessNoticeNo);
+
+    /**
+     * 删除
+     * @param businessNoticeNo
+     * @return
+     */
+    int deletAcc(String businessNoticeNo);
 }

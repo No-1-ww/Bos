@@ -244,9 +244,9 @@ layui.use('table', function(){
         done:function (res,curr,count) {
             $("[data-field='identificationSign']").children().each(function () {
                 if ($(this).text() == "true") {
-                    $(this).text("否")
+                    $(this).text("无")
                 }if($(this).text()=="false"){
-                    $(this).text("是")
+                    $(this).text("已返货")
                 }
             })
         }
