@@ -32,4 +32,17 @@ public class Acc_worksheet implements Serializable {
 
     public Acc_worksheet() {
     }
+
+    @Override
+    public String toString() {
+        return "Acc_worksheet{" +
+                "id=" + id +
+                ", workSheetNo='" + workSheetNo + '\'' +
+                ", destination='" + destination + '\'' +
+                ", productTime='" + productTime + '\'' +
+                ", total=" + total +
+                ", weight=" + weight +
+                ", stowageRequirements='" + stowageRequirements + '\'' +
+                '}';
+    }
 }

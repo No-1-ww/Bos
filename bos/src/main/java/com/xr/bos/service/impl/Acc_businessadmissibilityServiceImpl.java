@@ -69,5 +69,10 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
         return acc_businessadmissibilityMapper.update_afterSingleNum(businessNoticeNo);
     }
 
+    @Override
+    public int deletAcc(String businessNoticeNo) {
+        return acc_businessadmissibilityMapper.deletAcc(businessNoticeNo);
+    }
+
 
 }
