@@ -182,11 +182,11 @@ public class Html {
     }
 */
     //工作单快速录入
-   /* @GetMapping("/acceptance/worksheetQuickInput")
+    /*@GetMapping("/acceptance/worksheetQuickInput")
     public String worksheetQuickInput(){
         return "/acceptance/worksheetQuickInput";
-    }
-*/
+    }*/
+
     //工作单快速录入里面的新增businessAcceptance_add
    /* @GetMapping("/businessAcceptance_add")
     public String businessAcceptance_add1(){return "/acceptance/businessAcceptance_add";}

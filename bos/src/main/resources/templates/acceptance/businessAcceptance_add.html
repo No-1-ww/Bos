@@ -85,11 +85,6 @@
         layui.use('form', function(){
             var form = layui.form;
             form.on("submit(stoForm)",function(){
-                var deliveryPerson = $("#deliveryPerson").val();
-                if(deliveryPerson==""){
-                    $("#errDeliveryPerson").show();
-                    return false;
-                }
                 var c=$("input[name=customName]").val();
                 var d=$("input[name=linkman]").val();
                 var e=$("input[name=telPhone]").val();
@@ -103,7 +98,9 @@
                 }
                 //提交完毕关闭窗口
                 var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
+                parent.location.reload();//刷新父页
+                parent.layer.close(index);//关闭当前
+
             })
         })
 

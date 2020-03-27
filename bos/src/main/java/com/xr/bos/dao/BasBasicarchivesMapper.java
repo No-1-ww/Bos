@@ -76,4 +76,21 @@ public interface BasBasicarchivesMapper {
      */
     @Update("UPDATE `bos`.`bas_basicarchives` SET  `Name` =#{name}, `Grade` =${grade}, `Remarks` = #{remarks} , `InvalidateMark` =1 WHERE `ID` =#{id}")
     int updateBasicarchivesById(BasBasicarchives basicarchives);
+
+
+    /**
+     * 查询主表下有没有条目信息
+     * @param id
+     * @return
+     */
+    @Select("SELECT COUNT(*) FROM bas_basicarchivesentry y,bas_basicarchives s where y.ParentID=s.ID and y.ParentID=#{id}")
+    String findbas_basicarchivesentryByParent(Integer id);
+
+    /**
+     * 删除基础设置
+     * @param id
+     * @return
+     */
+    @Update("UPDATE `bos`.`bas_basicarchives` SET  `InvalidateMark` = 0 WHERE `ID` =#{id} ")
+    int deletebasicarchivesByID(Integer id);
 }

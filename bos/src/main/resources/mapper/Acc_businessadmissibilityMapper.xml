@@ -62,7 +62,7 @@
             businessNoticeNo like "%"#{businessNoticeNo}"%" and customCode like "%"#{customCode}"%"
         </if>
         <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
-             businessNoticeNo like  "%"#{businessNoticeNo}"%"
+             businessNoticeNo like "%"#{businessNoticeNo}"%"
         </if>
         <if test=" customCode !='' and customCode !=null">
              customCode like "%"#{customCode}"%"
@@ -73,5 +73,7 @@
         update acc_workorder set afterSingleNum=afterSingleNum+1 where businessNoticeNo=#{businessNoticeNo}
     </update>
 
-
+    <delete id="deletAcc" parameterType="String">
+        delete from acc_businessadmissibility where businessNoticeNo=#{businessNoticeNo}
+    </delete>
 </mapper>

@@ -65,4 +65,19 @@ public interface BasBasicarchivesService{
      */
     int updateBasicarchivesById(BasBasicarchives basicarchives);
 
+
+    /**
+     * 查询主表下有没有条目信息
+     * @param id
+     * @return
+     */
+   String findbas_basicarchivesentryByParent(Integer id);
+
+    /**
+     * 删除基础设置
+     * @param id
+     * @return
+     */
+   int deletebasicarchivesByID(Integer id);
+
 }

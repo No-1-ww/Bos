@@ -125,7 +125,7 @@ public class Acc_businessadmissibilityController {
     /*
         条件查询
      */
-    @RequestMapping(value = "/busin_querywhere",produces = "text/String;charset=UTF-8")
+    /*@RequestMapping(value = "/busin_querywhere",produces = "text/String;charset=UTF-8")
     @ResponseBody
     public String selectWhere(Acc_businessadmissibility acc_businessadmissibility){
         List<Acc_businessadmissibility> acc = acc_businessadmissibilityService.query_whereAcc(acc_businessadmissibility);
@@ -135,7 +135,43 @@ public class Acc_businessadmissibilityController {
         String s = JSONArray.toJSONString(acc);
 
         return s;
+    }*/
+
+    /**
+     * 条件查询
+     * @param acc_businessadmissibility
+     * @param responses
+     * @param page
+     * @param limit
+     */
+    @RequestMapping(value = "/busin_querywhere",produces = "text/String;charset=UTF-8")
+    public void selectwhere(Acc_businessadmissibility acc_businessadmissibility,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit) {
+        System.out.println("进入方法.....");
+        System.out.println("条件查询"+acc_businessadmissibility);
+        System.out.println("page的值为"+page+"limit的值为"+limit);
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<Acc_businessadmissibility> acc = acc_businessadmissibilityService.query_whereAcc(acc_businessadmissibility);
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo(acc);
+        StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
+        for (Acc_businessadmissibility a : acc) {
+            sb.append("{\"BusinessNoticeNo\":" + "\"" + a.getBusinessNoticeNo() + "\",\"customCode\":" + "\"" + a.getCustomCode() + "\",\"customName\":" + "\"" + a.getCustomName() + "\",\"linkman\":" + "\"" + a.getLinkman() + "\",\"telPhone\":" + "\"" + a.getTelPhone() + "\",\"pickupAddress\":" + "\"" + a.getPickupAddress() + "\",\"sendAddress\":" + "\"" + a.getSendAddress() + "\",\"arriveCity\":"+"\""+a.getArriveCity()+"\",\"importantHints\":"+"\""+a.getImportantHints()+"\",\"reservationTime\":"+"\""+a.getReservationTime()+"\"}");
+            System.out.println(a.getBusinessNoticeNo()+"**************&&&&&&&&&********" );
+        }
+        sb.append("]}");
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(sb);
+            PrintWriter out = responses.getWriter();
+            out.print(sb);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
+
 
     /*
         两个字段的前端显示查询
@@ -185,14 +221,16 @@ public class Acc_businessadmissibilityController {
 
     }
 
-    /*
-        根据id查询
+    /**
+     * 根据id查询
+     * @param businessNoticeNo
+     * @return
      */
-    @RequestMapping("/businessAcceptance_update")
-    public ModelAndView selectqueryByID(String busID){
-        System.out.println("根据id查询为"+busID);
+    @RequestMapping(value = "/fingBy_id")
+    public ModelAndView selectqueryByID(String businessNoticeNo){
+        System.out.println("根据id查询为"+businessNoticeNo);
        ModelAndView mv=new ModelAndView();
-       Acc_businessadmissibility acc = acc_businessadmissibilityService.queryByIDbusinessNoticeNo(busID);
+       Acc_businessadmissibility acc = acc_businessadmissibilityService.queryByIDbusinessNoticeNo(businessNoticeNo);
        System.out.println("值在这里有"+acc);
        mv.addObject("businessNoticeNo",acc.getBusinessNoticeNo());
        mv.addObject("customCode",acc.getCustomCode());
@@ -210,6 +248,17 @@ public class Acc_businessadmissibilityController {
     }
 
 
+
+    /*@RequestMapping(value = "/fingBy_id")
+    public ModelAndView findOpenById(String businessNoticeNo){
+        System.out.println(businessNoticeNo);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/acceptance/businessAcceptance_update.html");
+        mv.addObject("businessNoticeNo",businessNoticeNo);
+        return mv;
+
+    }
+*/
 
     /*
         修改
@@ -232,15 +281,26 @@ public class Acc_businessadmissibilityController {
     /*
         追单
      */
-    @RequestMapping(value = "/zhuidan",method = RequestMethod.POST)
-    public ModelAndView ZD(String busID){
-        System.out.println("~~~~~~~~~~~~"+busID);
-        int i = acc_businessadmissibilityService.update_afterSingleNum(busID);
-        if(i>0){
-            System.out.println("追单成功");
-        }else{
-            System.out.println("追单失败");
-        }
-        return null;
+    @RequestMapping(value = "/zhuidan")
+    public ModelAndView ZD(String businessNoticeNo){
+        System.out.println("进入后台~~~~~~~~~~~~"+businessNoticeNo);
+        int i = acc_businessadmissibilityService.update_afterSingleNum(businessNoticeNo);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/acceptance/businessAcceptance");
+        return mv;
+    }
+
+    /**
+     * 删除
+     * @param businessNoticeNo
+     * @return
+     */
+    @RequestMapping(value = "/del_Accadmin")
+    public ModelAndView del(String businessNoticeNo){
+        System.out.println("删除的id是"+businessNoticeNo);
+        int i = acc_businessadmissibilityService.deletAcc(businessNoticeNo);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("/acceptance/businessAcceptance");
+        return mv;
     }
 }

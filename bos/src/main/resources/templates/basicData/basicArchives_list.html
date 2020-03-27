@@ -222,13 +222,15 @@ $(function(){
 
 	//新增详细信息
 	$('#opDetailAdd').click(function(){
+		var parentid=[[${parentid}]];
+		var BasicFileNumber='[[${BasicFileNumber}]]';
 		//页面层
 		layer.open({
 		  title: ['新增', 'color:#fff;background:#1da02b;'],
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['650px', '375px'], //宽高
-		  content: 'basicArchives_detail_add.html'
+		  content: '/basicArchives_detail_add?parentid='+parentid+'&BasicFileNumber='+BasicFileNumber+''
 		});
 	});
 

@@ -42,7 +42,7 @@ public class Acc_worksheetController {
     public String work(){return "/acceptance/worksheetQuery";}*/
 
     /**
-     *
+     *  工作单查询
      * @param responses
      * @param page
      * @param limit
@@ -86,23 +86,37 @@ public class Acc_worksheetController {
 
 
 
-    //新增
-    @RequestMapping("/worksheetAdd")
+    //新增——工作单快速录入
+    @RequestMapping(value = "/sheet/add",method = RequestMethod.POST,produces = "text/String;charset=UTF-8")
     @ResponseBody
-    public ModelAndView insert(Acc_worksheet acc_worksheet){
+    public ModelAndView insert(Acc_worksheet acc_worksheet) {
         System.out.println("进入了");
-        System.out.println("***************"+acc_worksheet);
+        System.out.println("***************" + acc_worksheet);
         ModelAndView mv=new ModelAndView();
-        int i = acc_worksheetService.add_worksheet(acc_worksheet);
-        if(i>0){
-            System.out.println("新增成功");
+        acc_worksheetService.add_worksheet(acc_worksheet);
+        //原理：先新增如果新增后的单号和oudID(第一次进入该页面绑定的ID不相等，那么证明新增失败，告诉他系统异常！)
+        String s = acc_worksheetService.querywork_ID();
+        String yuanlai = s.substring(0, 3);//截取后面的数字
+        String now = s.substring(3);
+        int i = Integer.parseInt(now) + 1;
+        System.out.println(yuanlai+i);
+        String newID = yuanlai+i;
+        if(newID.equals(oudID)){
+            mv.addObject("workSheetNo",newID);
+            mv.addObject("error","error");
+            mv.setViewName("/acceptance/worksheetQuickInput");
         }else{
-            System.out.println("新增失败");
+
+            mv.addObject("workSheetNo",newID);
+            //通过该方法进入worksheetQuickinput页面
+            mv.setViewName("/acceptance/worksheetQuickInput");
         }
         return mv;
+
     }
 
-    //显示出最大的工作单号----这是快速录入页面的
+    String oudID;
+        //显示出最大的工作单号----这是快速录入页面的
     @RequestMapping(value = "/acceptance/worksheetQuickInput")
     public ModelAndView query_ID(){
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -111,8 +125,11 @@ public class Acc_worksheetController {
         String yuanlai = s.substring(0, 3);//截取后面的数字
         String now = s.substring(3);
         int i = Integer.parseInt(now) + 1;
-        System.out.println(yuanlai+i);
-        mv.addObject("workSheetNo",yuanlai+i);
+        oudID = yuanlai+i;
+        System.out.println(oudID);
+        mv.addObject("workSheetNo",oudID);
+        //通过该方法进入worksheetQuickinput页面
+        mv.setViewName("/acceptance/worksheetQuickInput");
         return mv;
     }
 
@@ -131,11 +148,11 @@ public class Acc_worksheetController {
     }
 
     //根据id查询
-    @RequestMapping("/dispatchingPersonnelSet_update")
-    public ModelAndView select_ByID(String busID){
-        System.out.println("根据"+busID+"查询........");
+    @RequestMapping(value = "/queryById_Work")
+    public ModelAndView select_ByID(String workSheetNo){
+        System.out.println("根据"+workSheetNo+"查询........");
         ModelAndView mv=new ModelAndView();
-        Map<String, Object> p = acc_worksheetService.queryByid_work(busID);
+        Map<String, Object> p = acc_worksheetService.queryByid_work(workSheetNo);
         /*for (Map<String, Object> map : mapList) {
             for (String k:map.keySet()){
                 System.out.println(k+":"+map.get(k));

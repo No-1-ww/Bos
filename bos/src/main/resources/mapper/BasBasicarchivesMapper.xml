@@ -5,12 +5,12 @@
     <select id="findBasBasicarchivesAll" resultType="map">
       select b.id,b.BasicFileNumber,b.Name as Bname,b.Grade,e.EmpName,u.`Name` as Uname,b.OperationTime,b.Remarks from
                 bas_basicarchives b ,sy_emp e ,sy_units u
-		where b.OperatorID=e.ID and b.OperationUnitID=u.ID
+		where b.OperatorID=e.ID and b.OperationUnitID=u.ID and InvalidateMark=1
     </select>
     <select id="findBasBasicarchivesByBasicFileNumberAndName" resultType="java.util.Map">
          select b.id,b.BasicFileNumber,b.Name as Bname,b.Grade,e.EmpName,u.`Name` as Uname,b.OperationTime,b.Remarks from
                 bas_basicarchives b ,sy_emp e ,sy_units u
-		where b.OperatorID=e.ID and b.OperationUnitID=u.ID
+		where b.OperatorID=e.ID and b.OperationUnitID=u.ID and b.InvalidateMark=1
 		<if test="basicfilenumber != null and basicfilenumber != ''">
             and b.BasicFileNumber=#{basicfilenumber}
         </if>
