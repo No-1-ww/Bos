@@ -13,7 +13,7 @@
     <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
         <div class="layui-inline">
             <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增明细行</button>
-            <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailDelete">删除明细行</button>
+            <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailReduction">删除明细行</button>
         </div>
     </div>
 </div>
@@ -103,7 +103,7 @@
             <th>二次入库</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="OutBoundDetailsTBody">
         <tr>
             <td>
                 <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
@@ -169,13 +169,15 @@
                 </select>
             </td>
         </tr>
-        <tr>
-            <td class="layui-bg-gray" colspan="8">
-                <button class="layui-btn" style="background: #1da02b;">确定</button>
-                <button type="button" class="layui-btn layui-btn-primary">取消</button>
-            </td>
-        </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="layui-bg-gray" colspan="8">
+                    <button class="layui-btn" style="background: #1da02b;">确定</button>
+                    <button type="button" class="layui-btn layui-btn-primary">取消</button>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </form>
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
@@ -312,7 +314,60 @@ var carriers = 0;
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
         })
+        var addID = 0;
+        //新增明细行，添加一行,先让id+1再新增，防止删除时需要点两次
+        $("#opDetailAdd").click(function () {
+            addID++;
+            $("#OutBoundDetailsTBody").append("<tr id="+addID+">\n" +
+                "            <td>\n" +
+                "                <input type=\"number\" name=\"id\" placeholder=\"序号\" autocomplete=\"off\" class=\"layui-input\" value=\"\" readonly>\n" +
+                "            </td>\n" +
+                "            <td>\n" +
+                "                <input type=\"number\" name=\"packageID\" placeholder=\"合包号\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+                "            </td>\n" +
+                "            <td>\n" +
+                "                <input type=\"number\" name=\"weight\" placeholder=\"重量\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+                "            </td>\n" +
+                "            <td width=\"150\">\n" +
+                "                <input type=\"number\" name=\"volume\" placeholder=\"体积\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+                "            </td>\n" +
+                "            <td width=\"150\">\n" +
+                "                <select  name=\"isScan\" lay-verify=\"required\">\n" +
+                "                    <option value=\"1\">是</option>\n" +
+                "                    <option value=\"0\">否</option>\n" +
+                "                </select>\n" +
+                "            </td>\n" +
+                "            <td>\n" +
+                "                <select name=\"isNextStorage\" lay-verify=\"required\">\n" +
+                "                    <option value=\"1\">是</option>\n" +
+                "                    <option value=\"0\">否</option>\n" +
+                "                </select>\n" +
+                "            </td>\n" +
+                "            <td>\n" +
+                "                <select name=\"isDoubleStorage\" lay-verify=\"required\">\n" +
+                "                    <option value=\"1\">是</option>\n" +
+                "                    <option value=\"0\">否</option>\n" +
+                "\n" +
+                "                </select>\n" +
+                "            </td>\n" +
+                "        </tr>");
 
+            layui.use('form',function () {
+                var form = layui.form;
+                form.render();
+            })
+            //拼接完成后编号
+            var index = 1;
+            //循环所有name=id的字段
+            $("input[name=id]").each(function () {
+                $(this).val(index);
+                index++;
+            });
+        })
+        $("#opDetailReduction").click(function () {
+            $("#"+addID).remove();
+            addID--;
+        })
 
     });
 

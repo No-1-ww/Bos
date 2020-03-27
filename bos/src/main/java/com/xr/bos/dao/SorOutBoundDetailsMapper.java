@@ -18,4 +18,13 @@ public interface SorOutBoundDetailsMapper {
      * @return
      */
     int addSorOutBoundDetails(SorOutBoundDetails sorOutBoundDetails);
+
+    /*删除
+    * */
+    Integer deleteOutBoundDetails(String OutBoundID);
+
+    /**
+     * 根据出库交接单进行查询
+     */
+    List<Map<String,Object>> queryByOutBoundID(String OutBoundID);
 }

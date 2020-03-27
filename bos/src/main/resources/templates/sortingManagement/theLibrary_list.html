@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,81 +21,36 @@
                     <col width="95">
                     <col width="95">
                     <col width="70">
-                    <col width="70">
-                    <col width="170">
+                    <col width="140">
+                    <col width="100">
                     <col width="80">
                     <col width="110">
                     <col>
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>序号</th>
-                    <th>单号</th>
+                    <th>编号</th>
                     <th>合包号</th>
                     <th>重量</th>
                     <th>体积</th>
                     <th>扫描时间</th>
-                    <th>扫描</th>
+                    <th>是否扫描</th>
                     <th>下环节入库</th>
                     <th>二次入库</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>DH1001</td>
-                    <td>HBH1001</td>
-                    <td>12</td>
-                    <td>12</td>
-                    <td>2017-12-15 10:5:38</td>
-                    <td>是</td>
-                    <td>是</td>
-                    <td>是</td>
+                <tr th:each="stor :${sorOutBoundDetails}">
+                    <td th:text="${stor.ID}"></td>
+                    <td th:text="${stor.PackageID}"></td>
+                    <td th:text="${stor.Weight}"></td>
+                    <td th:text="${stor.Volume}"></td>
+                    <td th:text="${stor.ScanDate}"></td>
+                    <td th:text="${stor.IsScan}"></td>
+                    <td th:text="${stor.IsNextStorage}"></td>
+                    <td th:text="${stor.IsDoubleStorage}"></td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>DH1001</td>
-                    <td>HBH1001</td>
-                    <td>12</td>
-                    <td>12</td>
-                    <td>2017-12-15 10:5:38</td>
-                    <td>是</td>
-                    <td>是</td>
-                    <td>是</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>DH1001</td>
-                    <td>HBH1001</td>
-                    <td>12</td>
-                    <td>12</td>
-                    <td>2017-12-15 10:5:38</td>
-                    <td>是</td>
-                    <td>是</td>
-                    <td>是</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>DH1001</td>
-                    <td>HBH1001</td>
-                    <td>12</td>
-                    <td>12</td>
-                    <td>2017-12-15 10:5:38</td>
-                    <td>是</td>
-                    <td>是</td>
-                    <td>是</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>DH1001</td>
-                    <td>HBH1001</td>
-                    <td>12</td>
-                    <td>12</td>
-                    <td>2017-12-15 10:5:38</td>
-                    <td>是</td>
-                    <td>是</td>
-                    <td>是</td>
-                </tr>
+
                 </tbody>
             </table>
     </div>

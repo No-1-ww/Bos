@@ -22,4 +22,13 @@ public interface SorOutBoundMapper {
 
     //修改
     Integer upDateOutBound(SorOutBound sorOutBound);
+
+    //删除
+    Integer deleteOutBound(String OutBoundID);
+
+    //根据条件查询
+    List<Map<String,Object>> queryWhere(Map<String,Object> map);
+
+    //根据条件查询总数
+    Integer queryWhereOutBoundCount(Map<String,Object> map);
 }

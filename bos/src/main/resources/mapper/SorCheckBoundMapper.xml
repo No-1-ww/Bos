@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.bos.dao.SorCheckBoundMapper">
+    <select id="queryAllSorCheckBound" resultMap="query">
+        select sc.ID,ss.ScanName ScanID,sc.CargoSum,se.EmpName CheckPerson,sc.CheckDate,sc.CheckCompany
+        from sor_checkbound sc
+        inner join sor_scanner ss on sc.ScanID = ss.ID
+        inner join sy_emp se on sc.CheckPerson = se.ID
+         order by sc.ID desc
+        limit #{page},#{limit}
+    </select>
+    <select id="querySorCheckBoundCount" resultType="Integer">
+        select count(*) from sor_checkbound
+    </select>
+    <resultMap id="query" type="Map">
+        <result column="ID" property="ID"></result>
+        <result column="ScanID" property="ScanID"></result>
+        <result column="CargoSum" property="CargoSum"></result>
+        <result column="CheckPerson" property="CheckPerson"></result>
+        <result column="CheckDate" property="CheckDate"></result>
+        <result column="CheckCompany" property="CheckCompany"></result>
+    </resultMap>
+</mapper>

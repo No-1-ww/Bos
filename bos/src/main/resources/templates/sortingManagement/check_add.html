@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新增盘库</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head>
+<body>
+
+<form lay-filter="addCheck" class="layui-form" action="/addCheckBound">
+    <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+        <tbody>
+        <tr>
+            <td class="layui-bg-gray" width="17%">盘库单号</td>
+            <td width="33%">
+                <input type="text" name="ID" placeholder="盘库单号" autocomplete="off" class="layui-input" readonly>
+            </td>
+            <td class="layui-bg-gray" width="17%">扫描设备号</td>
+            <td width="33%">
+                <input type="text" th:value="${acceptDate}" name="acceptDate" placeholder="扫描设备号" autocomplete="off" class="layui-input" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td class="layui-bg-gray" >总件数</td>
+            <td >
+                <label id="errAPerson"></label>
+                <input type="text" th:value="${acceptPerson}" name="aPerson" placeholder="总件数" autocomplete="off" class="layui-input">
+            </td>
+            <td class="layui-bg-gray">盘库人</td>
+            <td >
+                <input type="text" th:value="${acceptCompany}"  name="acceptCompany" placeholder="盘库人" autocomplete="off" class="layui-input" readonly>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="layui-bg-gray">盘库时间</td>
+            <td>
+                <label id="errDPerson"></label>
+                <input type="text" th:value="${deliveryPerson}"  name="dPerson" placeholder="盘库时间" autocomplete="off" class="layui-input">
+            </td>
+            <td class="layui-bg-gray">操作单位</td>
+            <td >
+                <input type="text"  th:value="${deliveryCompany}" name="deliveryCompany" placeholder="操作单位" autocomplete="off" class="layui-input" readonly>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <table class="layui-table" style="width: 98%;margin: 5px auto;text-align: center;">
+        <colgroup>
+            <col width="100">
+            <col width="100">
+            <col width="100">
+            <col width="90">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>件数</th>
+            <th>重量</th>
+            <th>体积</th>
+            <th>类型</th>
+            <th>方向</th>
+            <th>入库人</th>
+            <th>入库时间</th>
+        </tr>
+        </thead>
+        <tbody id="OutBoundDetailsTBody">
+        <tr>
+            <td>
+                <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
+            <td>
+                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td>
+                <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="150">
+                <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="150">
+                <select  name="isScan" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+            <td>
+                <select name="isNextStorage" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+            <td>
+                <select name="isDoubleStorage" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
+            <td>
+                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td>
+                <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="150">
+                <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
+            </td>
+            <td width="150">
+                <select  name="isScan" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+            <td>
+                <select name="isNextStorage" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+            <td>
+                <select name="isDoubleStorage" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+
+                </select>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td class="layui-bg-gray" colspan="8">
+                <button class="layui-btn" style="background: #1da02b;">确定</button>
+                <button type="button" class="layui-btn layui-btn-primary">取消</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+
+    $("input[name=aPerson]").blur(function () {
+        var name = $(this).val();
+
+        var dName = $("input[name=dPerson]").val();
+        if(name==""){
+            $("#errAPerson").text("请输入接货人姓名").css("color","red");
+
+            return;
+        }
+        $.ajax({
+            url:"/invoiceComparisonTable_add/check",
+            type:"POST",
+            data:{"name":name},
+            success:function (data) {
+                console.log(data);
+                //姓名验证完成前台做验证
+                if(data=="输入的姓名不存在"){
+                    $("#errAPerson").text("输入的姓名不存在").css("color","red");
+                }else if(name==dName){
+                    $("#errAPerson").text("两个姓名不能一致").css("color","red");
+                }else{
+                    //将收货人的公司绑定至前台
+                    $("input[name=acceptCompany]").val(data);
+                    $("#errAPerson").text("");
+                }
+
+
+            }
+        });
+    });
+    $("input[name=dPerson]").blur(function () {
+        var name = $(this).val();
+
+        var aName = $("input[name=aPerson]").val();
+        var SyUnitsName = $("input[name=deliveryCompany]").val();
+        if(name==""){
+            $("#errDPerson").text("请输入发货人姓名").css("color","red");
+            return;
+        }
+        $.ajax({
+            url:"/invoiceComparisonTable_add/check",
+            type:"POST",
+            data:{"name":name,"SyUnitsName":SyUnitsName},
+            success:function (data) {
+                console.log(data);
+                //姓名验证完成前台做验证
+                if(data=="输入的姓名不存在"){
+                    $("#errDPerson").text("输入的姓名不存在").css("color","red");
+                }else if(name==aName){
+                    $("#errDPerson").text("两个姓名不能一致").css("color","red");
+                }else{
+                    //将收货人的公司绑定至前台
+                    $("input[name=deliveryCompany]").val(data);
+                    $("#errDPerson").text("");
+
+                }
+
+
+            }
+        })
+    });
+    //加载'form'模块，使checkbox、select、radio初始化
+    layui.use('form', function(){
+
+        var form = layui.form;
+        form.on("submit(upDateStoForm)",function () {
+            var aName = $("input[name=aPerson]").val();
+            var dName = $("input[name=dPerson]").val();
+            var errAPerson = $("#errAPerson").text();
+            var errDPerson = $("#errDPerson").text();
+            if(errAPerson!=""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入正确的接货人姓名");
+
+                });
+                return false;
+            }
+            if(errDPerson!=""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入正确的发货人姓名");
+
+                });
+                return false;
+            }
+            if(aName==""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入接货人姓名");
+
+                });
+                return false;
+            }
+            if(dName==""){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("请输入发货人姓名");
+
+                });
+                return false;
+            }
+            if(aName==dName){
+                layui.use('layer',function () {
+                    var layer = layui.layer;
+                    layer.msg("两者姓名不能一致");
+
+                });
+                return false;
+            }
+
+
+
+            //没有任意一个return false 关闭窗体
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+
+        })
+    });
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+</script>
+</body>
+</html>
