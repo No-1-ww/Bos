@@ -1,4 +1,5 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en"> 
 <head> 
     <meta charset="utf-8"> 
@@ -13,39 +14,39 @@
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">档案名称</td>
 		      	<td width="35%">
-      				<input type="text" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
+      				<input type="text" name="name" id="name" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">上级编码</td>
-		      	<td width="35%"> BH001 </td>
+		      	<td  th:text="${BasicFileNumber}" width="35%"> BH001 </td>
 		    </tr>
 		   
-		    <tr>
+		    <tr th:each="dd:${mps}">
 		      	<td class="layui-bg-gray">封存标志</td>
 		      	<td>
-					<input type="radio" name="del" value="1" title="是">
-					<input type="radio" name="del" value="0" title="否" checked>
+					<input type="radio" name="available" value="1" title="是">
+					<input type="radio" name="available" value="0" title="否" checked>
 		      	</td>
 		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td>张三</td>
+		      	<td th:text="${dd.EmpName}">张三</td>
 		    </tr>
 		
-			<tr>
+			<tr th:each="dd:${mps}">
 				<td class="layui-bg-gray">操作单位</td>
-		      	<td>总公司</td>
+		      	<td th:text="${dd.Uname}">总公司</td>
 		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td> 2017-10-23 16:17:10 </td>
+		      	<td th:text="${date}"> 2017-10-23 16:17:10 </td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">备注</td>
 		      	<td colspan="3"> 
-					<textarea name="desc" placeholder="请输入备注信息" class="layui-textarea"></textarea>
+					<textarea name="remarks" id="remarks" placeholder="请输入备注信息" class="layui-textarea"></textarea>
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td colspan="4">
-					<button class="layui-btn" style="background: #1da02b;">确定</button>
-					<button type="button" class="layui-btn layui-btn-primary">取消</button>
-		      	</td>
+					<input  type="button" lay-submit="" id="add"  class="layui-btn" style="background: #1da02b;" lay-filter="suu"  value="确定">
+					<button type="button" id="exit" class="layui-btn  layui-btn-primary">取消</button>
+				</td>
 		    </tr>
 	  	</tbody>
 	</table>
@@ -53,11 +54,52 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
-        
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-           
-        });
+
+		//添加基础档案基本信息
+		layui.use(['form','layer'], function(){
+			//渲染
+			var form = layui.form
+					,layer=layui.layer;
+
+
+			//监听提交
+			form.on('submit(suu)',function (data) {
+				var parentid=[[${parentid}]];
+				//alert(parentid);
+				var name=$('#name').val();
+				var Grade=$('input[name="available"]:checked').val();
+				var Remarks=$('#remarks').val();
+				$.ajax({
+					url:'/addBasicarchivesentry',
+					type:'get',
+					data:{
+						"parentid":parentid,
+						"name":name,
+						"remarks":Remarks,
+						"available":Grade
+					},
+					success:function (res) {
+						layer.alert("新增成功！", {icon: 6},function () {
+							// 获得frame索引
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.location.reload(); //刷新父页面
+							//关闭当前frame
+							parent.layer.close(index);
+							$(".layui-form").submit();
+						});
+						return false;
+					}
+				})
+			})
+			/**
+			 * 取消 退出
+			 */
+			$("#exit").click(function(){
+
+				var index = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(index);
+			})
+		});
       
     </script>
 </body> 

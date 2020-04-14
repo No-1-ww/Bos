@@ -5,8 +5,29 @@
     <select id="queryAll">
       select * from sor_outbounddetails
     </select>
+
+    <!--根据出库交接单号进行查询-->
+    <select id="queryByOutBoundID" parameterType="String" resultMap="queryByOutBoundID">
+        select * from sor_outbounddetails where OutBoundID = #{outBoundID}
+    </select>
+    <resultMap id="queryByOutBoundID" type="Map">
+        <result column="ID" property="ID"></result>
+        <result column="PackageID" property="PackageID"></result>
+        <result column="Weight" property="Weight"></result>
+        <result column="Volume" property="Volume"></result>
+        <result column="ScanDate" property="ScanDate"></result>
+        <result column="IsScan" property="IsScan"></result>
+        <result column="IsNextStorage" property="IsNextStorage"></result>
+        <result column="IsDoubleStorage" property="IsDoubleStorage"></result>
+    </resultMap>
+
     <insert id="addSorOutBoundDetails" parameterType="SorStorageDetails">
         insert into sor_outbounddetails(ID,OutBoundID,PackageID,Weight,Volume,ScanDate,IsScan,IsNextStorage,IsDoubleStorage)
         values(null,#{outBoundID},#{packageID},#{weight},#{volume},#{scanDate},#{isScan},#{isNextStorage},#{isDoubleStorage})
     </insert>
+
+    <!--删除-->
+    <delete id="deleteOutBoundDetails" parameterType="String" >
+        delete from sor_outbounddetails where OutBoundID = #{outBoundID}
+    </delete>
 </mapper>

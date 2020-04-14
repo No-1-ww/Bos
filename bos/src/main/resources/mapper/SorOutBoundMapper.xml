@@ -3,18 +3,430 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SorOutBoundMapper">
     <select id="queryAll" parameterType="Map" resultMap="query">
-        select so.OutBoundID,HandoverType,Line,su.Name Direction, se1.EmpName AcceptPerson, se2.EmpName Carriers,
-        se2.EmpName DeliveryPerson,DeliveryDate,DeliveryCompany,se1.EmpName EnterPerson,EnterDate
+        select so.OutBoundID,HandoverType,Line,su.`Name` Direction, se1.EmpName AcceptPerson, se2.EmpName Carriers,
+        se3.EmpName DeliveryPerson,DeliveryDate,DeliveryCompany,se4.EmpName EnterPerson,EnterDate
         from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
-        inner join sy_emp se2 on so.DeliveryPerson = se2.ID
+        inner join sy_emp se2 on so.Carriers = se2.ID
+        inner join sy_emp se3 on so.DeliveryPerson = se3.ID
+        inner join sy_emp se4 on so.EnterPerson = se4.ID
         inner join sy_units su on so.Direction = su.ID
         order by so.OutBoundID desc
         limit #{page},#{limit}
     </select>
+    <!--根据条件查询-->
+    <select id="queryWhere" parameterType="Map" resultMap="query">
+        select so.OutBoundID,HandoverType,Line,su.`Name` Direction, se1.EmpName AcceptPerson, se2.EmpName Carriers,
+        se3.EmpName DeliveryPerson,DeliveryDate,DeliveryCompany,se4.EmpName EnterPerson,EnterDate
+        from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
+        inner join sy_emp se2 on so.Carriers = se2.ID
+        inner join sy_emp se3 on so.DeliveryPerson = se3.ID
+        inner join sy_emp se4 on so.EnterPerson = se4.ID
+        inner join sy_units su on so.Direction = su.ID
+        where
+        <if test="outBoundID !=''">
+            so.OutBoundID like '%${outBoundID}%'
+            <if test="handoverType !=''">
+                and HandoverType = #{handoverType}
+            </if>
+            <if test="line !=''">
+                and Line = #{line}
+            </if>
+            <if test="direction!=''">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        /*当前面条件不成立才执行下面的条件*/
+        <if test="outBoundID ==''
+        and handoverType !=''">
+            HandoverType = #{handoverType}
+            <if test="line !='' and line !=null">
+                and Line = #{line}
+            </if>
+            <if test="direction!='' and direction !=null">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line !=''">
+            Line = #{line}
+            <if test="direction!='' and direction !=null">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction !=''">
+            su.`Name` = #{direction}
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson !=''">
+            se1.EmpName = #{acceptPerson}
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers !=''">
+            se2.EmpName=#{carriers}
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson !=''">
+            /*嘿嘿*/
+            se3.EmpName=#{deliveryPerson}
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany !=''">
+            DeliveryCompany=#{deliveryCompany}
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany ==''
+        and enterPerson !=''">
+            se4.EmpName=#{enterPerson}
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany ==''
+        and enterPerson =='' and enterDate !=null">
+            /*哈哈*/
+            so.EnterDate like '%${enterDate}%'
+        </if>
+        order by so.OutBoundID desc
+        limit #{page},#{limit}
+
+    </select>
+    <!--根据条件查询总数-->
+    <select id="queryWhereOutBoundCount" parameterType="Map" resultType="Integer" >
+        select count(*)
+        from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
+        inner join sy_emp se2 on so.Carriers = se2.ID
+        inner join sy_emp se3 on so.DeliveryPerson = se3.ID
+        inner join sy_emp se4 on so.EnterPerson = se4.ID
+        inner join sy_units su on so.Direction = su.ID
+        where
+        <if test="outBoundID !=''">
+            so.OutBoundID like '%${outBoundID}%'
+            <if test="handoverType !=''">
+                and HandoverType = #{handoverType}
+            </if>
+            <if test="line !=''">
+                and Line = #{line}
+            </if>
+            <if test="direction!=''">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType !=''">
+            HandoverType = #{handoverType}
+            <if test="line !='' and line !=null">
+                and Line = #{line}
+            </if>
+            <if test="direction!='' and direction !=null">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line !=''">
+            Line = #{line}
+            <if test="direction!='' and direction !=null">
+                and su.`Name` = #{direction}
+            </if>
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction !=''">
+            su.`Name` = #{direction}
+            <if test="acceptPerson !=''and acceptPerson !=null">
+                and se1.EmpName = #{acceptPerson}
+            </if>
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson !=''">
+            se1.EmpName = #{acceptPerson}
+            <if test="carriers !=''and carriers !=null">
+                and se2.EmpName=#{carriers}
+            </if>
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers !=''">
+            se2.EmpName=#{carriers}
+            <if test="deliveryPerson !=''and deliveryPerson !=null">
+                and se3.EmpName=#{deliveryPerson}
+            </if>
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate !=''and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers !=''and deliveryPerson !=''">
+
+            se3.EmpName=#{deliveryPerson}
+            <if test="deliveryCompany !=''and deliveryCompany !=null">
+                and DeliveryCompany=#{deliveryCompany}
+            </if>
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany !=''">
+            DeliveryCompany=#{deliveryCompany}
+            <if test="enterPerson !=''and enterPerson !=null">
+                and se4.EmpName=#{enterPerson}
+            </if>
+            <if test="and enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany ==''
+        and enterPerson !=''">
+            se4.EmpName=#{enterPerson}
+            <if test="enterDate!=null">
+                and EnterDate like '${enterDate}%'
+            </if>
+        </if>
+        <if test="outBoundID ==''
+        and handoverType ==''
+        and line =='' and direction =='' and acceptPerson ==''
+        and carriers =='' and deliveryPerson =='' and deliveryCompany ==''
+        and enterPerson =='' and enterDate !=null">
+
+            so.EnterDate like '%${enterDate}%'
+        </if>
+    </select>
+
     <select id="queryOutBoundCount" resultType="Integer">
         select count(*)
         from sor_outbound so  inner join sy_emp se1 on so.AcceptPerson = se1.ID
-        inner join sy_emp se2 on so.DeliveryPerson = se2.ID
+        inner join sy_emp se2 on so.Carriers = se2.ID
+        inner join sy_emp se3 on so.DeliveryPerson = se3.ID
+        inner join sy_emp se4 on so.EnterPerson = se4.ID
         inner join sy_units su on so.Direction = su.ID
     </select>
 
@@ -33,8 +445,12 @@
         update sor_outbound set HandoverType=#{handoverType},Line=#{line},Direction=#{direction},AcceptPerson=#{acceptPerson},
         Carriers=#{carriers},DeliveryPerson=#{deliveryPerson},DeliveryDate=#{deliverDate},DeliveryCompany=#{deliveryCompany},
         EnterPerson=#{enterPerson}
-        where OutBoundID = #{outBoundID};
+        where OutBoundID = #{outBoundID}
     </update>
+    <!--删除-->
+    <delete id="deleteOutBound" parameterType="String" >
+        delete from sor_outbound where OutBoundID = #{outBoundID}
+    </delete>
 
     <resultMap id="query" type="Map">
         <result column="OutBoundID" property="OutBoundID"></result>

@@ -297,4 +297,40 @@ public class BasBasicarchivesController {
         return new ModelAndView("/basicData/basicArchives");
 
     }
+
+    /**
+     * 查询主表下有没有条目信息
+     * @param id
+     * @param responses
+     */
+    @RequestMapping(value = "/findbas_basicarchivesentryByParent")
+    public void findbas_basicarchivesentryByParent(Integer id,HttpServletResponse responses){
+        String count = basicarchivesService.findbas_basicarchivesentryByParent(id);
+        System.out.println(count+"....count");
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(count);
+        try {
+            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
+            System.out.println(count);
+            PrintWriter out = responses.getWriter();
+            out.print(count);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 删除档案
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/deletebasicarchivesByID")
+    public ModelAndView deletebasicarchivesByID(Integer id){
+        basicarchivesService.deletebasicarchivesByID(id);
+        return new  ModelAndView("/basicData/basicArchives");
+    }
 }

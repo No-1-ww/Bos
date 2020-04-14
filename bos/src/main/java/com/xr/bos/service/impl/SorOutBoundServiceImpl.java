@@ -39,4 +39,21 @@ public class SorOutBoundServiceImpl implements SorOutBoundService {
     public Integer upDateOutBound(SorOutBound sorOutBound) {
         return sorOutBoundMapper.upDateOutBound(sorOutBound);
     }
+
+    @Override
+    public Integer deleteOutBound(String OutBoundID) {
+        return sorOutBoundMapper.deleteOutBound(OutBoundID);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryWhere(Map<String, Object> map) {
+        return sorOutBoundMapper.queryWhere(map);
+    }
+
+    @Override
+    public Integer queryWhereOutBoundCount(Map<String, Object> map) {
+        return sorOutBoundMapper.queryWhereOutBoundCount(map);
+    }
+
+
 }

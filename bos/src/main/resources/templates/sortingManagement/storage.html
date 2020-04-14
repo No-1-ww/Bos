@@ -505,93 +505,100 @@
 
                 });
                 return;
-            }
-            $.ajax({
-                url: "/deleteSorStoage",
-                type: "POST",
-                data: {"ID": deleteStoID},
-                success: function (data) {
-                    layui.use(['form', 'layer'], function () {
-                        var layer = layui.layer,
-                            form = layui.form;
-                        layer.msg("删除成功");
-                        var result = eval(data);
-                        $("#stoBody").empty();
-                        for (var i = 0; i < result.length; i++) {
-                            $("#stoBody").append('<tr>' +
-                                '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
-                                '                    <td >' + result[i].id + '</td>' +
-                                '                    <td >' + result[i].acceptDate + '</td>' +
-                                '                    <td >' + result[i].acceptPerson + '</td>' +
-                                '                    <td >' + result[i].acceptCompany + '</td>' +
-                                '                    <td >' + result[i].deliveryPerson + '</td>' +
-                                '                    <td >' + result[i].deliveryCompany + '</td>' +
-                                '                    <td>' +
-                                '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
-                                '                    </td>' +
-                                '                </tr>')
-                        }
-                        form.render();
-                    });
-                }
+            }layer.confirm('确定要删除吗？', {
+                btn: ['确定', '取消'] //按钮
 
-            });
-            $.ajax({
-                url:"/sortingManagement/queryCount",
-                type:"POST",
-                async: false,
-                success:function(data) {
-                    $("#count").val(data);
-
-                }
-            })
-            layui.use(['laypage', 'layer'], function() {
-                var laypage = layui.laypage//laypage的分页组件实例对象。
-                    , layer = layui.layer;
-                //完整功能
-                //得到总数据条数
-
-                var count = $("#count").val();
-                laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
-                    elem: 'demo7'
-                    , count: count
-                    ,limit:5
-                    ,limits:[5,10,15,20]
-                    , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                    , jump: function (obj,first) {
-                        $.ajax({
-                            url:"/sortingManagement/query",
-                            data:{"page":obj.curr,"limit":obj.limit},
-                            type:"POST",
-                            success:function(data) {
-                                layui.use('form', function () {
-                                    var form = layui.form;
-                                    var result = eval(data);
-                                    $("#stoBody").empty();
-                                    for (var i = 0; i < result.length; i++) {
-
-                                        $("#stoBody").append('<tr>' +
-                                            '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
-                                            '                    <td >' + result[i].id + '</td>' +
-                                            '                    <td >' + result[i].acceptDate + '</td>' +
-                                            '                    <td >' + result[i].acceptPerson + '</td>' +
-                                            '                    <td >' + result[i].acceptCompany + '</td>' +
-                                            '                    <td >' + result[i].deliveryPerson + '</td>' +
-                                            '                    <td >' + result[i].deliveryCompany + '</td>' +
-                                            '                    <td>' +
-                                            '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
-                                            '                    </td>' +
-                                            '                </tr>')
-                                    }
-                                    form.render();
-
-                                });
+            },function(){
+                $.ajax({
+                    url: "/deleteSorStoage",
+                    type: "POST",
+                    data: {"ID": deleteStoID},
+                    success: function (data) {
+                        layui.use(['form', 'layer'], function () {
+                            var layer = layui.layer,
+                                form = layui.form;
+                            layer.msg("删除成功");
+                            var result = eval(data);
+                            $("#stoBody").empty();
+                            for (var i = 0; i < result.length; i++) {
+                                $("#stoBody").append('<tr>' +
+                                    '                    <td><input lay-filter="check" type="checkbox" name="check" lay-skin="primary"></td>' +
+                                    '                    <td >' + result[i].id + '</td>' +
+                                    '                    <td >' + result[i].acceptDate + '</td>' +
+                                    '                    <td >' + result[i].acceptPerson + '</td>' +
+                                    '                    <td >' + result[i].acceptCompany + '</td>' +
+                                    '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                    '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                    '                    <td>' +
+                                    '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                    '                    </td>' +
+                                    '                </tr>')
                             }
-                        })
+                            form.render();
+                        });
+                    }
+
+                });
+                $.ajax({
+                    url:"/sortingManagement/queryCount",
+                    type:"POST",
+                    async: false,
+                    success:function(data) {
+                        $("#count").val(data);
+
                     }
                 })
-            });
-        })
+                layui.use(['laypage', 'layer'], function() {
+                    var laypage = layui.laypage//laypage的分页组件实例对象。
+                        , layer = layui.layer;
+                    //完整功能
+                    //得到总数据条数
+
+                    var count = $("#count").val();
+                    laypage.render({//调用这个对象的render方法来渲染出分页的各个元素。
+                        elem: 'demo7'
+                        , count: count
+                        ,limit:5
+                        ,limits:[5,10,15,20]
+                        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                        , jump: function (obj,first) {
+                            $.ajax({
+                                url:"/sortingManagement/query",
+                                data:{"page":obj.curr,"limit":obj.limit},
+                                type:"POST",
+                                success:function(data) {
+                                    layui.use('form', function () {
+                                        var form = layui.form;
+                                        var result = eval(data);
+                                        $("#stoBody").empty();
+                                        for (var i = 0; i < result.length; i++) {
+
+                                            $("#stoBody").append('<tr>' +
+                                                '                    <td><input lay-filter="check"  type="checkbox"  name="check" lay-skin="primary"></td>' +
+                                                '                    <td >' + result[i].id + '</td>' +
+                                                '                    <td >' + result[i].acceptDate + '</td>' +
+                                                '                    <td >' + result[i].acceptPerson + '</td>' +
+                                                '                    <td >' + result[i].acceptCompany + '</td>' +
+                                                '                    <td >' + result[i].deliveryPerson + '</td>' +
+                                                '                    <td >' + result[i].deliveryCompany + '</td>' +
+                                                '                    <td>' +
+                                                '                        <button type="button" class="layui-btn layui-btn-small btnQuery" name="opQueryDetail">查看明细</button>' +
+                                                '                    </td>' +
+                                                '                </tr>')
+                                        }
+                                        form.render();
+
+                                    });
+                                }
+                            })
+                        }
+                    })
+                });
+            },function () {
+                layer.msg("取消成功 ");
+            })
+
+        });
 
 
         //查看明细

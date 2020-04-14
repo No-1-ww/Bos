@@ -98,4 +98,24 @@ public class BasBasicarchivesServiceImpl implements BasBasicarchivesService {
     public int updateBasicarchivesById(BasBasicarchives basicarchives) {
         return basBasicarchivesMapper.updateBasicarchivesById(basicarchives);
     }
+
+    /**
+     * 查询主表下有没有条目信息
+     * @param id
+     * @return
+     */
+    @Override
+    public String findbas_basicarchivesentryByParent(Integer id) {
+        return basBasicarchivesMapper.findbas_basicarchivesentryByParent(id);
+    }
+
+    /**
+     * 删除基础设置
+     * @param id
+     * @return
+     */
+    @Override
+    public int deletebasicarchivesByID(Integer id) {
+        return basBasicarchivesMapper.deletebasicarchivesByID(id);
+    }
 }
