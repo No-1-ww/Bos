@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="css/login/login.css">
 
 </head>
+<style>
+	#renLian{
+		width: 1000px;
+		height: 650px;
+		border: 1px solid green;
+		position:absolute;
+		top:50%;
+		left:50%;
+		margin:-225px 0 0 -400px;
+	}
+</style>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
 <body class="default">
@@ -45,7 +56,7 @@
 
 							<div class="tips clearfix">
 								<label><input type="checkbox" checked="checked">记住用户名</label>
-								<a href="javascript:;" class="register">立即注册</a>
+								<a href="javascript:;" class="register">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      </a>
 								<a href="javascript:;" class="forget-pwd" onclick="forgetPwd()">其他登录</a>
 
 							</div>
@@ -72,7 +83,7 @@
 
 							<div class="tips clearfix">
 								<!--<label><input type="checkbox" checked="checked">记住用户名</label>-->
-								<a href="javascript:;" class="register">立即注册</a>
+								<a href="javascript:;" class="register">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 								<a href="javascript:;" class="forget-pwd" onclick="yuanforGetpwd()">用原方式登录</a>
 							</div>
 							<div class="enter">
@@ -99,8 +110,9 @@
 	</div>
 </body> 
 </html>
-    
+
 <script type="text/javascript">
+
 	//shiro登录
 	function shiroLog() {
 		$("#aa").submit();
@@ -113,7 +125,7 @@
             alert("手机号码不能为空！");
             return;
         }
-        //进入后台判断是否存在该手机号，存在则跳转
+        //后台判断是否存在该手机号，存在则跳转
         $.ajax({
             url:"/queryExit",
             type:"POST",

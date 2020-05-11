@@ -37,7 +37,7 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/bos
+    url: jdbc:mysql://192.168.43.61:3306/bos
 
 
 server:
@@ -45,7 +45,7 @@ server:
     uri-encoding: UTF-8
   servlet:
     context-path: /
-  port: 8089
+  port: 80
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

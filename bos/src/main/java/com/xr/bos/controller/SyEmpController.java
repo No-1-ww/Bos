@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hazelcast.util.MD5Util;
 import com.xr.bos.model.SyEmp;
 import com.xr.bos.model.SyRoles;
 import com.xr.bos.model.SyUnits;
 import com.xr.bos.service.SyEmpService;
-import com.xr.bos.util.DuanxinPhone;
-import com.xr.bos.util.RedisTemplateUtil;
+import com.xr.bos.util.*;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -23,14 +23,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import sun.security.provider.MD5;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class SyEmpController {
@@ -69,8 +69,8 @@ public class SyEmpController {
     public ModelAndView login(String username, String password, HttpSession session){
         ModelAndView mv = new ModelAndView();
         System.out.println(username + "\t" + password);
-
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        String md5PassWord = MD5Util.toMD5String(password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username,md5PassWord);
         System.out.println(token);
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -90,7 +90,11 @@ public class SyEmpController {
             //得到用户所有信息绑定至session
             SyEmp syEmp = (SyEmp) subject.getPrincipal();
             session.setAttribute("SyEmp",syEmp);
-            mv.setViewName("main");
+            //进行人脸认证
+            mv.setViewName("certification");
+            //直接登录
+           // mv.setViewName("main");
+
             return mv ;
         }else{  //认证失败
             System.out.println("认证失败");
@@ -118,8 +122,42 @@ public class SyEmpController {
     public ModelAndView logInDx(String Phone, HttpSession session){
         System.out.println("进入了短信登录的方法");
         SyEmp syEmp = syEmpService.logInDx(Phone);
-        ModelAndView mv = login(syEmp.getEmpNo(), syEmp.getPwd(), session);
+        ModelAndView mv = loginDXCertification(syEmp.getEmpNo(), syEmp.getPwd(), session);
         return mv;
+    }
+    /*短信登录后进行认证*/
+    public ModelAndView loginDXCertification(String username, String password, HttpSession session){
+        ModelAndView mv = new ModelAndView();
+        System.out.println(username + "\t" + password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        System.out.println(token);
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            //主体提交登录请求到SecurityManager
+            subject.login(token);
+        }catch (IncorrectCredentialsException ice){
+            mv.addObject("msg","密码不正确");
+        }catch(UnknownAccountException uae){
+            mv.addObject("msg","账号不存在");
+        }catch(AuthenticationException ae){
+            mv.addObject("msg","状态不正常");
+        }
+//认证成功
+        if(subject.isAuthenticated()){
+            System.out.println("认证成功");
+            mv.addObject("username",username);
+
+            //得到用户所有信息绑定至session
+            SyEmp syEmp = (SyEmp) subject.getPrincipal();
+            session.setAttribute("SyEmp",syEmp);
+            mv.setViewName("main");
+            return mv ;
+        }else{  //认证失败
+            System.out.println("认证失败");
+            token.clear();
+            mv.setViewName("login");
+            return mv; //跳转登录页面
+        }
     }
 
     /**
@@ -389,4 +427,36 @@ public class SyEmpController {
         syEmpService.deleteEmpByid(Integer.parseInt(ID));
         return new  ModelAndView("/systemManagement/sysEmp");
     }
+
+    @RequestMapping(value = "/certification",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
+    @ResponseBody
+    public String chekEdRenLian(@RequestParam("base64ImgLog") String base64ImgLog,HttpSession session,HttpServletResponse responses){
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println("进了");
+        System.out.println(base64ImgLog);
+        SyEmp syEmp = (SyEmp)session.getAttribute("SyEmp");
+        System.out.println("asfdgfghjhgfdgsfadfdgfhghgfdddddddddddd"+syEmp.getPhoto());
+
+
+        if(base64ImgLog==null||syEmp.getPhoto()==null){
+            return "err";
+        }
+        //把得到的结果集绑定至前台进行解析
+        String s = RenLianUtil.testRenLian(syEmp.getPhoto().toString(), base64ImgLog);
+        System.out.println(s);
+        return s;
+
+    }
+    @RequestMapping("/gotoMain")
+    public ModelAndView gotoMain(){
+        return new ModelAndView("main");
+    }
+
+    @RequestMapping("/gotoLogin")
+    public ModelAndView gotoLogin(){
+        return new ModelAndView("login");
+    }
+
+
 }

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+</head>
+<style>
+    #testRenLian{
+        width: 1000px;
+        height: 650px;
+        border: 1px solid green;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin:-225px 0 0 -400px;
+    }
+</style>
+<body>
+<div id="testRenLian">
+    <center><h2>请进行人脸识别</h2></center>
+    <div id="container">
+
+        <div style="display: none;">
+            <p>Get available audio, video sources and audio output devices from <code>mediaDevices.enumerateDevices()</code>
+                then set the source for <code>getUserMedia()</code> using a <code>deviceId</code> constraint.</p>
+
+            <div class="select">
+                <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
+            </div>
+
+            <div class="select">
+                <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
+            </div>
+
+            <div class="select">
+                <label for="videoSource">Video source: </label><select id="videoSource"></select>
+            </div>
+        </div>
+
+        <video id="video" playsinline autoplay></video>
+        <input type="button"  id="log" value="拍照" />
+        <!-- <button id="camera">拍照</button> -->
+
+        <div style="display: none;"><canvas width="640" height="480" id="outrec"></canvas></div>
+
+    </div>
+
+
+</div>
+</body>
+<script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/zhaoxiang.js" async></script>
+<script>
+
+    $('#log').click(function() {
+
+        var outrec = document.getElementById("outrec");
+        var outreccon = outrec.getContext("2d");
+        outreccon.drawImage(video, 0, 0, 640, 480);
+
+        alert("拍照成功");
+        var img = outrec.toDataURL("image/jpeg", 0.5)
+        //去掉data:image/jpeg;base64,前缀，这段字符串不属于base64格式的图片
+        var base64ImgLog = img.substring(img.indexOf(",")+1);
+        console.log(base64ImgLog);
+        $('#imgvideo').attr('src', img);
+
+        //人脸识别时校验
+        checkeds(base64ImgLog);
+
+    });
+
+    //进行验证
+    function checkeds(base64ImgLog) {
+        $.ajax({
+            url:"/certification",
+            data:{"base64ImgLog":base64ImgLog},
+            type:"post",
+            success:function (data) {
+                if(data=="err"){
+                    alert("人脸比对失败！");
+                    return;
+                }
+                console.log(data);
+                var resultList = $.parseJSON(data);
+                var content = "";
+                for(var i=0;i<resultList.cardsinfo.length;i++){
+                    for(var j=0;j<resultList.cardsinfo[i].items.length;j++){
+                        content = resultList.cardsinfo[i].items[j].content
+                        console.log(content);
+                    }
+                }
+                if(content=="是"){
+                    alert("是本人！");
+                    location = "/gotoMain";
+
+
+                }else{
+                    alert("不是本人！");
+                    location = "/gotoLogin";
+
+                }
+
+            }
+        })
+
+    }
+
+</script>
+</html>

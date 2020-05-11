@@ -13,6 +13,114 @@
     <select id="querySorCheckBoundCount" resultType="Integer">
         select count(*) from sor_checkbound
     </select>
+    <!--查询最大ID-->
+    <select id="queryMaxID" resultType="String">
+        select max(ID) from sor_checkbound
+    </select>
+    <select id="queryScan" resultMap="Scan">
+        select * from sor_scanner
+    </select>
+
+    <select id="queryByID" parameterType="String" resultMap="query">
+        select sc.ID,ss.ScanName ScanID,sc.CargoSum,se.EmpName CheckPerson,sc.CheckDate,sc.CheckCompany
+        from sor_checkbound sc
+        inner join sor_scanner ss on sc.ScanID = ss.ID
+        inner join sy_emp se on sc.CheckPerson = se.ID where sc.ID = #{checkID}
+    </select>
+
+
+    <!--根据条件查询-->
+    <select id="queryWhereSorCheckBound" parameterType="Map" resultMap="query">
+        select sc.ID,ss.ScanName ScanID,sc.CargoSum,se.EmpName CheckPerson,sc.CheckDate,sc.CheckCompany
+        from sor_checkbound sc
+        inner join sor_scanner ss on sc.ScanID = ss.ID
+        inner join sy_emp se on sc.CheckPerson = se.ID
+        where
+        <if test="ID !=''">
+            sc.ID like '%${ID}%'
+            <if test="CheckPerson!=''">
+                and se.EmpName like '%${CheckPerson}%'
+            </if>
+            <if test="CheckCompany!=''">
+                and sc.CheckCompany like '%${CheckCompany}%'
+            </if>
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckPerson!='' and ID==''">
+            se.EmpName like '%${CheckPerson}%'
+            <if test="CheckCompany!=''">
+                and sc.CheckCompany like '%${CheckCompany}%'
+            </if>
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckCompany!='' and  CheckPerson=='' and ID==''">
+            sc.CheckCompany like '%${CheckCompany}%'
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckDate!='' and CheckCompany=='' and CheckPerson=='' and ID==''">
+            sc.CheckDate like '%${CheckDate}%'
+        </if>
+
+         order by sc.ID desc
+         limit #{page},#{limit}
+    </select>
+
+    <!--根据条件查询Count-->
+    <select id="queryWhereSorCheckBoundCount" parameterType="Map" resultType="Integer">
+        select count(*)
+        from sor_checkbound sc
+        inner join sor_scanner ss on sc.ScanID = ss.ID
+        inner join sy_emp se on sc.CheckPerson = se.ID
+        where
+        <if test="ID !=''">
+            sc.ID like '%${ID}%'
+            <if test="CheckPerson!=''">
+                and se.EmpName like '%${CheckPerson}%'
+            </if>
+            <if test="CheckCompany!=''">
+                and sc.CheckCompany like '%${CheckCompany}%'
+            </if>
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckPerson!='' and ID==''">
+            se.EmpName like '%${CheckPerson}%'
+            <if test="CheckCompany !=''">
+                and sc.CheckCompany like '%${CheckCompany}%'
+            </if>
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckCompany!='' and  CheckPerson=='' and ID==''">
+            sc.CheckCompany like '%${CheckCompany}%'
+            <if test="CheckDate!=''">
+                and sc.CheckDate like '%${CheckDate}%'
+            </if>
+        </if>
+        <if test="CheckDate!='' and CheckCompany=='' and CheckPerson=='' and ID==''">
+            sc.CheckDate like '%${CheckDate}%'
+        </if>
+    </select>
+
+
+    <insert id="addSorCheckBound" parameterType="SorCheckBound">
+        insert into sor_checkbound(ID,ScanID,CargoSum,CheckPerson,CheckDate,CheckCompany)
+        values (#{ID},#{scanID},#{cargoSum},#{checkPerson},#{checkDate},#{checkCompany})
+    </insert>
+
+
+    <resultMap id="Scan" type="Map">
+        <result column="ID" property="ID"></result>
+        <result column="ScanName" property="ScanName"></result>
+    </resultMap>
     <resultMap id="query" type="Map">
         <result column="ID" property="ID"></result>
         <result column="ScanID" property="ScanID"></result>

@@ -16,6 +16,18 @@ public class SorCheckBound {
     public SorCheckBound() {
     }
 
+    @Override
+    public String toString() {
+        return "SorCheckBound{" +
+                "ID='" + ID + '\'' +
+                ", scanID=" + scanID +
+                ", cargoSum=" + cargoSum +
+                ", checkPerson=" + checkPerson +
+                ", checkDate=" + checkDate +
+                ", checkCompany='" + checkCompany + '\'' +
+                '}';
+    }
+
     public SorCheckBound(String ID, Integer scanID, Integer cargoSum, Integer checkPerson, Date checkDate, String checkCompany) {
         this.ID = ID;
         this.scanID = scanID;

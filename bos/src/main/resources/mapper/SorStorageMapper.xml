@@ -23,7 +23,7 @@
         where
         <if test=" ID !=null">
             /*进了*/
-            s.ID =#{ID}
+            s.ID like '%${ID}%'
             <if test="acceptDate !=null">
                 and s.acceptDate like '%${acceptDate}%'
             </if>
@@ -98,7 +98,7 @@
         where
         <if test=" ID !=null">
             /*进了*/
-            s.ID =#{ID}
+            s.ID like '%${ID}%'
             <if test="acceptDate !=null">
                 and s.acceptDate like '%${acceptDate}%'
             </if>
