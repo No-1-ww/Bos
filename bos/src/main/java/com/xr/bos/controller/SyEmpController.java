@@ -91,9 +91,9 @@ public class SyEmpController {
             SyEmp syEmp = (SyEmp) subject.getPrincipal();
             session.setAttribute("SyEmp",syEmp);
             //进行人脸认证
-            mv.setViewName("certification");
+            //mv.setViewName("certification");
             //直接登录
-           // mv.setViewName("main");
+            mv.setViewName("main");
 
             return mv ;
         }else{  //认证失败
