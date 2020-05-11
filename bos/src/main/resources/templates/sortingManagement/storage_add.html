@@ -4,13 +4,13 @@
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>新增入库交接单</title>
-    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../css/page.css">
 </head> 
 <body>
 	<!--引入自定义的js脚本库-->
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-
-	<form  lclass="layui-form" action="/addStorage" method="post">
+	<form  class="layui-form" action="/addStorage" method="post">
 		<br/>
 		<br/>
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
@@ -37,7 +37,7 @@
 		      	<td class="layui-bg-gray">发货人 </td>
 		      	<td>
                     <label id="errDeliveryPerson" style="color: #FF5722; display:none">请选择收货人</label>
-					<select lay-filter="test" name="deliveryPerson" id="deliveryPerson"  >
+					<select lay-filter="test" name="deliveryPerson" id="deliveryPerson" lay-verify=""  >
 						<option    value=""></option>
 						<option  th:each="syemp,userStat:${SyEmps}" th:text="${syemp.empName}" th:value="${syemp.ID}"   value=""></option>
 					</select>
@@ -106,6 +106,7 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
+
 		/**
 		 * 验证
 		 * 验证前端的写法

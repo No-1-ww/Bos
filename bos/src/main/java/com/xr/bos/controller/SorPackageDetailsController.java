@@ -35,14 +35,14 @@ public class SorPackageDetailsController {
             else if(wareName==4) stringWareName="厨房用品";
             else stringWareName="其他用品";
 
-            map.put("wareName",stringWareName);
+            map.put("WareName",stringWareName);
 
             if(ask==0) stringAsk="无要求";
             else if(ask==1) stringAsk="禁航空";
             else if(ask==2) stringAsk="禁铁路";
             else stringAsk="禁航空，铁路";
 
-            map.put("ask",stringAsk);
+            map.put("Ask",stringAsk);
         }
         mv.addObject("sorPackage",formatMap);
         mv.setViewName("/sortingManagement/package_list");

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
             <!-- 操作按扭组 -->
             <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
                 <div class="layui-inline">
-                    <button type="button" class="layui-btn layui-btn-small btnQuery" id="opSave">保存</button>
+                    <button type="button" class="layui-btn layui-btn-small btnQuery" id="opSave">新增合包信息</button>
                     <button type="button" class="layui-btn layui-btn-small btnQuery" id="opAddDetail">新增合包明细</button>
                     <button type="button" class="layui-btn layui-btn-small btnOther" id="opDeleteMenu">删除条目</button>
                 </div>
@@ -32,59 +32,34 @@
     <table class="layui-table layui-form" style="width: 100%;margin: 1px auto;text-align: center;margin-top: 5px;">
         <tbody>
             <tr>
-                <td class="layui-bg-gray" width="10%">合包号</td>
-                <td width="15%">
-                    <input type="text" name="title" placeholder="请输入合包号" autocomplete="off" class="layui-input">
-                </td>
                 <td class="layui-bg-gray" width="10%">合包人</td>
                 <td width="15%">
-                    <input type="text" name="title" placeholder="请输入合包人" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="PackagePerson" placeholder="请输入合包人" autocomplete="off" class="layui-input" value="">
                 </td>
-                <td class="layui-bg-gray" width="10%">封签号</td>
+                <td class="layui-bg-gray" width="10%">设备号</td>
                 <td width="15%">
-                    <input type="text" name="title" placeholder="请输入封签号" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="SealInt" placeholder="请输入设备号" autocomplete="off" class="layui-input" value="">
                 </td>
                 <td class="layui-bg-gray" width="10%">到达地</td>
                 <td width="15%">
                     <select name="city" lay-verify="required">
                         <option value=""></option>
-                        <option value="0">北京</option>
-                        <option value="1">上海</option>
-                        <option value="2">广州</option>
-                        <option value="3">深圳</option>
-                        <option value="4">杭州</option>
+                        <option  th:each="unit,userStat:${untisAll}" th:text="${unit.Name}" th:value="${unit.ID}"   value=""></option>
                     </select>
                 </td>
-            </tr>
-
-            <tr>
                 <td class="layui-bg-gray" width="10%">计算到达地</td>
                 <td width="15%">
-                    <input type="text" name="title" placeholder="请输入计算到达地" autocomplete="off" class="layui-input">
-                </td>
-                <td class="layui-bg-gray" width="10%">送达时限</td>
-                <td width="15%">
-                    <input type="text" name="title" placeholder="请输入送达时限" autocomplete="off" class="layui-input" value="">
-                </td>
-                <td class="layui-bg-gray" width="10%">总票数</td>
-                <td width="15%">
-                    <input type="text" name="title" placeholder="请输入总票数" autocomplete="off" class="layui-input" value="">
-                </td>
-                <td class="layui-bg-gray" width="10%">总件数</td>
-                <td width="15%">
-                    <input type="text" name="title" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="ReckonDes" placeholder="请输入计算到达地" autocomplete="off" class="layui-input">
                 </td>
             </tr>
 
             <tr>
-                <td class="layui-bg-gray" width="10%">总重量</td>
+
+                <td class="layui-bg-gray" width="10%">送达时限</td>
                 <td width="15%">
-                    <input type="text" name="title" placeholder="请输入总重量" autocomplete="off" class="layui-input">
+                    <input type="date" name="TimeLimit" placeholder="请输入送达时限" autocomplete="off" class="layui-input" value="">
                 </td>
-                <td class="layui-bg-gray" width="10%">总体积</td>
-                <td width="15%">
-                    <input type="text" name="title" placeholder="请输入总体积" autocomplete="off" class="layui-input" value="">
-                </td>
+
                 <td class="layui-bg-gray" width="10%">状态</td>
                 <td width="15%">
                     <select name="city" lay-verify="required">
@@ -235,6 +210,26 @@
         });
 
     });
+
+    $("input[name=TimeLimit]").blur(function () {
+        var myDate = new Date();
+
+        var thisDate = $(this).val();
+        var timeLimit = new Date(thisDate);
+        if (timeLimit.getDate()<myDate.getDate()){
+            layui.use('layer',function () {
+                var layer = layui.layer;
+                layer.msg("不能小于系统当前时间");
+            });
+            $(this).val("");
+        }
+
+    });
+
+    //新增
+    $("#opSave").click(function () {
+
+    })
 
 </script>
 

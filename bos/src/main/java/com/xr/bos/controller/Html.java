@@ -359,11 +359,7 @@ public class Html {
     public String check(){
         return "/sortingManagement/check";
     }
-    //合包
-    @GetMapping("/sortingManagement/package")
-    public String packages(){
-        return "/sortingManagement/package";
-    }
+
 
     //拆包
     @GetMapping("/sortingManagement/unpacking")
