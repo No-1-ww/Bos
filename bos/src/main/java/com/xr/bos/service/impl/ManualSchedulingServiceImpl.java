@@ -18,4 +18,19 @@ public class ManualSchedulingServiceImpl implements ManualSchedulingService {
     public List<Map<String, Object>> queryall() {
         return manualSchedulingMapper.queryall();
     }
+
+    @Override
+    public List<Map<String, Object>> querywhere_manua(Map<String, Object> map) {
+        return manualSchedulingMapper.querywhere_manua(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> query_ById(String jObNo) {
+        return manualSchedulingMapper.query_ById(jObNo);
+    }
+
+    @Override
+    public int del_manu(String jObNo) {
+        return manualSchedulingMapper.del_manu(jObNo);
+    }
 }

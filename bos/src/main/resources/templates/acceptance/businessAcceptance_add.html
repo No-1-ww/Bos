@@ -56,14 +56,14 @@
 		      	<td class="layui-bg-gray">产品</td>
 		      	<td>
 				  <select name="importantHints" lay-verify="required">
-					  <option th:each="aa,userStat:${importantList}" th:text="${aa.importantHints}" th:value="${aa.importantHints}"> </option>
+					  <option th:each="aa,userStat:${importantList}" th:text="${aa.importantHints}" th:value="${aa.importantHints}"></option>
 				   </select>
 		      	</td>
 		    </tr>
        		 <tr>
 		      	<td class="layui-bg-gray">预约取件时间</td>
 		      	<td>
-					       <input type="date" name="reservationTime" placeholder="请输入预约取件时间" autocomplete="off" class="layui-input" value="">
+					 <input type="date" name="reservationTime" placeholder="请输入预约取件时间" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		    </tr>
 		    <tr>
@@ -78,8 +78,37 @@
 	<script type="text/javascript" src="../../custom/jquery.min.js"></script>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript">
+			function cc(){//客户名称
+                var c=$("input[name=customName]").val();
+                $("#customName").text();
+                var reg=/^[\u4E00-\u9FA5]{2,4}$/;
+                if(!reg.test(c)){
+                    document.getElementById('t').innerHTML = '不符合标准！';
+					return false;
+                }
+                return true;
+			}
 
+            function dd(){//客户名称
+                var d=$("input[name=linkman]").val();
+                $("#customName").text();
+                var reg=/^[\u4E00-\u9FA5]{2,4}$/;
+                if(!reg.test(d)){
+                    document.getElementById('t').innerHTML = '不符合标准！';
+                    return false;
+                }
+                return true;
+            }
 
+			function ee(){//电话号码
+                var e=$("input[name=telPhone]").val();
+                $("#telPhone").text();
+                if(!reg.test(e)){
+                    var reg=/^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/;
+                    return false;
+				}
+			   return true;
+			}
 
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){

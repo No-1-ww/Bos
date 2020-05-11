@@ -7,24 +7,24 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form class="layui-form">
+	<form lay-filter="stoForm" action="/Pro_add" method="post" class="layui-form">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">发布时间</td>
 		      	<td width="35%">
-              <input type="text" name="title" placeholder="请输入发布时间" autocomplete="off" class="layui-input">
+              <input type="date" name="releaseTime" placeholder="请输入发布时间" autocomplete="off" class="layui-input">
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">失效时间</td>
 		      	<td width="35%">
-              <input type="text" name="title" placeholder="请输入失效时间" autocomplete="off" class="layui-input">
+              <input type="date" name="failureTime" placeholder="请输入失效时间" autocomplete="off" class="layui-input">
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">状态</td>
 		      	<td>
-              <input type="radio" name="state" value="1" title="有效" checked>
-              <input type="radio" name="state" value="2" title="作废">
+              <input type="radio" name="status" value="1" title="有效" checked>
+              <input type="radio" name="status" value="2" title="作废">
 		      	</td>
             <td class="layui-bg-gray"></td>
             <td></td>
@@ -32,13 +32,13 @@
 		    <tr>
 		      	<td class="layui-bg-gray">宣传概要</td>
 		      	<td colspan="3">
-		      		<input type="text" name="title" placeholder="请输入宣传概要" autocomplete="off" class="layui-input">
+		      		<input type="text" name="outline" placeholder="请输入宣传概要" autocomplete="off" class="layui-input">
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">宣传内容</td>
 		      	<td colspan="3">
-		      		<textarea name="desc" placeholder="请输入宣传内容" class="layui-textarea"></textarea>
+		      		<textarea name="content" placeholder="请输入宣传内容" class="layui-textarea"></textarea>
 		      	</td>
 		    </tr>
 
@@ -57,8 +57,24 @@
 
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
+            var form = layui.form;
+            form.on("submit(stoForm)",function(){
+                var c=$("input[name=releaseTime]").val();
+                var d=$("input[name=failureTime]").val();
+                var e=$("input[name=status]").val();
+                var f=$("input[name=outline]").val();
+                var g=$("input[name=content]").val();
+                if(c==""||d==""||e==""||f==""||g==""){
+                    alert("不能为空");
+                    return false;
+                }
+                //提交完毕关闭窗口
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.location.reload();//刷新父页
+                parent.layer.close(index);//关闭当前
 
-        });
+            })
+        })
 
     </script>
 </body>

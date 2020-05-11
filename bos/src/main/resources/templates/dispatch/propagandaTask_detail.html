@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,34 +7,37 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form class="layui-form">
+	<form lay-filter="stoForm" action="/update_pro" method="post" class="layui-form">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">发布时间</td>
-		      	<td width="35%">2017-11-11 11:11:11</td>
+				<td width="35%">
+					<input type="date" name="releaseTime" th:value="${releaseTime}" placeholder="请输入发布时间" autocomplete="off" class="layui-input" value="">
+				</td>
 		      	<td class="layui-bg-gray" width="15%">失效时间</td>
-		      	<td width="35%">2017-11-15 11:11:11</td>
+		      	<td width="35%">
+					<input type="date" name="failureTime" th:value="${failureTime}" placeholder="请输入失效时间" autocomplete="off" class="layui-input" value="">
+				</td>
 		    </tr>
 		    <tr>
-		      	<td class="layui-bg-gray">状态</td>
-		      	<td>有效</td>
-            <td class="layui-bg-gray">更新时间</td>
-            <td>2017-11-15 11:11:11</td>
-		    </tr>
-        <tr>
-		      	<td class="layui-bg-gray">更新单位</td>
-		      	<td>总公司</td>
-            <td class="layui-bg-gray">更新时间</td>
-            <td>2017-11-15 11:11:11</td>
+				<td class="layui-bg-gray">状态</td>
+				<td>
+					<input type="radio" name="status" value="1" title="有效" checked>
+					<input type="radio" name="status" value="2" title="作废">
+				</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">宣传概要</td>
-		      	<td colspan="3">宣传概要宣传概要宣传概要宣传概要宣传概要宣传概要</td>
+		      	<td colspan="3">
+					<input type="text" name="outline" th:value="${outline}" placeholder="请输入宣传概要" autocomplete="off" class="layui-input" value="">
+				</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">宣传内容</td>
-		      	<td colspan="3">宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容</td>
+		      	<td colspan="3">
+					<input type="text" name="content" th:value="${content}" placeholder="请输入宣传内容" autocomplete="off" class="layui-input" value="">
+				</td>
 		    </tr>
 
 		    <tr>
@@ -52,8 +55,25 @@
 
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
-
+            var index=parent.getFrameIndex(window.name);
+            parent.layer.close(index);
         });
+
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on("submit(stoForm)",function(){
+                var deliveryPerson = $("#deliveryPerson").val();
+                if(deliveryPerson==""){
+                    $("#errDeliveryPerson").show();
+                    return false;
+                }
+
+                //提交完毕关闭窗口
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.location.reload();//刷新父页
+                parent.layer.close(index);//关闭当前
+            })
+        })
 
     </script>
 </body>

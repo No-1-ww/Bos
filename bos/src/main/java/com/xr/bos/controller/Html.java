@@ -196,6 +196,7 @@ public class Html {
     public String worksheetQuery(){
         return "/acceptance/worksheetQuery";
     }
+
     //工作单查询修改dispatchingPersonnelSet_update
     /*@GetMapping("/dispatchingPersonnelSet_update")
     public String dispatchingPersonnelSet_update(){
@@ -209,10 +210,10 @@ public class Html {
         return "/dispatch/checkTable";
     }
 
-    //查台转单的--转单singleTurn
+   /* //查台转单的--转单singleTurn
     @GetMapping("/singleTurn")
     public String singleTurn(){return "/dispatch/singleTurn"; }
-
+*/
     //人工调度
     @GetMapping("/dispatch/manualScheduling")
     public String manualScheduling(){
@@ -220,9 +221,9 @@ public class Html {
     }
 
     //人工调度distribution---分配
-    @GetMapping("/distribution")
+   /* @GetMapping("/distribution")
     public String distribution(){return "/dispatch/distribution"; }
-
+*/
     //人工详情manualScheduling_detail
     @GetMapping("/manualScheduling_detail")
     public String manualScheduling_detail(){return "/dispatch/manualScheduling_detail"; }
@@ -234,13 +235,13 @@ public class Html {
     }
 
     //签收录入新增signInput_add
-    @GetMapping("/signInput_add")
+    /*@GetMapping("/signInput_add")
     public String signInput_add(){ return "/dispatch/signInput_add"; }
-
+*/
     //签收录入的修改signlnput_update
-    @GetMapping("/signlnput_update")
+    /*@GetMapping("/signlnput_update")
     public String signlnput_update(){return "/dispatch/signlnput_update";}
-
+*/
     //签收录入的详情
     @GetMapping("/signInput_detail")
     public String signInput_detail(){return "/dispatch/signInput_detail"; }
@@ -252,9 +253,9 @@ public class Html {
     }
 
     //取消签收申请确认 新增 cancelSignApplicationConfirmation_add
-    @GetMapping("/cancelSignApplicationConfirmation_add")
+    /*@GetMapping("/cancelSignApplicationConfirmation_add")
     public String cancelSignApplicationConfirmation_add(){return "/dispatch/cancelSignApplicationConfirmation_add"; }
-
+*/
     //取消签收申请确认 详情 cancelSignApplicationConfirmation_detail
     @GetMapping("/cancelSignApplicationConfirmation_detail")
     public String cancelSignApplicationConfirmation_detail(){return "/dispatch/cancelSignApplicationConfirmation_detail"; }
@@ -286,9 +287,12 @@ public class Html {
     }
 
     //返货申请确认的新增returnApply_add
-    @GetMapping("/returnApply_add")
+    /*@GetMapping("/returnApply_add")
     public String returnApply_add(){return "/return/returnApply_add"; }
-
+*/
+    //返货申请确认的修改returnApply_update
+   /* @GetMapping("/returnApply_update")
+    public String returnApply_add(){return "/return/returnApply_update"; }*/
     //返货申请确认的详情returnApply_detail
     @GetMapping("/returnApply_detail")
     public String returnApply_detail(){return "/return/returnApply_detail"; }

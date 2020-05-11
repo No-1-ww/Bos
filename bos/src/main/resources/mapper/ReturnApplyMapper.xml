@@ -20,8 +20,22 @@
             <result property="Name" column="Name"></result>
             <result property="personName" column="personName"></result>
     </resultMap>
-
-
+    <insert id="add_Apply" parameterType="Ret_returnlist" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `bos`.`ret_returnlist` (`ID`, `ApplicationNo`, `WorkSheetNo`, `ReturnType`, `ApRemark`, `ApLoss`, `EntryTime`, `ReceivegUnit`, `InvalidateSign`, `ReturnUnit`, `RecordingTime`, `EntryUnit`, `PersonName`, `ConfirmationTime`, `ConfirmationUnit`, `ConfirmationPersonName`, `TreatmentState`, `ApReturnStatus`, `IdentificationSign`, `HandlingOpinions`, `DenialType`)
+        VALUES (null, #{applicationNo}, #{workSheetNo}, #{returnType}, #{apRemark}, #{apLoss}, #{entryTime}, #{receivegUnit}, #{invalidateSign}, #{returnUnit}, #{recordingTime}, #{entryUnit}, #{personName}, #{confirmationTime}, #{confirmationUnit}, #{confirmationPersonName}, #{treatmentState}, #{apReturnStatus}, #{identificationSign}, #{handlingOpinions}, #{denialType});
+    </insert>
+    <select id="query_ApplicationNo" resultType="String">
+        select max(ApplicationNo) from ret_returnlist
+    </select>
+    <select id="query_WorkSheetNo" resultType="String">
+        select max(WorkSheetNo) from ret_returnlist
+    </select>
+    <select id="query_empName" resultType="Ret_returnlist">
+        select empName from sy_emp
+    </select>
+    <select id="query_Name" resultType="Ret_returnlist">
+        select `Name` from sy_units
+    </select>
 
     <!--第二个模板-->
     <select id="queryaConfim" resultMap="queryRet1">

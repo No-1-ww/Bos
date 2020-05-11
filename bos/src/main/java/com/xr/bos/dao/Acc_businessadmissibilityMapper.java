@@ -36,7 +36,11 @@ public interface Acc_businessadmissibilityMapper {
     //产品下拉框字段查询
     List<Acc_businessadmissibility> query_importantHints();
 
-    //根据id查询
+    /**
+     * 根据id查询
+     * @param businessNoticeNo
+     * @return
+     */
     Acc_businessadmissibility queryByIDbusinessNoticeNo(String businessNoticeNo);
 
     /**
@@ -51,9 +55,13 @@ public interface Acc_businessadmissibilityMapper {
      * @param acc_businessadmissibility
      * @return
      */
-    List<Acc_businessadmissibility> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility);
+    List<Map<String,Object>> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility);
 
-    //追单
+    /**
+     * 追单
+     * @param businessNoticeNo
+     * @return
+     */
     int update_afterSingleNum(String businessNoticeNo);
 
     /**

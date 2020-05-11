@@ -22,14 +22,16 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">通知单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" id="businessNoticeNo" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
+				     	<input type="text" id="businessNoticeNo" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+							   placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">客户编号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" id="customCode" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+				     	<input type="text" id="customCode" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+							   placeholder="请输入客户编号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
@@ -259,37 +261,18 @@
         } else {
             var businessNoticeNo = $("#businessNoticeNo").val();
             var customCode = $("#customCode").val();
-            /*  $.ajax({
-                url:"/busin_querywhere",
-				type:"POST",
-				data:{"businessNoticeNo":businessNoticeNo,"customCode":customCode},
-                success:function(data){*/
             layui.use('table', function () {
                 var table = layui.table;
-                table.render({
-                    id: 'busTable',
-                    height: 370,
-                    elem: '#ChekTale',
-                    url: '/busin_querywhere',
-                    page: true,
-                    limits: [10, 25, 50, 75, 100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
-                    limit: 3,
-                    cols: [
-                        [ //表头
-                            {checkbox: true, fixed: 'left'}
-                            , {field: 'businessNoticeNo', title: '业务通知单', width: 120}
-                            , {field: 'customCode', title: '客户编号', width: 120}
-                            , {field: 'customName', title: '客户名称', width: 120}
-                            , {field: 'linkman', title: '联系人', width: 120}
-                            , {field: 'telPhone', title: '电话', width: 130}
-                            , {field: 'pickupAddress', title: '取件地址', width: 140}
-                            , {field: 'sendAddress', title: '取件城市', width: 140}
-                            , {field: 'arriveCity', title: '到达城市', width: 120}
-                            , {field: 'importantHints', title: '产品', width: 90}
-                            , {field: 'reservationTime', title: '预约取件时间', width: 120}
-                        ]
-                    ]
-                })
+                table.reload('busTable', {
+                    url:'/busin_querywhere'
+                    ,where: { //设定异步数据接口的额外参数，任意设
+                        businessNoticeNo: businessNoticeNo
+                        , customCode: customCode
+                    }
+                    , page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
                 /* })
                 }
             })
@@ -300,39 +283,10 @@
 
 
 	//重置
-	$("#cz").click(function(){
+    $("#cz").click(function () {
+        location.reload();
+    })
 
-        $.ajax({
-            url:"/acceptance/businessAcceptanceAjax",
-            type:"POST",
-            success:function(data){
-                layui.use('form', function() {
-
-                    var form = layui.form;
-
-                    var result = eval(data);
-                    $("#tBody").empty();
-                    for (var i = 0; i < result.length; i++) {
-                        $("#tBody").append('<tr>' +
-                            '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
-                            '<td>' + result[i].businessNoticeNo + '</td>' +
-                            '<td>' + result[i].customCode + '</td>' +
-                            '<td>' + result[i].customName + '</td>' +
-                            '<td>' + result[i].linkman + '</td>' +
-                            '<td>' + result[i].telPhone + '</td>' +
-                            '<td>' + result[i].pickupAddress + '</td>' +
-                            '<td>' + result[i].sendAddress + '</td>' +
-                            '<td>' + result[i].arriveCity + '</td>' +
-                            '<td>' + result[i].importantHints + '</td>' +
-                            '<td>' + result[i].reservationTime + '</td>' +
-                            '</tr>')
-                    }
-                    form.render();
-                })
-
-            }
-        })
-	})
 
     //追单
     $("#ZhuiDan").click(function(){

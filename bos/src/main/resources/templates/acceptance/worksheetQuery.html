@@ -22,14 +22,16 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">工作单号:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" id="workSheetNo" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+                        <input type="text" id="workSheetNo" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+                               placeholder="请输入工作单号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-inline">
                     <label class="layui-form-label">开单时间:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" id="workGenerationTime" placeholder="请输入开单时间" autocomplete="off" class="layui-input">
+                        <input type="text" id="workGenerationTime" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+                               placeholder="请输入开单时间" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -39,7 +41,7 @@
                         <i class="layui-icon">&#xe615;</i> 查询
                     </button>
 
-                    <button type="button" class="layui-btn btnOther">
+                    <button id="cz" type="button" class="layui-btn btnOther">
                         <i class="layui-icon">&#x1002;</i> 重置
                     </button>
 
@@ -259,46 +261,35 @@
         })
     });
 
+    //重置
+    $("#cz").click(function () {
+        location.reload();
+    })
 
-    //条件查询
+    //工作单条件查询
     $("#cxwhere").click(function() {
-        alert("进入")
         if ($("#workSheetNo").val() == "" && $("#workGenerationTime").val() == "") {
             alert("必须选择一项查询");
             return false;
         } else {
             var workSheetNo = $("#workSheetNo").val();
             var workGenerationTime = $("#workGenerationTime").val();
-            $.ajax({
-                url:"/work_querywhere",
-                type:"POST",
-                success:function(){
-                    layui.use('form', function() {
-                        var form = layui.form;
-                        var result = eval(data);
-                        $("#tBody").empty();
-                        for (var i = 0; i < result.length; i++) {
-                            $("#tBody").append('<tr>' +
-                                '<td><input type="checkbox" lay-filter="check" lay-skin="primary"></td>' +
-                                '<td>' + result[i].id + '</td>' +
-                                '<td>' + result[i].workSheetNo + '</td>' +
-                                '<td>' + result[i].customCode + '</td>' +
-                                '<td>' + result[i].importantHints + '</td>' +
-                                '<td>' + result[i].destination + '</td>' +
-                                '<td>' + result[i].businessNoticeNo + '</td>' +
-                                '<td>' + result[i].empNo + '</td>' +
-                                '<td>' + result[i].empName + '</td>' +
-                                '<td>' + result[i].pickupTime + '</td>' +
-                                '<td>' + result[i].customName + '</td>' +
-                                '<td>' + result[i].linKman + '</td>' +
-                                '</tr>')
-                        }
-                        form.render();
-                    })
-                }
-            });
+            layui.use('table', function () {
+                var table = layui.table;
+                table.reload('busTable', {
+                    url: '/work_querywhere'
+                    , where: { //设定异步数据接口的额外参数，任意设
+                        workSheetNo: workSheetNo
+                        , workGenerationTime: workGenerationTime
+                    }
+                    , page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                })
+            })
         }
     })
+
     //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
         //在加载form表单时为checkbox渲染事件
@@ -398,6 +389,9 @@
         });
     });
 
+    $("#cz").click(function () {
+            location.reload();
+        })
     //分页
     /*layui.use(['laypage', 'layer'], function() {
         var laypage = layui.laypage//laypage的分页组件实例对象。

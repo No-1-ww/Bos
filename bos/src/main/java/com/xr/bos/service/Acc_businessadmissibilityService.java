@@ -34,7 +34,7 @@ public interface Acc_businessadmissibilityService {
 
 
     //条件查询
-    List<Acc_businessadmissibility> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility);
+    List<Map<String,Object>> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility);
 
 
     //追单

@@ -32,13 +32,24 @@ public class Acc_worksheetServiceImpl implements Acc_worksheetService {
     }
 
     @Override
-    public List<Acc_worksheet> querywhere_work(Acc_worksheet acc_worksheet) {
-        return acc_worksheetMapper.querywhere_work(acc_worksheet);
+    public List<Map<String,Object>> querywhere_work(Map<String,Object> map) {
+        return acc_worksheetMapper.querywhere_work(map);
     }
 
     @Override
     public Map<String, Object> queryByid_work(String workSheetNo) {
         return acc_worksheetMapper.queryByid_work(workSheetNo);
+    }
+
+    @Override
+    public int updateDestination(Map<String,Object> map) {
+        return acc_worksheetMapper.updateDestination(map);
+    }
+
+    @Override
+    public int updateimportantHints(Map<String,Object> map) {
+        System.out.println(map.get("businessNoticeNo"));
+        return acc_worksheetMapper.updateimportantHints(map);
     }
 
 }

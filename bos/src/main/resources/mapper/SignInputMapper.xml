@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.bos.dao.SignInputMapper">
     <select id="queryall" resultMap="querySig">
-        select b.id,a.workSheetNo,b.workOrderType,b.signType,u.`Name`
+        select b.id,b.workSheetNo,b.workOrderType,b.signType,u.`Name`
                ,b.inputPersonCode,s.empName,b.recipient,b.courierName
         from dis_workordersign b,acc_worksheet a,sy_emp s,sy_units u
         where a.workSheetNo=b.workSheetNo and b.inputPersonID=s.id and b.inputID=u.id
@@ -19,4 +19,22 @@
         <result property="recipient" column="recipient"></result>
         <result property="courierName" column="courierName"></result>
     </resultMap>
+
+    <insert id="addSig" parameterType="Dis_workordersign" useGeneratedKeys="true" keyProperty="workSheetNo">
+        INSERT INTO `bos`.`dis_workordersign` (`id`,`workSheetNo`, `workOrderType`, `signType`, `courierInt`, `courierName`, `recipient`, `signUnit`, `signTime`, `invalidateMark`,`inputPersonID`, `inputID`, `inputTime`)
+        VALUES (null,#{workSheetNo},#{workOrderType},#{signType},#{courierInt},#{courierName},#{recipient},#{signUnit},#{signTime},#{invalidateMark},#{inputPersonID},#{inputID},#{inputTime});
+    </insert>
+
+    <select id="query_gzd" resultType="String">
+        select max(workSheetNo) from dis_workordersign
+    </select>
+
+    <select id="queryById" resultType="Dis_workordersign">
+        select * from dis_workordersign where WorkSheetNo = #{workSheetNo}
+    </select>
+
+    <update id="update_Sig" parameterType="Dis_workordersign">
+        update dis_workordersign set workOrderType=#{workOrderType},signType=#{signType},inputID=#{inputID},inputPersonCode=#{inputPersonCode},courierName=#{courierName},recipient=#{recipient},courierName=#{courierName}
+        where workSheetNo=#{courierName}
+    </update>
 </mapper>

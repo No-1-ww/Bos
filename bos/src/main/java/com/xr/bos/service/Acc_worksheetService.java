@@ -16,9 +16,17 @@ public interface Acc_worksheetService {
     String querywork_ID();
 
     //条件查询
-    List<Acc_worksheet> querywhere_work(Acc_worksheet acc_worksheet);
+    List<Map<String,Object>> querywhere_work(Map<String,Object> map);
 
     //根据id查询
     Map<String,Object> queryByid_work(String workSheetNo);
 
+    /**
+     * 工作单查询的修改需要
+     * 两个修改方法，执行的多条SQL语句
+     * @param
+     * @return
+     */
+    int updateDestination(Map<String,Object> map);
+    int updateimportantHints(Map<String,Object> map);
 }

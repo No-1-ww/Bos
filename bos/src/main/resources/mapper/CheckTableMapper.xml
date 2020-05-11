@@ -7,7 +7,6 @@
                 b.sendAddress,b.linkman,b.telPhone,a.afterSingleNum,s.`Name`
         from acc_workorder a,acc_businessadmissibility b,sy_units s
         where a.businessNoticeNo=b.businessNoticeNo and a.pickupUnit=s.id
-
     </select>
 
     <resultMap id="queryCheck" type="Map">
@@ -23,4 +22,37 @@
         <result property="Name" column="Name"></result>
     </resultMap>
 
+    <select id="querywhere" parameterType="Acc_businessadmissibility" resultMap="queryCheck">
+        select a.id,a.jObNo,a.shortMessageInt,b.businessNoticeNo,a.workGenerationTime,
+                b.sendAddress,b.linkman,b.telPhone,a.afterSingleNum,s.`Name`
+        from acc_workorder a,acc_businessadmissibility b,sy_units s
+        where a.businessNoticeNo=b.businessNoticeNo and a.pickupUnit=s.id
+        <if test=" businessNoticeNo !='' and telPhone !='' ">
+           and b.businessNoticeNo like '%${businessNoticeNo}%' and b.telPhone like '%${telPhone}%'
+        </if>
+        <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
+           and b.businessNoticeNo like '%${businessNoticeNo}%'
+        </if>
+        <if test=" telPhone !='' and telPhone !=null">
+           and b.telPhone like '%${telPhone}%'
+        </if>
+    </select>
+
+    <select id="query_ById" resultType="CheckTable">
+        select a.id,a.JObNo,a.ShortMessageInt,b.BusinessNoticeNo,a.WorkGenerationTime,b.sendAddress,b.linkman,b.telPhone,a.AfterSingleNum,s.`Name`
+        from acc_workorder a,acc_businessadmissibility b,sy_units s
+        where a.BusinessNoticeNo=b.BusinessNoticeNo and a.PickupUnit=s.id and a.JObNo like #{jObNo}
+    </select>
+
+    <select id="query_xjy" resultType="CheckTable">
+        select EmpNo from sy_emp where roleId=12
+    </select>
+
+    <select id="query_dw" resultType="CheckTable">
+        select `Name` from sy_units
+    </select>
+
+    <update id="update_Sign" parameterType="Acc_workorder">
+        update acc_workorder set SmallMemberNum=#{smallMemberNum},PickupUnit=#{pickupUnit} where JobNo=#{jobNo}
+    </update>
 </mapper>

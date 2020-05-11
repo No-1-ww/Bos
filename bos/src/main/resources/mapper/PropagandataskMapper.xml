@@ -13,4 +13,16 @@
         <result property="status" column="status"></result>
         <result property="content" column="content"></result>
     </resultMap>
+
+    <insert id="add_Pro" parameterType="Dis_propagandatask">
+        INSERT INTO `bos`.`dis_propagandatask` (`ID`, `Outline`, `ReleaseTime`, `FailureTime`, `Status`, `Content`) VALUES (null, #{outline}, #{releaseTime},#{failureTime}, #{status}, #{content});
+    </insert>
+
+    <select id="query_ById" resultType="Dis_propagandatask" parameterType="int">
+        select id,outline,releaseTime,failureTime,status,content from dis_propagandatask where id=#{id}
+    </select>
+
+    <update id="update_Pro" parameterType="Dis_propagandatask">
+        UPDATE `bos`.`dis_propagandatask` SET `Outline`='宣传概要', `ReleaseTime`=#{releaseTime}, `FailureTime`=#{failureTime}, `Status`=#{status}, `Content`=#{content} WHERE (`ID`=#{id});
+    </update>
 </mapper>

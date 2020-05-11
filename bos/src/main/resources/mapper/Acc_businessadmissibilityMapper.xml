@@ -6,7 +6,7 @@
     <select id="queryall" resultMap="queryacc">
         select a.businessNoticeNo ,a.customCode,a.customName,a.linkman,
             a.telPhone,a.pickupAddress,a.sendAddress,a.arriveCity,a.importantHints,a.reservationTime
-        from acc_businessadmissibility a
+        from acc_businessadmissibility a order by a.businessNoticeNo desc
     </select>
    <!-- <select id="totalAcc_admin" resultType="Integer">
         select count(*) from acc_businessadmissibility
@@ -33,7 +33,7 @@
     </select>
 
     <select id="query_importantHints" resultType="Acc_businessadmissibility">
-        select importantHints from acc_businessadmissibility
+        select importantHints from acc_businessadmissibility group by importantHints
     </select>
 
     <insert id="addBusin" parameterType="Acc_businessadmissibility" useGeneratedKeys="true" keyProperty="businessNoticeNo">
@@ -54,18 +54,18 @@
         WHERE businessNoticeNo=#{businessNoticeNo};
     </update>
 
-    <select id="query_whereAcc" resultType="Acc_businessadmissibility">
-        select businessNoticeNo ,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime
+    <select id="query_whereAcc" parameterType="Acc_businessadmissibility" resultMap="queryacc">
+        select businessNoticeNo,customCode,customName,linkman,telPhone,pickupAddress,sendAddress,arriveCity,importantHints,reservationTime
         from acc_businessadmissibility
         where
         <if test=" businessNoticeNo !='' and customCode !='' ">
-            businessNoticeNo like "%"#{businessNoticeNo}"%" and customCode like "%"#{customCode}"%"
+            businessNoticeNo like '%${businessNoticeNo}%' and customCode like '%${customCode}%'
         </if>
         <if test=" businessNoticeNo !='' and businessNoticeNo !=null ">
-             businessNoticeNo like "%"#{businessNoticeNo}"%"
+             businessNoticeNo like '%${businessNoticeNo}%'
         </if>
         <if test=" customCode !='' and customCode !=null">
-             customCode like "%"#{customCode}"%"
+             customCode like '%${customCode}%'
         </if>
     </select>
 

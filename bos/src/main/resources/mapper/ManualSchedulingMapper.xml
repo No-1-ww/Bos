@@ -30,4 +30,24 @@
         <result property="customNoModifyFlag" column="customNoModifyFlag"></result>
     </resultMap>
 
+    <select id="querywhere_manua" parameterType="acc_businessadmissibility" resultMap="queryMan">
+        select b.id,b.jObNo, a.reservationTime,a.customName,a.pickupAddress,a.customCode,a.linkman,a.telPhone,a.weight,a.volume,a.importantHints,a.arriveCity,e.empName,a.sendAddress,s.`Name`,a.notificationSource,a.customNoModifyFlag
+        from acc_businessadmissibility a,acc_workorder b,sy_units s,sy_emp e
+        where a.businessNoticeNo=b.businessNoticeNo and b.pickupUnit=s.id and b.smallMemberNum=e.id
+        <if test=" jObNo !='' and sendAddress !='' ">
+            and b.jObNo like '%${jObNo}%' and a.sendAddress like '%${sendAddress}%'
+        </if>
+        <if test=" jObNo !='' and jObNo !=null ">
+            and b.jObNo like '%${jObNo}%'
+        </if>
+        <if test=" sendAddress !='' and sendAddress !=null">
+            and a.sendAddress like '%${sendAddress}%'
+        </if>
+    </select>
+
+    <select id="query_ById" resultMap="queryMan">
+      select b.id,b.jObNo, a.reservationTime,a.customName,a.pickupAddress,a.customCode,a.linkman,a.telPhone,a.weight,a.volume,a.importantHints,a.arriveCity,e.empName,a.sendAddress,s.`Name`,a.notificationSource,a.customNoModifyFlag
+      from acc_businessadmissibility a,acc_workorder b,sy_units s,sy_emp e
+      where a.businessNoticeNo=b.businessNoticeNo and b.pickupUnit=s.id and b.smallMemberNum=e.id and b.jobNo=#{jobNo}
+    </select>
 </mapper>

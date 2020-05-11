@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>分配</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+</head>
+<body>
+<div class="layui-form">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">新增返货申请</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+            <div class="layui-tab-item layui-show">
+                <form lay-filter="stoForm" action="/add_retaaply" class="layui-form" method="post">
+                    <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+                        <tbody>
+                        <tr>
+                            <td class="layui-bg-gray" width="13%">申请单号</td>
+                            <td width="20%">
+                                <input type="text" name="applicationNo" th:value="${applicationNo}"  placeholder="请输入申请单号" autocomplete="off" class="layui-input">
+                            </td>
+                            <td class="layui-bg-gray" width="13%">工作单号</td>
+                            <td width="20%">
+                                <input type="text" name="workSheetNo" th:value="${workSheetNo}"  placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+                            </td>
+                            <td class="layui-bg-gray" width="13%">返货类型</td>
+                            <td width="20%">
+                                <select name="returnType" lay-verify="">
+                                    <option value="">请选择原因</option>
+                                    <option value="1">基础设置中对应的返货原因</option>
+                                    <option value="2">未封存的</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="layui-bg-gray">破损丢失件数</td>
+                            <td>
+                                <input type="" name="apLoss" th:value="${apLoss}" placeholder="请输入破损丢失件数" autocomplete="off" class="layui-input">
+                            </td>
+                            <td class="layui-bg-gray">进港时间</td>
+                            <td>
+                                <input type="data" name="entryTime" th:value="${entryTime}" placeholder="请输入进港时间" autocomplete="off" class="layui-input">
+                            </td>
+                            <td class="layui-bg-gray">接收单位</td>
+                            <td>
+                                <input type="text" name="Name" th:value="${Name}" placeholder="请输入接收单位" autocomplete="off" class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="layui-bg-gray">作废标志</td>
+                            <td>
+                                <input type="radio" name="invalidateSign" th:value="${invalidateSign}" value="1" title="是">
+                                <input type="radio" name="invalidateSign" th:value="${invalidateSign}" value="0" title="否" checked>
+                            </td>
+                            <td class="layui-bg-gray">返货单位</td>
+                            <td>
+                                <input type="text" name="Name" th:value="${Name}" placeholder="请输入返货单位" autocomplete="off" class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="layui-bg-gray">录入单位</td>
+                            <td>
+                                <input type="text" name="Name" th:value="${Name}" placeholder="请输入录入单位" autocomplete="off" class="layui-input">
+                            </td>
+                            <td class="layui-bg-gray">录入人</td>
+                            <td>
+                                <input type="text" name="personName" th:value="${personName}" placeholder="请输入录入人" autocomplete="off" class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <button class="layui-btn" style="background: #1da02b;">确定</button>
+                                <button type="button" class="layui-btn layui-btn-primary">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+
+    //加载'form'模块，使checkbox、select、radio初始化
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on("submit(stoForm)",function(){
+            var c=$("input[name=applicationNo]").val();
+            var d=$("input[name=workSheetNo]").val();
+            var e=$("input[name=returnType]").val();
+            var f=$("input[name=apRemark]").val();
+            var g=$("input[name=apLoss]").val();
+            var h=$("input[name=entryTime]").val();
+            var i=$("input[name=receivegUnit]").val();
+            var j=$("input[name=invalidateSign]").val();
+            var k=$("input[name=returnUnit]").val();
+            var l=$("input[name=recordingTime]").val();
+            var m=$("input[name=entryUnit]").val();
+            var n=$("input[name=personName]").val();
+            var o=$("input[name=confirmationTime]").val();
+            var p=$("input[name=confirmationPersonName]").val();
+            var q=$("input[name=treatmentState]").val();
+            var r=$("input[name=apReturnStatus]").val();
+            var s=$("input[name=identificationSign]").val();
+            var t=$("input[name=handlingOpinions]").val();
+            var u=$("input[name=denialType]").val();
+            var v=$("input[name=confirmationUnit]").val();
+            if(c==""||d==""||e==""||f==""||g==""||h==""||i==""||j==""||k==""||l==""||m==""||n==""||o==""||p==""==""||r==""||s==""||t==""||u==""||v==""){
+                alert("不能为空");
+                return false;
+            }
+            //提交完毕关闭窗口
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.location.reload();//刷新父页
+            parent.layer.close(index);//关闭当前
+
+        })
+    })
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+</script>
+</body>
+</html>

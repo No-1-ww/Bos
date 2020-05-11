@@ -75,8 +75,7 @@ public class Acc_businessadmissibilityController {
 */
 
     /**
-     * 受理，业务受理
-     *
+     * 受理，业务受理查询
      * @param responses
      * @param page
      * @param limit
@@ -137,6 +136,7 @@ public class Acc_businessadmissibilityController {
         return s;
     }*/
 
+
     /**
      * 条件查询
      * @param acc_businessadmissibility
@@ -148,26 +148,37 @@ public class Acc_businessadmissibilityController {
     public void selectwhere(Acc_businessadmissibility acc_businessadmissibility,HttpServletResponse responses, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "limit", required = false) String limit) {
         System.out.println("进入方法.....");
         System.out.println("条件查询"+acc_businessadmissibility);
-        System.out.println("page的值为"+page+"limit的值为"+limit);
+        System.out.println("page的值为"+page+",limit的值为"+limit);
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
-        List<Acc_businessadmissibility> acc = acc_businessadmissibilityService.query_whereAcc(acc_businessadmissibility);
+        List<Map<String,Object>> acc = acc_businessadmissibilityService.query_whereAcc(acc_businessadmissibility);
         PageInfo<Map<String,Object>> pageInfo = new PageInfo(acc);
         StringBuffer sb = new StringBuffer("{\"code\":0,\"msg\":\"\",\"count\":" + pageInfo.getTotal() + ",\"data\":[");
-        for (Acc_businessadmissibility a : acc) {
-            sb.append("{\"BusinessNoticeNo\":" + "\"" + a.getBusinessNoticeNo() + "\",\"customCode\":" + "\"" + a.getCustomCode() + "\",\"customName\":" + "\"" + a.getCustomName() + "\",\"linkman\":" + "\"" + a.getLinkman() + "\",\"telPhone\":" + "\"" + a.getTelPhone() + "\",\"pickupAddress\":" + "\"" + a.getPickupAddress() + "\",\"sendAddress\":" + "\"" + a.getSendAddress() + "\",\"arriveCity\":"+"\""+a.getArriveCity()+"\",\"importantHints\":"+"\""+a.getImportantHints()+"\",\"reservationTime\":"+"\""+a.getReservationTime()+"\"}");
-            System.out.println(a.getBusinessNoticeNo()+"**************&&&&&&&&&********" );
+        for (Map<String, Object> map : acc) {
+            Set<String> set = map.keySet();
+            Iterator<String> iterator = set.iterator();
+            sb.append("{");
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object o = map.get(key);
+                sb.append("\"" + key + "\":\"" + o + "\",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("},");
+
         }
         sb.append("]}");
         sb.deleteCharAt(sb.lastIndexOf(","));
+        responses.setCharacterEncoding("utf-8");
+        responses.setContentType("text/html;charset=utf-8");
+        System.out.println(sb);
         try {
-            //PrintWriter out 必须要写在方法里在HttpServletResponse之后出现 否则会出现乱码
             System.out.println(sb);
             PrintWriter out = responses.getWriter();
             out.print(sb);
             out.flush();
             out.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            //TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

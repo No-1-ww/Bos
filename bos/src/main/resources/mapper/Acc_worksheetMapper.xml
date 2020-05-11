@@ -32,18 +32,18 @@
         select MAX(workSheetNo) from acc_worksheet
     </select>
 
-    <select id="querywhere_work" resultType="Acc_worksheet">
+    <select id="querywhere_work" parameterType="Acc_worksheet" resultMap="querywor">
         select b.id,c.workSheetNo,a.customCode,a.importantHints,c.destination,a.businessNoticeNo,s.empNo,s.empName,b.pickupTime,a.customName,a.linKman
         from acc_businessadmissibility a,acc_workorder b,acc_worksheet c,sy_emp s
         where a.BusinessNoticeNo=b.BusinessNoticeNo and a.PickerInfo=s.id and b.id=c.id
-        <if test="workSheetNo !='' and workGenerationTime !=''">
-          and  c.workSheetNo like "%"#{workSheetNo}"%" and b.workGenerationTime like "%"#{workGenerationTime}"%"
+        <if test=" workSheetNo !='' and workGenerationTime !='' ">
+           and c.workSheetNo like '%${workSheetNo}%' and b.workGenerationTime like '%${workGenerationTime}%'
         </if>
-        <if test="workSheetNo !='' and workSheetNo !=null">
-          and  c.workSheetNo like "%"#{workSheetNo}"%"
+        <if test=" workSheetNo !='' and workSheetNo !=null ">
+           and c.workSheetNo like '%${workSheetNo}%'
         </if>
-        <if test="workGenerationTime !='' and workGenerationTime !=null">
-          and  b.workGenerationTime like "%"#{workGenerationTime}"%"
+        <if test=" workGenerationTime !='' and workGenerationTime !=null">
+          and  b.workGenerationTime like '%${workGenerationTime}%'
         </if>
     </select>
 
@@ -52,4 +52,12 @@
         from acc_businessadmissibility a,acc_workorder b,acc_worksheet c,sy_emp s
         where a.businessNoticeNo=b.businessNoticeNo and a.pickerInfo=s.id and b.id=c.id and c.workSheetNo=#{workSheetNo}
     </select>
+
+    <update id="updateDestination" parameterType="Map">
+        update acc_worksheet set destination=#{destination} where workSheetNo=#{workSheetNo}
+    </update>
+
+    <update id="updateimportantHints" parameterType="Map">
+        update acc_businessadmissibility set importantHints=#{importantHints} where businessNoticeNo=#{businessNoticeNo}
+    </update>
 </mapper>

@@ -60,7 +60,7 @@ public class Acc_businessadmissibilityServiceImpl implements Acc_businessadmissi
     }
 
     @Override
-    public List<Acc_businessadmissibility> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility) {
+    public List<Map<String,Object>> query_whereAcc(Acc_businessadmissibility acc_businessadmissibility) {
         return acc_businessadmissibilityMapper.query_whereAcc(acc_businessadmissibility);
     }
 

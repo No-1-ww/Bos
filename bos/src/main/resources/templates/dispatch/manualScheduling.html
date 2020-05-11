@@ -22,24 +22,26 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">所属单位:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				    	<input type="text" name="title" placeholder="请输入所属单位" autocomplete="off" class="layui-input">
+				    	<input type="text" name="sendAddress" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+                               placeholder="请输入所属单位" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >通知单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
+							<input type="text" name="jobNo" onkeyup="this.value=this.value.replace(/[, ]/g,'')"
+                                   placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button id="cxwhere" type="button" class="layui-btn btnQuery">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button id="cz" type="button" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -100,7 +102,7 @@
 				<div class="layui-inline">
 					<button type="button" class="layui-btn layui-btn-small btnQuery" id="distribution">分配</button>
 					<button type="button" class="layui-btn layui-btn-small btnQuery" id="distribution">退回</button>
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="distribution">销单</button>
+					<button type="button" class="layui-btn layui-btn-small btnQuery" id="del">销单</button>
 					<button type="button" class="layui-btn layui-btn-small btnOther" id="detail">详情</button>
 				</div>
 			</div>
@@ -194,7 +196,7 @@ layui.use('form', function(){
 layui.use('table', function(){
     var table = layui.table;
     table.render({
-        id:'table',
+        id:'busTable',
         height:370,
         elem:'#ChekTale',
         url: '/query_Man',
@@ -225,6 +227,34 @@ layui.use('table', function(){
         ]
     })
 });
+        //重置
+        $("#cz").click(function () {
+            location.reload();
+        })
+
+	//工作单条件查询
+	$("#cxwhere").click(function() {
+		if ($("#sendAddress").val() == "" && $("#jobNo").val() == "") {
+			alert("必须选择一项查询");
+			return false;
+		} else {
+			var sendAddress = $("input[name=sendAddress]").val();
+			var jobNo = $("input[name=jobNo]").val();
+			layui.use('table', function () {
+				var table = layui.table;
+				table.reload('busTable', {
+					url: '/manu_querywhere'
+					, where: { //设定异步数据接口的额外参数，任意设
+                        sendAddress: sendAddress
+						, jobNo: jobNo
+					}
+					, page: {
+						curr: 1 //重新从第 1 页开始
+					}
+				})
+			})
+		}
+	})
 
 //加载'laydate'时间组件
 layui.use('laydate', function(){
@@ -241,17 +271,75 @@ $(function(){
 		$("#hQuery").toggle();
 	});
 
-	//分配
-	$('#distribution').click(function(){
-		//页面层
-		layer.open({
-		  title: ['分配', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['350px', '220px'], //宽高
-		  content: '/distribution'
-		});
-	});
+    //分配
+    $('#distribution').click(function(){
+        layui.use(['table','layer'],function(){
+            var layer = layui.layer,
+                table = layui.table;
+            var checkStatus = table.checkStatus("busTable");
+            var data = checkStatus.data;
+            if (data.length == 0) {
+                layer.msg('请勾选一行');
+            } else if (data.length > 1) {
+                layer.msg('只能勾选一行');
+            } else {
+
+                //页面层
+                layer.open({
+                    title: ['分配', 'color:#fff;background:#1da02b;'],
+                    type: 2,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ['350px', '220px'], //宽高
+                    content: '/find_ByManid?jObNo='+data[0].jObNo,
+                    end: function () {
+                        layui.use(['table', 'layer'], function () {
+                            var layer = layui.layer,
+                                table = layui.table;
+                            layer.msg("执行完毕");
+                            table.reload('table', {
+                                page: {
+                                    curr: 1
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+        })
+    });
+
+    //删除
+    $('#del').click(function(){
+        layui.use(['table','layer'],function(){
+            var layer = layui.layer,
+                table = layui.table;
+            var checkStatus = table.checkStatus("busTable");
+            var data = checkStatus.data;
+            if (data.length == 0) {
+                layer.msg('请勾选一行');
+            } else if (data.length > 1) {
+                layer.msg('只能勾选一行');
+            } else {
+                layer.confirm('确定要删除吗？', {
+                    btn: ['是', '否'] //按钮
+
+                },function () {
+                    layer.msg('执行完毕', {icon: 1});
+                    $.ajax({
+                        url: '/delet_manu',
+                        type: 'get',
+                        data: {'jObNo': data[0].jObNo},
+                        success: function (a) {
+                            location.reload();
+                        }
+                    });
+
+                },function () {
+                    layer.msg("取消成功 ")
+                });
+            }
+        });
+    });
 
 	//详情
 	$('#detail').click(function(){

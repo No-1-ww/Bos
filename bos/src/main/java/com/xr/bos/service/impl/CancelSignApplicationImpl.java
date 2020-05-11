@@ -19,4 +19,9 @@ public class CancelSignApplicationImpl implements CancelSignApplicationService {
 
         return cancelSignApplicationMapper.queryall();
     }
+
+    @Override
+    public Map<String, Object> queryByID(String workSheetNo) {
+        return cancelSignApplicationMapper.queryByID(workSheetNo);
+    }
 }

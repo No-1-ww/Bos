@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,80 +7,101 @@
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
-	<form class="layui-form">
+	<form lay-filter="stoForm" action="/sig_add" class="layui-form" method="post">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="13%">工作单号</td>
-		      	<td width="20%">
-      				<input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray" width="13%">返货标志</td>
-		      	<td width="20%">
-					      <input type="text" name="title" placeholder="自动带入返货标志" autocomplete="off" class="layui-input">
-		      	</td>
+					<td width="20%">
+						<input type="text" name="workSheetNo" th:value="${workSheetNo}" placeholder="请输入工作单号" autocomplete="off" class="layui-input" readonly>
+					</td>
 		      	<td class="layui-bg-gray" width="13%">工作单类型</td>
-		      	<td width="20%">
-					    <select name="city" lay-verify="required" disabled>
-			        	<option value=""></option>
-			        	<option value="0" selected>类型1</option>
-			        	<option value="1">类型2</option>
-			      	</select>
-		      	</td>
+					<td width="20%">
+							<select name="workOrderType" lay-verify="required">
+							<option value="3" >正常数据</option>
+							<option value="2">调单</option>
+							<option value="2">返单</option>
+						</select>
+					</td>
+				<td class="layui-bg-gray">签收类型</td>
+					<td width="20%">
+						<select name="signType" lay-verify="required">
+							<option value="1" >正常签收</option>
+							<option value="2">反向签收</option>
+						</select>
+					</td>
 		    </tr>
 		    <tr>
-		      	<td class="layui-bg-gray">签收类型</td>
-		      	<td>
-              <input type="radio" name="type" value="1" title="是">
-              <input type="radio" name="type" value="0" title="否" checked>
-		      	</td>
-		      	<td class="layui-bg-gray">原单核销标志</td>
-		      	<td>
-					         <input type="text" name="title" placeholder="请输入原单核销标志" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray">签收人</td>
-		      	<td>
-					         <input type="text" name="title" placeholder="请输入签收人" autocomplete="off" class="layui-input">
-		      	</td>
+				<td class="layui-bg-gray">派送员工号</td>
+					<td>
+						<select name="courierInt" lay-verify="required">
+							<option value="E007" >E007</option>
+							<option value="E008">E008</option>
+							<option value="E009" >E009</option>
+							<option value="E0010">E0010</option>
+						</select>
+					</td>
+				<td class="layui-bg-gray">派送员名称</td>
+					<td>
+						<select name="courierName" lay-verify="required">
+							<option value="10" >珊珊</option>
+							<option value="11">刘大海</option>
+							<option value="12" >胡楠</option>
+							<option value="13">罗智</option>
+						</select>
+					</td>
+				<td class="layui-bg-gray">作废标记</td>
+					<td width="20%">
+						<select name="invalidateMark" lay-verify="required">
+							<option value="0" selected>否</option>
+							<option value="1">是</option>
+						</select>
+					</td>
 		    </tr>
 		    <tr>
-		    	<td class="layui-bg-gray">派送员工号</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入派送员工号" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray">派送员名称</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入派送员名称" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray">派件单位</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入单双号" autocomplete="off" class="layui-input">
-		      	</td>
+
+				<td class="layui-bg-gray">签收人</td>
+					<td>
+						<input type="text" name="recipient" placeholder="请输入签收人" autocomplete="off" class="layui-input">
+					</td>
+				<td class="layui-bg-gray">签收单位</td>
+					<td>
+						<select name="signUnit" lay-verify="required">
+							<option value="4">长沙宅急送物流有限公司</option>
+							<option value="2" >上海宅急送快运物流公司</option>
+							<option value="1">北京宅急送物流有限公司</option>
+							<option value="3" >武汉物流快运有限公司</option>
+						</select>
+					</td>
+				<td class="layui-bg-gray">签收时间</td>
+					<td>
+						<input type="date" name="signTime" placeholder="请输签收时间" autocomplete="off" class="layui-input" value="">
+					</td>
 		    </tr>
         <tr>
-		    	<td class="layui-bg-gray">签收时间</td>
+			<td class="layui-bg-gray">录入人</td>
+				<td>
+					<select name="inputPersonID" lay-verify="required">
+						<option value="E007" >E007</option>
+						<option value="E008">E008</option>
+						<option value="E009" >E009</option>
+						<option value="E0010">E0010</option>
+					</select>
+				</td>
+			<td class="layui-bg-gray">录入单位</td>
+				<td>
+					<select name="inputID" lay-verify="required">
+						<option value="4">长沙宅急送物流有限公司</option>
+						<option value="2" >上海宅急送快运物流公司</option>
+						<option value="1">北京宅急送物流有限公司</option>
+						<option value="3" >武汉物流快运有限公司</option>
+					</select>
+				</td>
+			<td class="layui-bg-gray">录入时间</td>
 		      	<td>
-					<input type="text" name="title" placeholder="请输入签收时间" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray">录入人</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入录入人" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray">录入单位</td>
-		      	<td>
-					<input type="text" name="title" placeholder="请输入录入单位" autocomplete="off" class="layui-input">
-		      	</td>
-		    </tr>
-        <tr>
-		    	<td class="layui-bg-gray">录入时间</td>
-		      	<td>
-					         <input type="text" name="title" placeholder="请输入录入时间" autocomplete="off" class="layui-input">
-		      	</td>
-		      	<td class="layui-bg-gray"></td>
-		      	<td> </td>
-            <td class="layui-bg-gray"></td>
-		      	<td> </td>
-		    </tr>
+					<input type="date" name="inputTime" placeholder="请输入录入时间" autocomplete="off" class="layui-input" value="">
+				</td>
+		</tr>
 		    <tr>
 		      	<td colspan="6">
 					<button class="layui-btn" style="background: #1da02b;">确定</button>
@@ -96,8 +117,31 @@
 
         //加载'form'模块，使checkbox、select、radio初始化
         layui.use('form', function(){
+            var form = layui.form;
+            form.on("submit(stoForm)",function(){
+                var c=$("input[name=workSheetNo]").val();
+                var d=$("input[name=workOrderType]").val();
+                var e=$("input[name=signType]").val();
+                var f=$("input[name=courierInt]").val();
+                var g=$("input[name=courierName]").val();
+                var h=$("input[name=invalidateMark]").val();
+                var r=$("input[name=recipient]").val();
+                var j=$("input[name=signUnit]").val();
+                var k=$("input[name=signTime]").val();
+                var l=$("input[name=inputPersonID]").val();
+                var m=$("input[name=inputID]").val();
+                var n=$("input[name=inputTime]").val();
+                if(c==""||d==""||e==""||f==""||g==""||h==""||r==""||j==""||k==""||l==""||m==""||n==""){
+                    alert("不能为空");
+                    return false;
+                }
+                //提交完毕关闭窗口
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.location.reload();//刷新父页
+                parent.layer.close(index);//关闭当前
 
-        });
+            })
+        })
 
     </script>
 </body>
