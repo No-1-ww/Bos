@@ -22,7 +22,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">入库交接单:</label>
                     <div class="layui-input-block" style="width: 150px;">
-                        <input type="text" name="ID" placeholder="入库交接单号" autocomplete="off" class="layui-input">
+                        <input type="text" onkeyup="this.value=this.value.replace(/[, ]/g,'')" name="ID" placeholder="入库交接单号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -56,28 +56,28 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">接货人:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="aPerson" placeholder="接货人（接方经手人）" autocomplete="off" class="layui-input">
+                            <input type="text" onkeyup="this.value=this.value.replace(/[, ]/g,'')" name="aPerson" placeholder="接货人（接方经手人）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">接收单位:</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="acceptCompany" placeholder="接收单位（接方单位）" autocomplete="off" class="layui-input">
+                            <input type="text" onkeyup="this.value=this.value.replace(/[, ]/g,'')" name="acceptCompany" placeholder="接收单位（接方单位）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">发货人</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="dPerson" placeholder="发货人（交方经手人）" autocomplete="off" class="layui-input">
+                            <input type="text" onkeyup="this.value=this.value.replace(/[, ]/g,'')" name="dPerson" placeholder="发货人（交方经手人）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">发货单位</label>
                         <div class="layui-input-block" style="width: 150px;">
-                            <input type="text" name="deliveryCompany" placeholder="发货单位（交方单位）" autocomplete="off" class="layui-input">
+                            <input type="text" onkeyup="this.value=this.value.replace(/[, ]/g,'')" name="deliveryCompany" placeholder="发货单位（交方单位）" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 

@@ -113,6 +113,11 @@ public class SorStorageController {
     @RequestMapping(value = "/sortingManagement/queryWhere",produces = "text/String;charset=UTF-8",method = RequestMethod.POST)
     @ResponseBody
     public String queryWhere(SorStorage sorStorage,String aPerson,String dPerson,String date,Integer page,Integer limit,HttpSession session){
+
+        System.out.println(sorStorage);
+        System.out.println(aPerson);
+        System.out.println(dPerson);
+        System.out.println(date);
         //把员工姓名变成ID
         if(aPerson!=""){
             SyEmp check = syEmpService.check(aPerson);
@@ -139,6 +144,7 @@ public class SorStorageController {
         }
         //返回数据后，格式化时间
         Map<String,Object> map = new HashMap<>();
+        map.put("ID",sorStorage.getID());
         map.put("acceptDate",sorStorage.getAcceptDate());
         map.put("acceptPerson",sorStorage.getAcceptPerson());
         map.put("acceptCompany",sorStorage.getAcceptCompany());
@@ -194,6 +200,7 @@ public class SorStorageController {
         }
         //返回数据后，格式化时间
         Map<String,Object> map = new HashMap<>();
+        map.put("ID",sorStorage.getID());
         map.put("acceptDate",sorStorage.getAcceptDate());
         map.put("acceptPerson",sorStorage.getAcceptPerson());
         map.put("acceptCompany",sorStorage.getAcceptCompany());

@@ -37,15 +37,16 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
+    #版本高于6的使用com.mysql.jdbc.cj.Drover
     url: jdbc:mysql://192.168.43.61:3306/bos
-
+    #地址会随着网络的变动而变动
 
 server:
   tomcat:
     uri-encoding: UTF-8
   servlet:
     context-path: /
-  port: 8089
+  port: 80
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>修改盘库</title>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+<form lay-filter="addCheck" class="layui-form" action="/SorCheckBound/upDateCheckBound">
+    <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+        <tbody>
+        <tr>
+            <td class="layui-bg-gray" width="17%">盘库单号</td>
+            <td width="33%">
+                <input type="text" name="ID" th:value="${ID}" placeholder="盘库单号" autocomplete="off" class="layui-input" readonly>
+            </td>
+            <td class="layui-bg-gray" width="17%">扫描设备号</td>
+            <td width="33%">
+                <input type="text" name="ScanID" th:value="${ScanID}" placeholder="请输入扫描设备号" autocomplete="off" class="layui-input" readonly>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="layui-bg-gray" >总件数</td>
+            <td >
+                <label style="color: red;display: none" ></label>
+                <input type="number" name="cargoSum" th:value="${CargoSum}" placeholder="请输入总件数" autocomplete="off" class="layui-input">
+            </td>
+            <td class="layui-bg-gray">盘库人</td>
+            <td >
+                <label style="color: red;display: none" ></label>
+                <input type="text"  name="cPerson" th:value="${CheckPerson}" placeholder="请输入盘库人" autocomplete="off" class="layui-input">
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="layui-bg-gray">盘库时间</td>
+            <td>
+                <input type="text" th:value="${CheckDate}" name="checkDate" placeholder="请输入盘库时间" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
+            <td class="layui-bg-gray">操作单位</td>
+            <td >
+                <input type="text"  th:value="${CheckCompany}" name="cCompany" placeholder="操作单位" autocomplete="off" class="layui-input" readonly>
+            </td>
+        </tr>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="layui-bg-gray" colspan="8">
+                    <button id="submitCheck"  class="layui-btn" style="background: #1da02b;">确定</button>
+                    <button type="button" class="layui-btn layui-btn-primary">取消</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</form>
+
+<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript">
+
+    $(".layui-input").blur(function () {
+        var data = $(this).val();
+        var placeholder = $(this).attr("placeholder");
+        if(data==""){
+            var prev = $(this).prev();
+            $(prev).text(placeholder);
+            $(prev).show();
+        }else{
+            $(prev).val("");
+            var prev = $(this).prev();
+            $(prev).hide();
+            //填写的不为空进入后台查看是否有该员工
+            if($(this).attr("name")=="cPerson"){
+                $.ajax({
+                    url:"/invoiceComparisonTable_add/check",
+                    type:"POST",
+                    data:{"name":data},
+                    success:function (syUnitName) {
+                        //姓名验证完成前台做验证
+                        if(syUnitName=="输入的姓名不存在"){
+                            $(prev).text("输入的姓名不存在");
+                            $("input[name=cCompany]").val("");
+                            $(prev).show();
+                        }else{
+                            //将收货人的公司绑定给物流方向
+                            $("input[name=cCompany]").val(syUnitName);
+                            $(prev).text("");
+                            $(prev).hide();
+                        }
+
+
+                    }
+                });
+            }
+
+        }
+
+
+    });
+    //加载'form'模块，使checkbox、select、radio初始化
+    layui.use(['form','layer'], function(){
+
+        var form = layui.form,
+            layer = layui.layer;
+        form.on("submit(addCheck)",function () {
+            var text="";
+            $("label").each(function () {
+                text = $(this).text();
+                if(text!=""){
+                    return false;
+                }
+            });
+            if(text!=""){
+                layer.msg("请填写正确的数据！");
+                return false;
+            }
+            if($("input[name=cargoSum]").val()<=0){
+                layer.msg("总数不能小于1");
+                return false;
+            }
+
+
+
+            //没有任意一个return false 关闭窗体
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+
+        })
+    });
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+</script>
+</body>
+</html>

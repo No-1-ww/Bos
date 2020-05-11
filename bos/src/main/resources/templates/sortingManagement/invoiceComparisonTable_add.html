@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>新增入库交接单</title>
+	<title>修改入库交接单</title>
 	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
 </head>
 <body>
@@ -74,7 +74,6 @@
 			type:"POST",
 			data:{"name":name},
 			success:function (data) {
-				console.log(data);
 				//姓名验证完成前台做验证
                 if(data=="输入的姓名不存在"){
                     $("#errAPerson").text("输入的姓名不存在").css("color","red");

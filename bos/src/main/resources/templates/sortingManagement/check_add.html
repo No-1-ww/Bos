@@ -5,31 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增盘库</title>
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
 </head>
 <body>
-
-<form lay-filter="addCheck" class="layui-form" action="/addCheckBound">
+<div class="external">
+    <!-- 操作按扭组 -->
+    <div class="layui-form-item" style="padding-left: 11px;height: 30px;">
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增明细行</button>
+            <button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailReduction">删除明细行</button>
+        </div>
+    </div>
+</div>
+<form lay-filter="addCheck" class="layui-form" action="/SorCheckBound/addCheckBound">
     <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
         <tbody>
         <tr>
             <td class="layui-bg-gray" width="17%">盘库单号</td>
             <td width="33%">
-                <input type="text" name="ID" placeholder="盘库单号" autocomplete="off" class="layui-input" readonly>
+                <input type="text" name="ID" th:value="${CheckID}" placeholder="盘库单号" autocomplete="off" class="layui-input" readonly>
             </td>
             <td class="layui-bg-gray" width="17%">扫描设备号</td>
             <td width="33%">
-                <input type="text" th:value="${acceptDate}" name="acceptDate" placeholder="扫描设备号" autocomplete="off" class="layui-input" readonly>
+                <select lay-filter="ScanName" name="scanID" lay-verify="required">
+                    <option  th:each="scan,userStat:${Scan}" th:text="${scan.ScanName}" th:value="${scan.ID}"   value=""></option>
+                </select>
             </td>
         </tr>
         <tr>
             <td class="layui-bg-gray" >总件数</td>
             <td >
                 <label id="errAPerson"></label>
-                <input type="text" th:value="${acceptPerson}" name="aPerson" placeholder="总件数" autocomplete="off" class="layui-input">
+                <input type="text" name="cargoSum" placeholder="总件数" autocomplete="off" class="layui-input" readonly>
             </td>
             <td class="layui-bg-gray">盘库人</td>
             <td >
-                <input type="text" th:value="${acceptCompany}"  name="acceptCompany" placeholder="盘库人" autocomplete="off" class="layui-input" readonly>
+                <input type="text"  name="cPerson" th:value="${CheckPerson}" placeholder="盘库人" autocomplete="off" class="layui-input" readonly>
             </td>
 
         </tr>
@@ -38,11 +49,11 @@
             <td class="layui-bg-gray">盘库时间</td>
             <td>
                 <label id="errDPerson"></label>
-                <input type="text" th:value="${deliveryPerson}"  name="dPerson" placeholder="盘库时间" autocomplete="off" class="layui-input">
+                <input type="text" th:value="${Now}" name="checkDate" placeholder="盘库时间" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td class="layui-bg-gray">操作单位</td>
             <td >
-                <input type="text"  th:value="${deliveryCompany}" name="deliveryCompany" placeholder="操作单位" autocomplete="off" class="layui-input" readonly>
+                <input type="text"  th:value="${CheckCompany}" name="cCompany" placeholder="操作单位" autocomplete="off" class="layui-input" readonly>
             </td>
         </tr>
 
@@ -50,14 +61,13 @@
     </table>
     <table class="layui-table" style="width: 98%;margin: 5px auto;text-align: center;">
         <colgroup>
-            <col width="100">
-            <col width="100">
-            <col width="100">
+            <col width="110">
+            <col width="110">
+            <col width="110">
             <col width="90">
             <col width="120">
-            <col width="120">
-            <col width="120">
-            <col width="120">
+            <col width="135">
+            <col width="135">
             <col>
         </colgroup>
         <thead>
@@ -67,18 +77,17 @@
             <th>重量</th>
             <th>体积</th>
             <th>类型</th>
-            <th>方向</th>
             <th>入库人</th>
-            <th>入库时间</th>
+            <th>方向</th>
         </tr>
         </thead>
-        <tbody id="OutBoundDetailsTBody">
+        <tbody id="CheckBoundDetailsTBody">
         <tr>
             <td>
                 <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="cargoCount" placeholder="件数" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
                 <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
@@ -87,36 +96,29 @@
                 <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
             </td>
             <td width="150">
-                <select  name="isScan" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                <select  name="cargoType" lay-verify="required">
+                    <option value="0">电子产品</option>
+                    <option value="1">日常用品</option>
+                    <option value="2">婴幼儿用品</option>
+                    <option value="3">衣服,裤子</option>
+                    <option value="4">厨房用品</option>
+                    <option value="5">其他用品</option>
                 </select>
             </td>
             <td>
-                <select name="isNextStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
-                </select>
+                <input type="text" name="storagePerson" placeholder="入库人" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <select name="isDoubleStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
-                </select>
+                <input type="text" name="direction" placeholder="方向" autocomplete="off" class="layui-input" value="" readonly>
             </td>
-            <td>
-                <select name="isDoubleStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
-                </select>
-            </td>
+
         </tr>
         <tr>
             <td>
                 <input type="number" name="id" placeholder="序号" autocomplete="off" class="layui-input" value="" readonly>
             </td>
             <td>
-                <input type="number" name="packageID" placeholder="合包号" autocomplete="off" class="layui-input" value="">
+                <input type="number" name="cargoCount" placeholder="件数" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
                 <input type="number" name="weight" placeholder="重量" autocomplete="off" class="layui-input" value="">
@@ -125,36 +127,28 @@
                 <input type="number" name="volume" placeholder="体积" autocomplete="off" class="layui-input" value="">
             </td>
             <td width="150">
-                <select  name="isScan" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                <select  name="cargoType" lay-verify="required">
+                    <option value="0">电子产品</option>
+                    <option value="1">日常用品</option>
+                    <option value="2">婴幼儿用品</option>
+                    <option value="3">衣服,裤子</option>
+                    <option value="4">厨房用品</option>
+                    <option value="5">其他用品</option>
                 </select>
             </td>
             <td>
-                <select name="isNextStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
-                </select>
+                <input type="text" name="storagePerson" placeholder="入库人" autocomplete="off" class="layui-input" value="">
             </td>
             <td>
-                <select name="isDoubleStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                <input type="text" name="direction" placeholder="方向" autocomplete="off" class="layui-input" value="" readonly>
+            </td>
 
-                </select>
-            </td>
-            <td>
-                <select name="isDoubleStorage" lay-verify="required">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
-                </select>
-            </td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
             <td class="layui-bg-gray" colspan="8">
-                <button class="layui-btn" style="background: #1da02b;">确定</button>
+                <button id="submitCheck"  class="layui-btn" style="background: #1da02b;">确定</button>
                 <button type="button" class="layui-btn layui-btn-primary">取消</button>
             </td>
         </tr>
@@ -165,115 +159,205 @@
 <script type="text/javascript" src="../../custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript">
+    var addID = 0;
+    //新增明细行
+    $("#opDetailAdd").click(function () {
+        addID++;
+        $("#CheckBoundDetailsTBody").append(
+            "<tr id="+addID+">\n" +
+            "            <td>\n" +
+            "                <input type=\"number\" name=\"id\" placeholder=\"序号\" autocomplete=\"off\" class=\"layui-input\" value=\"\" readonly>\n" +
+            "            </td>\n" +
+            "            <td>\n" +
+            "                <input type=\"number\" name=\"cargoCount\" placeholder=\"件数\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+            "            </td>\n" +
+            "            <td>\n" +
+            "                <input type=\"number\" name=\"weight\" placeholder=\"重量\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+            "            </td>\n" +
+            "            <td width=\"150\">\n" +
+            "                <input type=\"number\" name=\"volume\" placeholder=\"体积\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+            "            </td>\n" +
+            "            <td width=\"150\">\n" +
+            "                <select  name=\"cargoType\" lay-verify=\"required\">\n" +
+            "                    <option value=\"0\">电子产品</option>\n" +
+            "                    <option value=\"1\">日常用品</option>\n" +
+            "                    <option value=\"2\">婴幼儿用品</option>\n" +
+            "                    <option value=\"3\">衣服,裤子</option>\n" +
+            "                    <option value=\"4\">厨房用品</option>\n" +
+            "                    <option value=\"5\">其他用品</option>\n" +
+            "                </select>\n" +
+            "            </td>\n" +
+            "            <td>\n" +
+            "                <input type=\"text\" name=\"storagePerson\" placeholder=\"入库人\" autocomplete=\"off\" class=\"layui-input\" value=\"\">\n" +
+            "            </td>\n" +
+            "            <td>\n" +
+            "                <input type=\"text\" name=\"direction\" placeholder=\"方向\" autocomplete=\"off\" class=\"layui-input\" value=\"\" readonly>\n" +
+            "            </td>\n" +
+            "            \n" +
+            "        </tr>"
+        );
+        layui.use('form',function () {
+            var form = layui.form;
+            form.render();
+        })
 
-    $("input[name=aPerson]").blur(function () {
+        var index = 1;
+        //循环所有name=id的字段
+        $("input[name=id]").each(function () {
+            $(this).val(index);
+            index++;
+        });
+    });
+    //删除明细行
+    $("#opDetailReduction").click(function () {
+
+            $("#"+addID).remove();
+            addID--;
+
+    })
+
+    var boolPerson;
+    //用于得到后台的值
+    //追加的数据只能通过父类托管来实现
+    $("#CheckBoundDetailsTBody").on('blur','input[name=storagePerson]',function () {
         var name = $(this).val();
-
-        var dName = $("input[name=dPerson]").val();
+        var storage = $(this);
         if(name==""){
-            $("#errAPerson").text("请输入接货人姓名").css("color","red");
+            layui.use('layer',function () {
+                var layer = layui.layer;
+                layer.msg("姓名不能为空！");
 
+            })
+            $(storage).parent().next().children().val("");
             return;
         }
         $.ajax({
             url:"/invoiceComparisonTable_add/check",
             type:"POST",
             data:{"name":name},
+            async:"false",
             success:function (data) {
-                console.log(data);
                 //姓名验证完成前台做验证
                 if(data=="输入的姓名不存在"){
-                    $("#errAPerson").text("输入的姓名不存在").css("color","red");
-                }else if(name==dName){
-                    $("#errAPerson").text("两个姓名不能一致").css("color","red");
+                    layui.use('layer',function () {
+                        var layer = layui.layer;
+                        layer.msg("输入的姓名不存在！");
+                        boolPerson = false;
+                        $(storage).parent().next().children().val("");
+                    });
                 }else{
                     //将收货人的公司绑定至前台
-                    $("input[name=acceptCompany]").val(data);
-                    $("#errAPerson").text("");
+                    $(storage).parent().next().children().val(data);
+                    boolPerson = true;
                 }
 
 
             }
         });
-    });
-    $("input[name=dPerson]").blur(function () {
-        var name = $(this).val();
-
-        var aName = $("input[name=aPerson]").val();
-        var SyUnitsName = $("input[name=deliveryCompany]").val();
-        if(name==""){
-            $("#errDPerson").text("请输入发货人姓名").css("color","red");
-            return;
-        }
-        $.ajax({
-            url:"/invoiceComparisonTable_add/check",
-            type:"POST",
-            data:{"name":name,"SyUnitsName":SyUnitsName},
-            success:function (data) {
-                console.log(data);
-                //姓名验证完成前台做验证
-                if(data=="输入的姓名不存在"){
-                    $("#errDPerson").text("输入的姓名不存在").css("color","red");
-                }else if(name==aName){
-                    $("#errDPerson").text("两个姓名不能一致").css("color","red");
-                }else{
-                    //将收货人的公司绑定至前台
-                    $("input[name=deliveryCompany]").val(data);
-                    $("#errDPerson").text("");
-
-                }
+    })
+    //定义一个总和
+    var sum = 0;
+    $("#CheckBoundDetailsTBody").on('blur','input[name=cargoCount]',function () {
 
 
-            }
-        })
+        //Number(转化为Number类型，相加不会变成拼接)
+
+        sum = sum +Number($(this).val());
+        $("input[name=cargoSum]").val(sum);
+    })
+
+
+    $(function () {
+        var index = 1;
+        //循环所有name=id的字段
+        $("input[name=id]").each(function () {
+            $(this).val(index);
+            index++;
+        });
     });
     //加载'form'模块，使checkbox、select、radio初始化
     layui.use('form', function(){
 
         var form = layui.form;
-        form.on("submit(upDateStoForm)",function () {
-            var aName = $("input[name=aPerson]").val();
-            var dName = $("input[name=dPerson]").val();
-            var errAPerson = $("#errAPerson").text();
-            var errDPerson = $("#errDPerson").text();
-            if(errAPerson!=""){
+        form.on("submit(addCheck)",function () {
+            var status = true;
+
+            $("input[name=cargoCount]").each(function () {
+                var CargoCount =  $(this).val();
+                if (CargoCount!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
                 layui.use('layer',function () {
                     var layer = layui.layer;
-                    layer.msg("请输入正确的接货人姓名");
-
-                });
+                    layer.msg("请填写完所有详情数据！");
+                })
                 return false;
             }
-            if(errDPerson!=""){
+
+            $("input[name=weight]").each(function () {
+                var weight =  $(this).val();
+                if (weight!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
                 layui.use('layer',function () {
                     var layer = layui.layer;
-                    layer.msg("请输入正确的发货人姓名");
-
-                });
+                    layer.msg("请填写完所有详情数据！");
+                })
                 return false;
             }
-            if(aName==""){
+
+            $("input[name=volume]").each(function () {
+                var volume =  $(this).val();
+                if (volume!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
                 layui.use('layer',function () {
                     var layer = layui.layer;
-                    layer.msg("请输入接货人姓名");
-
-                });
+                    layer.msg("请填写完所有详情数据！");
+                })
                 return false;
             }
-            if(dName==""){
+
+            $("input[name=storagePerson]").each(function () {
+                var StoragePerson =  $(this).val();
+                if (StoragePerson!=""&&boolPerson==true){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
                 layui.use('layer',function () {
                     var layer = layui.layer;
-                    layer.msg("请输入发货人姓名");
-
-                });
+                    layer.msg("请检查数据是否填写正确！");
+                })
                 return false;
             }
-            if(aName==dName){
+            $("input[name=direction]").each(function () {
+                var direction =  $(this).val();
+                if (direction!=""){
+                    status = true;
+                }else{
+                    status = false;
+                }
+            });
+            if(status==false){
                 layui.use('layer',function () {
                     var layer = layui.layer;
-                    layer.msg("两者姓名不能一致");
-
-                });
+                    layer.msg("请检查数据是否填写正确！");
+                })
                 return false;
             }
 

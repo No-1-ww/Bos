@@ -18,4 +18,14 @@ public class SorCheckBoundDetailsServiceImpl implements SorCheckBoundDetailsServ
     public List<Map<String, Object>> querySorCheckBoundDetailsByID(String ID) {
         return sorCheckBoundDetailsMapper.querySorCheckBoundDetailsByID(ID);
     }
+
+    @Override
+    public Integer addSorCheckBoundDetails(Map<String, Object> map) {
+        return sorCheckBoundDetailsMapper.addSorCheckBoundDetails(map);
+    }
+
+    @Override
+    public Integer deleteCheckBoundDetails(String checkID) {
+        return sorCheckBoundDetailsMapper.deleteCheckBoundDetails(checkID);
+    }
 }
