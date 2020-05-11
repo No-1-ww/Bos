@@ -45,7 +45,7 @@ server:
     uri-encoding: UTF-8
   servlet:
     context-path: /
-  port: 8089
+  port: 80
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
